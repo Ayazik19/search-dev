@@ -1,0 +1,616 @@
+.step-resume-creation{
+    display: block;
+    margin: 0 auto;
+    width: 42.5%;
+    margin-top: 100px;
+}
+.resume-creation{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column
+}
+.main-text-step{
+    font-size: 32px;
+    font-weight: 600;
+}
+.description-text-step{
+    margin-top: 7.5px;
+    color: rgb(140, 140, 140);
+    font-size: 22px;
+}
+.input-search-stack-items{
+    width: 99%;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 12px;
+    margin-top: 40px;
+    background: none;
+    color: white;
+    border-color: white;
+}
+.input-search-stack-items_active{
+    width: 99%;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 12px;
+    margin-top: 40px;
+    background: none;
+    color: white;
+    border-color: #007bff;
+}
+
+
+
+.item-stack{
+    display: flex;
+    width: 100%;
+    height: 44px;
+    font-size: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    background: none;
+    color: white;
+    background: none;
+    border: 1px solid white;
+    align-items: center;
+    cursor: pointer;
+}
+.input-stack_checked{
+    display: flex;
+    width: 100%;
+    height: 44px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    background: none;
+    color: white;
+    background: none;
+    border: 1px solid #007bff;
+    align-items: center;
+}
+.input-stack:checked + .custom-label::before {
+    background-color: #007bff; /* Цвет фона для отмеченного состояния */
+    border-color: #007bff; /* Цвет рамки для отмеченного состояния */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+.name-item-stack{
+    margin-left: 50px;
+}
+.input-stack {
+    display: none; /* Скрываем стандартный чекбокс */
+}
+
+.custom-label {
+    margin-left: 30px;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Стили для псевдоэлемента */
+.custom-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px; /* Задайте желаемый размер */
+    height: 16px;
+    border: 2px solid #ccc; /* Цвет рамки по умолчанию */
+    border-radius: 4px; /* Радиус углов */
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Стили при наведении курсора на label */
+.input-stack:not(:disabled):not(:checked) + .custom-label:hover::before {
+    border-color: #b3d7ff;
+}
+
+/* Стили для активного состояния чекбокса (при нажатии на него) */
+.input-stack:not(:disabled):active + .custom-label::before {
+    background-color: #b3d7ff;
+    border-color: #b3d7ff;
+}
+
+/* Стили для чекбокса, находящегося в фокусе */
+.input-stack:focus + .custom-label::before {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+.input-stack:focus:not(:checked) + .custom-label::before {
+    border-color: #80bdff;
+}
+
+/* Стили для чекбокса, находящегося в состоянии disabled */
+.input-stack:disabled + .custom-label::before {
+    background-color: #e9ecef;
+}
+
+/* Стили для отмеченного состояния */
+.input-stack:checked + .custom-label::before {
+    background-color: #007bff; /* Цвет фона для отмеченного состояния */
+    border-color: #007bff; /* Цвет рамки для отмеченного состояния */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+
+
+
+.name-search-item{
+    color: black;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+
+.stack-items{
+    display: flex;
+    flex-direction: column;
+}
+.attr-name-search-item{
+    display: flex;
+    margin: 5px;
+    height: 40px;
+    border-radius: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+.attr-name-search-item:hover{
+    display: flex;
+    margin: 5px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #eef1f7;
+    align-items: center;
+    cursor: pointer;
+}
+
+.main-resume-user-contacts,
+.form-education{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 200px;
+}
+.education-type{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.contact-info{
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.name-contact,
+.name-education{
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+.input-contacts_full-width,
+.input-education_full-width{
+    width: 100%;
+    height: 40px;
+    background: none;
+    border-color: white;
+    font-size: 14px;
+    color: white;
+    border-radius: 4px;
+}
+.input-education_small-width{
+    width: 18.5%;
+    height: 40px;
+    background: none;
+    border-color: white;
+    font-size: 14px;
+    color: white;
+    border-radius: 4px;
+}
+.input-education_small-width_errors{
+    width: 18.5%;
+    height: 40px;
+    background: none;
+    border: 1px solid #fe725f;
+    font-size: 14px;
+    color: #fe725f;
+    border-radius: 4px;
+}
+.input-contacts_full-width_errors,
+.input-education_full-width_errors{
+    width: 100%;
+    height: 40px;
+    background: none;
+    border: 1px solid #fe725f;
+    font-size: 14px;
+    color: #fe725f;
+    border-radius: 4px;
+}
+.gender-types{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 230px;
+    justify-content: space-between;
+}
+.gender_type-m-selected,
+.gender_type-f-selected{
+    background: rgb(38, 38, 38);
+    border: 1px solid white;
+    width: 105px;
+    height: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.gender_type-m{
+    width: 105px;
+    height: 30px;
+    border-radius: 10px;
+    background: none;
+    border: 1px solid white;
+    cursor: pointer;
+}
+.gender_type-f{
+    width: 105px;
+    height: 30px;
+    border-radius: 10px;
+    background: none;
+    border: 1px solid white;
+    cursor: pointer;
+}
+.text-gender{
+    display: block;
+    margin-top: 6px;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+}
+.set-date{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.input-date-1{
+    height: 40px;
+    border-radius: 4px 0 0 4px;
+    background: none;
+    border-color: white;
+    font-size: 14px;
+    color: white;
+    width: 33.3%;
+}
+.input-date-2{
+    height: 40px;
+    border-radius: 0 4px 4px 0;
+    background: none;
+    border-color: white;
+    font-size: 14px;
+    color: white;
+    width: 33.3%;
+}
+.input-date-1_error{
+    height: 40px;
+    border-radius: 4px 0 0 4px;
+    background: none;
+    border-color: #fe725f;
+    font-size: 14px;
+    color: white;
+    width: 33.3%;
+}
+.input-date-2_error{
+    height: 40px;
+    border-radius: 0 4px 4px 0;
+    background: none;
+    border-color: #fe725f;
+    font-size: 14px;
+    color: white;
+    width: 33.3%;
+}
+.select-date_error{
+    height: 40px;
+    max-height: 40px;
+    background: none;
+    font-size: 14px;
+    color: white;
+    width: 33.3%;
+    border-color: #fe725f;
+}
+.select-date{
+    height: 40px;
+    max-height: 40px;
+    background: none;
+    border-color: white;
+    font-size: 14px;
+    color: white;
+    width: 33.3%;
+}
+
+.select-date option{
+    background-color: gray;
+    width: 33.3%;
+}
+.tel-number-info{
+    
+}
+.help-text-education{
+    position: absolute;
+    color: rgb(120, 120, 120);
+    margin-top: 41px;
+    font-size: 14px;
+    margin-left: 127.5px;
+}
+
+.errors-input-contacts,
+.erorrs-input-education{
+    position: absolute;
+    margin-top: 85px;
+    font-size: 14px;
+    color: #fe725f;
+}
+.errors-input-contacts_date{
+    position: absolute;
+    margin-top: 47.5px;
+    font-size: 14px;
+    color: #fe725f;
+}
+.icon-show-fp-cont-location{
+    position: absolute;
+    width: 22.5px;
+    height: 22.5px;
+    margin-top: 45px;
+    margin-left: 610px;
+    cursor: pointer;
+}
+.icon-delete-citizenship,
+.icon-delete-work-permit{
+    cursor: pointer;
+}
+
+.fp-cont-select-location{
+    position: fixed;
+    z-index: 2147483649;
+    cursor:default;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(28,31,36,.75);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.fp-cont-location{
+    width: 600px;
+    height: 570px;
+    background-color: white;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+.main-fp-cont-location{
+    display: block;
+    margin-top: 4%;
+    margin-left: 5%;
+    height: 90%;
+    width: 90%;
+    color: white;
+}
+
+.input-contacts_full-width,
+.input-contacts_full-width_errors,
+.input-date-1,
+.input-date-1_error,
+.input-date-2,
+.input-date-2_error,
+.select-date,
+.select-date_error,
+.input-fast-search-location,
+.input-education_small-width,
+.input-education_small-width_errors,
+.input-education_full-width,
+.input-education_full-width_errors{
+    box-sizing: border-box; 
+    padding-left: 10px; 
+}
+
+.fp-close-cont-location{
+    position: absolute;
+    margin-left: 1375px;
+    margin-top: -625px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.selected-items{
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 7.5px;
+}
+.citizenships-items-2,
+.citizenships-items-3,
+.work-permit-items-2,
+.work-permit-items-3{
+    display: flex;
+    border-radius: 4px;
+    margin-left: 7.5px;
+    background-color: rgb(108, 108, 108);
+    border-color: rgb(108, 108, 108);
+    width: 95px;
+    height: 30px;
+}
+.citizenships-items-1,
+.work-permit-items-1{
+    display: flex;
+    border-radius: 4px;
+    background-color: rgb(108, 108, 108);
+    border-color: rgb(108, 108, 108);
+    width: 95px;
+    height: 30px;
+}
+.el-citizenships,
+.el-work-permit{
+    display: flex;
+    width: 85px;
+    margin-left: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+.text-citizenship,
+.text-work-permit{
+    color: white;
+    font-size: 14px;    
+}
+.citizenship-info{
+    height: 115px;
+}
+
+.header-fp-location{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+.main-text-fp-location{
+    color: #2a3137;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.input-fast-search-location{
+    border: 1px solid #949494;
+    height: 37.5px;
+    font-size: 14px;
+    border-radius: 4px;
+    color: #949494;
+}
+.main-fp-location{
+    width: 100%;
+    height: 375px;
+    min-height: 375px;
+    margin-top: 10px;
+    display: block;
+    background-color: none;
+    overflow: auto;
+}
+.name-country{
+    font-size: 16px;
+    color: #0c0c0c;
+    margin-left: 10px;
+}
+.el-country{
+    display: flex;
+    align-items: center;
+}
+.checkbox-country{
+    width: 18px;
+    border-color: #949494;
+    height: 18px;
+}
+.checkbox-country_limit{
+    width: 18px;
+    border-color: #b2b2b2;
+    height: 18px;
+}
+.main-fp-location::-webkit-scrollbar-thumb {
+    background-color: darkgray; /* Цвет ползунка */
+    border-radius: 10px; /* Закругление углов ползунка */
+}
+
+/* Стиль для дорожки скролл-бара */
+.main-fp-location::-webkit-scrollbar-track {
+    background: #222; /* Цвет дорожки скролл-бара */
+    border-radius: 10px; /* Закругление дорожки */
+}
+
+
+.name-country_limit{
+    color:#b2b2b2;
+    margin-left: 10px;
+    font-size: 16px;
+}
+.footer-fp-location{
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    justify-content: flex-start;
+}
+.b-location{
+    height: 40px;
+    width: 90px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.type-select{
+    margin-left: 10px;
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+.type-cancelled{
+    background-color:#f4f6fb;
+    color: #2a3137;
+    border-color: #aabbca;
+}
+.list-education{
+    margin-top: 50px;
+    margin-bottom: 70px;
+    display: flex;
+    width: 100%;
+    height: 600px;
+    flex-direction: column;
+}
+.item-education{
+    width: 100%;
+    margin-top: 20px;
+    height: 50px;
+    border-radius: 16px;
+    border: 1px solid white;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    cursor: pointer;
+}
+.text-education{
+    font-size: 16px;
+    font-weight: 700;
+}
+.faculty{
+    position: absolute;
+    height: 150px;
+    width: 640px;
+    display: block;
+    margin-top: 79.5px;
+    border-radius: 8px;
+    z-index: 1;
+    background-color: white;
+    color: black
+}
+.faculty-els{
+    display: flex;
+    flex-direction: column;
+}
+.faculty-finded{
+    display: flex;
+    align-items: center;
+    height: 25px;
+    width: 100%;
+}
+.faculty-finded:hover{
+    display: flex;
+    align-items: center;
+    height: 25px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: #b1b1b1;
+}
+.name-faculty{
+    font-size: 14px;
+    color: black;
+    margin-left: 10px;
+}

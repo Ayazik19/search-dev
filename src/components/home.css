@@ -1,0 +1,230 @@
+.home-main{
+    margin-top: 50px;
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 50px;
+}
+nav{
+    display: flex;
+    height: 50px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.b-type_search-resume,
+.b-type_search-dev{
+    width: 134px;
+    height: 38px;
+    border-radius: 12px;
+    background: none;
+    color: whitesmoke;
+    border-color: whitesmoke;
+    font-size: 14px;
+    cursor: pointer;
+}
+.logo-site{
+    display: inline-block;
+    width: 52.5px;
+    height: 52.5px;
+    margin: 0;
+    padding: 0;
+}
+.text-city-user{
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 15px;
+    text-decoration: underline dotted;
+}
+.link-home-page-b{
+    color: whitesmoke;
+    text-decoration: none
+}
+.page-main_margin{
+    margin-top: 75px;
+    width: 72%;
+    margin-left: 14%;
+}
+.main-header-text{
+    font-weight: 400;
+    font-size: 36px;
+}
+.operation-search-resumes{
+    margin-top: 75px;
+    width: 100%;
+    height: 65px;
+}
+.input-serach-resume,
+.butt-search-resume{font-size: 14px;}
+
+.input-serach-resume{
+    width: 72%;
+    border-radius: 10px 0 0 10px;
+    background-color: antiquewhite;
+    border: 1px solid #cbd1d4;
+    background-color: #fff;
+    color: #333;
+    padding: 0 14px;
+}
+.butt-search-resume{
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    background: #0f8fee;
+    border-radius: 0 4px 4px 0;
+    width: 24%;
+    height: 54px;
+    border: 1px solid #0f8fee;
+    color: #fff
+}
+.input-serach-resume{
+    height: 80%;
+}
+
+.main-content{
+    margin-top: 100px;
+}
+.content-recomended-items,
+.content-achivments,
+.content-articles{
+    width: 100%;
+}
+
+.items-recomended,
+.items-achivments-site{
+    justify-content: space-between;
+    display: flex;
+    margin-top: 50px;
+}
+.content-articles-items{
+    justify-content: space-between;
+    display: flex;
+    margin-top: 25px;
+}
+.items-recomended-size-average,
+.items-achivments-size-average,
+.items-articles{
+    height: 262px;
+}
+.items-achivments-size-small{
+    height: 230px;
+}
+
+
+.items-recomended-size-average,
+.items-recomended-size-big,
+.items-achivments-size-average,
+.items-articles{
+    background-color: #242133;
+    border-radius: 3px;
+    width: 270px;
+    padding: 0;
+}
+.main-items{
+    text-align: center;
+    margin-top: 50px;
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+.main-text-item{
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 25px;
+}
+.text-description-item{
+    margin-top: 15px;
+    font-size: 16px;
+}
+.img-recomended-item,
+.img-achivments-item{
+    margin: 0 auto;
+    width: 45px;
+    height: 45px;
+}
+
+.content-review,
+.content-articles{
+    margin-top: 75px;
+    
+}
+
+.review{
+    display: flex;
+    background-color: #242133;
+    width: 100%;
+    height: 450px;
+    flex-wrap: nowrap;
+    border-radius: 4px;
+}
+.left-side-review{
+    margin-top: 40px;
+    margin-left: 50px;
+}
+.text-review{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+.main-text-review{
+    font-size: 38px;
+    color: white;
+    font-weight: 700;
+}
+.description-text-review{
+    color: white;
+    margin-top: 5px;
+    font-size: 19px;
+    font-weight: 400;
+}
+.reviews-operation{
+    margin-top: 180px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+[id='select-review']{
+    margin-top: 5px;
+    color: #333;
+    padding-left: 12px;
+    width: 77%;
+    border: 1px solid #cbd1d4;
+    border-radius: 4px 0 0 4px;
+    font-size: 13px;
+    height: 35px;
+}
+.b-review-submit{
+    position: absolute;
+    background-color: #27ae60;
+    border: none;
+    color: white;
+    width: 100px;
+    height: 35px;
+    font-size: 13px;
+    margin-top: 23.5px;
+    margin-left: 335px;
+    border-radius: 0 4px 4px 0;
+}
+.img-review-content{
+    width: 250px;
+    height: 300px;
+    margin-left: 65px;
+    margin-top: 150px;
+}
+.description-articles{
+    font-size: 22px;
+    color: white;
+}
+.items-articles{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.img-content-articles-item{
+    height: 65%;
+    width: 100%;
+}
+.text-articles-items{
+    margin-top: 20px;
+}

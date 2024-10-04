@@ -1,0 +1,57 @@
+.footer-create-page{
+    width: 100%;
+    height: 100px;
+    background-color: #1e1e1e;
+    margin-top: 200px;
+    position: fixed;
+    bottom: 0; /* Фиксируем футер внизу */
+    left: 0;
+    z-index: 1000
+}
+.steps-success-items{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    height: 6px;
+    width: 100%;
+}
+.items-steps{
+    width: 305px;
+    height: 100%;
+    border-radius: 8px;
+}
+.footer-main-create-page{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    margin: auto;
+    width: 80%;
+}
+.footer-main-create-page_step-one-true{
+    display: flex;
+    align-items: center;
+    justify-content: right; 
+    height: 100%;
+    margin: auto;
+    width: 80%;
+}
+.b-back-step,
+.b-next-step{
+    border-radius: 8px;
+    font-size: 16px;
+    height: 40px;
+    z-index: 1001;
+}
+.b-back-step{
+    color: #007bff;
+    width: 70px;
+    background-color: rgb(148, 148, 148);
+    border-color: rgb(148, 148, 148);
+}
+.b-next-step{
+    width: 175px;
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
