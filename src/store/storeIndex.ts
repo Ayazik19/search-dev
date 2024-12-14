@@ -1,4 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import searchResumesReducer from './resumesSlice';
+
 
 import {
     persistStore,
@@ -14,6 +16,7 @@ import storage from "redux-persist/lib/storage";
 
 
 const rootReducer = combineReducers({
+    resumes: searchResumesReducer,
 })
 
 const persistConfig = {
