@@ -1,0 +1,11 @@
+body{
+    background-color: #1e1e1e;
+    font-family: "Space Grotesk", sans-serif;
+    color: white;
+}
+button{
+    cursor: pointer;
+}
+button:active{
+    transform: scale(1.02);
+}
