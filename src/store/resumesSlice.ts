@@ -1,12 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProfileLinks, Projects, skills, statusSearchResume, levelIsResume } from "../types/typesResume";
+import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProjectsProfileLinks, Projects, skills, statusSearchResume, levelIsResume } from "../types/typesResume";
 import { FormValues } from "../components/componentsCreatePage/componentsStepsResume/stepResumeFour";
 import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
 import { ProjectsForm } from "../components/componentsCreatePage/componentsStepsResume/componentsStepFive/resumePetProjects";
 
 
 const initialState: ResumeState = {
-    resumesState: []
+    resumesState: {
+        idResumeDb: '',
+        nameResume: '',
+        isResumeCompleted: false,
+        basicInfo: {},
+        education: {},
+        skills: [],
+        profileLinks: [],
+        typeWorkResume: '',
+        positions: [],
+        petProjects: [],
+        amountTimeWorked: {year: 0, month: 0},
+        statusSearchResume: 'Default',
+        levelIsResume: 'Middle Developer',
+        isModifyResume: false
+    }
 };
 
 interface ChangeFieldPayload {
@@ -111,95 +126,85 @@ const getEarlyOrLateDate: Funcs['getEarlyOrLateDate'] = (positions: Positions[],
     return isToDateField !== undefined && typeGetDate === 'toDate' ? 'toDate' : resFormattedFullDate;
 }
 
-const calculateCountResumes = (resumesState: ResumeState[]): number => {
-    return resumesState.length - 1;
-}
-
 const resumesSlice = createSlice({
     name: "resume",
     initialState,
     reducers: {
         setNameResume(state, action: PayloadAction<string>) {
-            if (state.resumesState.length > 0) {
-                state.resumesState[0].nameResume = action.payload;
+            if (state.resumesState) {
+                state.resumesState.nameResume = action.payload;
             }
             else {
                 const { resumesState } = state;
-                const lengthArr = resumesState?.length || 0;
+                const lengthArr = resumesState || 0;
 
-                const validResumesState = Array.isArray(resumesState) ? resumesState : [];
 
                 const newResume = {
                     idResume: lengthArr + 1,
                     nameResume: action.payload,
                     isResumeCompleted: false,
                 };
-                state.resumesState = [...validResumesState, newResume];
+                state.resumesState = newResume;
             }
         },
         setBasicInfo(state, action: PayloadAction<BasicInfo>) {
-            state.resumesState.forEach((item: Resume) => {
-                item.basicInfo = {
-                    ...item.basicInfo,
-                    ...action.payload,
-                };
-            })
+            const basicInfoUpdates = action.payload; 
+
+            state.resumesState = {
+                ...state.resumesState,
+                basicInfo: {
+                    ...state.resumesState.basicInfo,
+                    ...basicInfoUpdates, 
+                },
+            };
         },
         setEducationClass(state, action: PayloadAction<string>) {
-            state.resumesState.forEach((item: Resume) => {
+            const education: Education = {
+                educationClass: action.payload
+            };
 
-                const education: Education = {
-                    educationClass: action.payload
-                }
-
-                item.education = education;
-            })
+            state.resumesState = {
+                ...state.resumesState,
+                education: education, 
+            };
         },
         setEducation(state, action: PayloadAction<FormValues>) {
             const payloadObject = action.payload;
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
-            if (lastResume && lastResume.education) {
-                lastResume.education.nameInstituation = payloadObject.nameInstituation;
-                lastResume.education.faculty = payloadObject.faculty;
+            if (resumesState && resumesState.education) {
+                resumesState.education.nameInstituation = payloadObject.nameInstituation;
+                resumesState.education.faculty = payloadObject.faculty;
             }
-        },
-        setChang(state) {
-            const resumesState = state.resumesState;
-
-            state.resumesState[resumesState.length - 1].statusSearchResume = '';
         },
         setChangeTypeWork(state, action: PayloadAction<string>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
-            if (lastResume) {
-                lastResume.typeWorkResume = action.payload;
+            if (resumesState) {
+                resumesState.typeWorkResume = action.payload;
             }
         },
         setAmountTimeWorked(state) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
-            if (lastResume.positions) {
-                const length = lastResume.positions.length;
-                const positions = lastResume.positions;
+            if (resumesState.positions) {
+                const length = resumesState.positions.length;
+                const positions = resumesState.positions;
                 if (length > 1) {
                     const getEarlySinceDate = getEarlyOrLateDate(positions, 'early');
                     const getLateToDate = getEarlyOrLateDate(positions, 'toDate');
 
                     const amountCountTimeWorked = formattedWorkingTimeDate(getEarlySinceDate, getLateToDate)
 
-                    state.resumesState[0].amountTimeWorked = amountCountTimeWorked.calculateCountTime;
+                    state.resumesState.amountTimeWorked = amountCountTimeWorked.calculateCountTime;
                 }
                 else if (length === 1) {
-                    const stateFirstObjPos = lastResume.positions[0].workingTime?.countTime;
-                    lastResume.amountTimeWorked = stateFirstObjPos;
+                    const stateFirstObjPos = resumesState.positions[0].workingTime?.countTime;
+                    resumesState.amountTimeWorked = stateFirstObjPos;
                 }
                 else {
-                    lastResume.amountTimeWorked = {
+                    resumesState.amountTimeWorked = {
                         year: 0,
                         month: 0
                     };
@@ -209,16 +214,15 @@ const resumesSlice = createSlice({
         setPosition(state, action: PayloadAction<Positions>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
-            const positions = lastResume.positions ?? [];
+            const positions = resumesState.positions ?? [];
             const lengthPositions = positions.length;
             const payloadObj = action.payload;
 
             let payloadDataSinceDatePost = payloadObj.workingTime?.sinceDate || '';
             let payloadDataToDatePost = payloadObj.workingTime?.toDate || '';
 
-            let formattedCountTime = { year: 0, month: 0 }; 
+            let formattedCountTime = { year: 0, month: 0 };
 
             if (payloadDataSinceDatePost && payloadDataToDatePost) {
                 const formattedWorkingTime = formattedWorkingTimeDate(payloadDataSinceDatePost, payloadDataToDatePost);
@@ -242,19 +246,18 @@ const resumesSlice = createSlice({
                 },
             };
 
-            if (lastResume.positions) {
-                lastResume.positions?.push(finallyPost);
+            if (resumesState.positions) {
+                resumesState.positions?.push(finallyPost);
             }
             else {
-                lastResume.positions = [finallyPost];
+                resumesState.positions = [finallyPost];
             }
         },
         setUpdIdsPositions(state) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
-            const statePositions = lastResume.positions;
+            const statePositions = resumesState.positions;
             if (statePositions && statePositions.length >= 1) {
                 const updIdsPos = statePositions?.map((item, index) => {
                     return {
@@ -272,30 +275,25 @@ const resumesSlice = createSlice({
                         }
                     };
                 });
-                lastResume.positions = updIdsPos;
+                resumesState.positions = updIdsPos;
             }
 
         },
         setFilterPositions(state, action: PayloadAction<number>) {
-            const resumesState = state.resumesState;
-
-            state.resumesState[resumesState.length - 1].positions = state.resumesState[resumesState.length - 1].positions?.filter(item => item.idPosition !== action.payload);
+            state.resumesState.positions = state.resumesState.positions?.filter(item => item.idPosition !== action.payload);
         },
         setFilterProjects(state, action: PayloadAction<number>) {
-            const resumesState = state.resumesState;
-
-            state.resumesState[resumesState.length - 1].petProjects = state.resumesState[resumesState.length - 1].petProjects?.filter(item => item.idProject !== action.payload)
+            state.resumesState.petProjects = state.resumesState.petProjects?.filter(item => item.idProject !== action.payload)
         },
         setChangeFieldPost(state, action: PayloadAction<ChangeFieldPayload>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
             const postChange = action.payload.post;
             const fieldChange = action.payload.field;
             const valueChange = action.payload.value;
 
-            const statePositions = lastResume.positions;
+            const statePositions = resumesState.positions;
             if (statePositions) {
                 if (postChange && postChange.idPosition !== undefined) {
                     const positionToUpdate = statePositions[postChange.idPosition];
@@ -322,32 +320,29 @@ const resumesSlice = createSlice({
         setChangeDataPostArr(state, action: PayloadAction<ChangePostArrPayload>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
             const post = action.payload.post;
             const mainIdPost = action.payload.mainIdPost;
-            if (lastResume.positions) {
-                lastResume.positions[mainIdPost].post = post;
+            if (resumesState.positions) {
+                resumesState.positions[mainIdPost].post = post;
             }
         },
-        setLinkProfile(state, action: PayloadAction<ProfileLinks>) {
+        setLinkProfile(state, action: PayloadAction<ProjectsProfileLinks>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
-            const stateProfileLinks = lastResume.profileLinks;
-            lastResume.profileLinks = stateProfileLinks ?? [];
-            lastResume.profileLinks.push(action.payload);
+            const stateProfileLinks = resumesState.profileLinks;
+            resumesState.profileLinks = stateProfileLinks ?? [];
+            resumesState.profileLinks.push(action.payload);
         },
         setChangeLinkProfile(state, action: PayloadAction<{ nameLink: string, value: string }>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
             const field = action.payload.nameLink;
             const value = action.payload.value;
 
-            const stateProfileLinks = lastResume.profileLinks;
+            const stateProfileLinks = resumesState.profileLinks;
             if (stateProfileLinks) {
                 const changedLink = stateProfileLinks?.map((item, index) => {
                     if (item.nameLink === field) {
@@ -358,17 +353,16 @@ const resumesSlice = createSlice({
                     }
                     return item;
                 })
-                lastResume.profileLinks = changedLink;
+                resumesState.profileLinks = changedLink;
             }
         },
         setChangeProjectData(state, action: PayloadAction<Projects>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
             const changedProject = action.payload;
 
-            const stateProjects = lastResume.petProjects;
+            const stateProjects = resumesState.petProjects;
             const updatedProjects = stateProjects?.map((item) => {
                 if (item.idProject === changedProject.idProject) {
                     if (item.description !== changedProject.description) {
@@ -393,14 +387,13 @@ const resumesSlice = createSlice({
                 }
                 return item;
             });
-            lastResume.petProjects = updatedProjects;
+            resumesState.petProjects = updatedProjects;
         },
         setPetProject(state, action: PayloadAction<ProjectsForm>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
-            const statePetProjects = state.resumesState[0].petProjects;
+            const statePetProjects = resumesState.petProjects;
 
             const addIdProject: Projects = {
                 idProject: statePetProjects?.length || 0,
@@ -410,14 +403,14 @@ const resumesSlice = createSlice({
             };
 
 
-            lastResume.petProjects = statePetProjects ?? [];
+            resumesState.petProjects = statePetProjects ?? [];
 
-            lastResume.petProjects.push(addIdProject)
+            resumesState.petProjects.push(addIdProject)
         },
         setSkills(state, action: PayloadAction<skills>) {
             const resumesState = state.resumesState;
 
-            state.resumesState[resumesState.length - 1].skills = action.payload;
+            resumesState.skills = action.payload;
         },
         setValueModalCont(state, action: PayloadAction<{
             typeField: string,
@@ -425,20 +418,32 @@ const resumesSlice = createSlice({
         }>) {
             const resumesState = state.resumesState;
 
-            const lastResume = resumesState[resumesState.length - 1];
 
             if (action.payload.typeField === 'status search') {
-                lastResume.statusSearchResume = action.payload.value;
+                resumesState.statusSearchResume = action.payload.value;
             }
             else {
-                lastResume.levelIsResume = action.payload.value;
+                resumesState.levelIsResume = action.payload.value;
             }
         },
+        setResumeCompleted(state) {
+            const resumesState = state.resumesState;
+
+            resumesState.isResumeCompleted = true;
+        },
+        setIdResumeDb(state, action: PayloadAction<string>) {
+            const resumesState = state.resumesState;
+
+            resumesState.idResumeDb = action.payload;
+        },
+        setIsModifyResume(state, action: PayloadAction<boolean>) {
+            state.resumesState.isModifyResume = action.payload;
+        },
         deleteResume(state) {
-            state.resumesState = [];
+            state.resumesState = {};
         },
     },
 });
 
-export const { setValueModalCont, setSkills, setChang, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
+export const { setValueModalCont, setIdResumeDb, setResumeCompleted, setSkills, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
 export default resumesSlice.reducer;

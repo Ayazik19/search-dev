@@ -30,36 +30,41 @@ export interface WorkingTime {
 
 
 interface DateBirth {
-    day: string,
-    month: string,
-    year: string
+    day?: string,
+    month?: string,
+    year?: string
 }
 
 export interface BasicInfo {
-    firstName: string,
-    lastName: string,
-    patronymic: string,
-    gender: string,
-    city: string,
-    workPermit: string[],
-    citizenship: string[],
-    dateBirth: DateBirth,
-    elAddress: string,
-    phoneNumber: string,
+    firstName?: string,
+    lastName?: string,
+    patronymic?: string,
+    gender?: string,
+    city?: string,
+    workPermit?: string[],
+    citizenship?: string[],
+    socialContactsLinks?: ContactLinks[],
+    dateBirth?: DateBirth,
+    elAddress?: string,
+    phoneNumber?: string,
 }
 
+export interface ContactLinks{
+    nameSelectedSocial: string,
+    link: string
+}
 
 //skils types
 export type skills = string[];
 
 
-export interface ProfileLinks {
+export interface ProjectsProfileLinks {
     nameLink: string,
     url: string
 }
 
 export interface Education {
-    educationClass: string,
+    educationClass?: string,
     nameInstituation?: string,
     faculty?: string,
     yearGraduation?: string
@@ -81,21 +86,22 @@ export type statusSearchResume = string
 export type levelIsResume = string
 
 export type Resume = {
-    idResume: number,
-    nameResume: string,
-    isResumeCompleted: boolean,
+    idResumeDb?: string,
+    nameResume?: string,
+    isResumeCompleted?: boolean,
     basicInfo?: BasicInfo,
     education?: Education,
     skills?: skills,
-    profileLinks?: ProfileLinks[],
+    profileLinks?: ProjectsProfileLinks[],
     typeWorkResume?: workResume,
     positions?: Positions[],
     petProjects?: Projects[],
     amountTimeWorked?: Date,
     statusSearchResume?: statusSearchResume,
     levelIsResume?: levelIsResume
+    isModifyResume?: boolean    
 }
 
 export type ResumeState = {
-    resumesState: Resume[]
+    resumesState: Resume
 }
