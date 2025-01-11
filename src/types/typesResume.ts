@@ -92,14 +92,13 @@ export type Resume = {
     basicInfo?: BasicInfo,
     education?: Education,
     skills?: skills,
-    profileLinks?: ProjectsProfileLinks[],
+    projectsProfile?: ProjectsProfileLinks[],
     typeWorkResume?: workResume,
     positions?: Positions[],
     petProjects?: Projects[],
     amountTimeWorked?: Date,
     statusSearchResume?: statusSearchResume,
     levelIsResume?: levelIsResume
-    isModifyResume?: boolean    
 }
 
 export type ResumeState = {
