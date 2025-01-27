@@ -96,7 +96,7 @@ export type Resume = {
     typeWorkResume?: workResume,
     positions?: Positions[],
     petProjects?: Projects[],
-    amountTimeWorked?: Date,
+    amountTimeWorked?: Date | string,
     statusSearchResume?: statusSearchResume,
     levelIsResume?: levelIsResume
 }
