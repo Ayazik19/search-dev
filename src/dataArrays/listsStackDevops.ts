@@ -1,8 +1,8 @@
 export const arrayStacks: Array<string> = [
-    'Backend Development', 
-    'Full-stack Development', 
-    'Mobile Development', 
-    'Web Frontend Development',
+    'Backend Developer', 
+    'Full-stack Developer', 
+    'Mobile Developer', 
+    'Frontend Developer',
     'Lead Developer',
     'Team Lead',
     'DevOps Engineer',
