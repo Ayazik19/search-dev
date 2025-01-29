@@ -13,14 +13,13 @@ const initialState: ResumeState = {
         basicInfo: {},
         education: {},
         skills: [],
-        profileLinks: [],
+        projectsProfile: [],
         typeWorkResume: '',
         positions: [],
         petProjects: [],
         amountTimeWorked: {year: 0, month: 0},
         statusSearchResume: 'Default',
         levelIsResume: 'Middle Developer',
-        isModifyResume: false
     }
 };
 
@@ -176,6 +175,7 @@ const resumesSlice = createSlice({
             if (resumesState && resumesState.education) {
                 resumesState.education.nameInstituation = payloadObject.nameInstituation;
                 resumesState.education.faculty = payloadObject.faculty;
+                resumesState.education.yearGraduation = payloadObject.yearGradiation;
             }
         },
         setChangeTypeWork(state, action: PayloadAction<string>) {
@@ -331,9 +331,9 @@ const resumesSlice = createSlice({
             const resumesState = state.resumesState;
 
 
-            const stateProfileLinks = resumesState.profileLinks;
-            resumesState.profileLinks = stateProfileLinks ?? [];
-            resumesState.profileLinks.push(action.payload);
+            const stateProfileLinks = resumesState.projectsProfile;
+            resumesState.projectsProfile = stateProfileLinks ?? [];
+            resumesState.projectsProfile.push(action.payload);
         },
         setChangeLinkProfile(state, action: PayloadAction<{ nameLink: string, value: string }>) {
             const resumesState = state.resumesState;
@@ -342,7 +342,7 @@ const resumesSlice = createSlice({
             const field = action.payload.nameLink;
             const value = action.payload.value;
 
-            const stateProfileLinks = resumesState.profileLinks;
+            const stateProfileLinks = resumesState.projectsProfile;
             if (stateProfileLinks) {
                 const changedLink = stateProfileLinks?.map((item, index) => {
                     if (item.nameLink === field) {
@@ -353,7 +353,7 @@ const resumesSlice = createSlice({
                     }
                     return item;
                 })
-                resumesState.profileLinks = changedLink;
+                resumesState.projectsProfile = changedLink;
             }
         },
         setChangeProjectData(state, action: PayloadAction<Projects>) {
@@ -436,14 +436,11 @@ const resumesSlice = createSlice({
 
             resumesState.idResumeDb = action.payload;
         },
-        setIsModifyResume(state, action: PayloadAction<boolean>) {
-            state.resumesState.isModifyResume = action.payload;
-        },
         deleteResume(state) {
             state.resumesState = {};
         },
     },
 });
 
-export const { setValueModalCont, setIdResumeDb, setResumeCompleted, setSkills, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
+export const {  setValueModalCont, setIdResumeDb, setResumeCompleted, setSkills, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
 export default resumesSlice.reducer;
