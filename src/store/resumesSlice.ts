@@ -134,12 +134,7 @@ const resumesSlice = createSlice({
                 state.resumesState.nameResume = action.payload;
             }
             else {
-                const { resumesState } = state;
-                const lengthArr = resumesState || 0;
-
-
                 const newResume = {
-                    idResume: lengthArr + 1,
                     nameResume: action.payload,
                     isResumeCompleted: false,
                 };
