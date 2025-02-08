@@ -463,6 +463,7 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
                             <input
                                 value={valuesBasicInfo?.dateBirth?.day}
                                 type="text"
+                                maxLength={2}
                                 className={errors?.dateBirth?.day || errors?.dateBirth?.month || errors?.dateBirth?.year ? "input-date-1_error" : "input-date-1"}
                                 placeholder="Day"
                                 {...register('dateBirth.day', {
@@ -500,6 +501,7 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
                             <input
                                 value={valuesBasicInfo?.dateBirth?.year}
                                 type="text"
+                                maxLength={4}
                                 className={errors?.dateBirth?.day || errors?.dateBirth?.month || errors?.dateBirth?.year ? "input-date-2_error" : "input-date-2"}
                                 placeholder="Year"
                                 {...register('dateBirth.year', {
