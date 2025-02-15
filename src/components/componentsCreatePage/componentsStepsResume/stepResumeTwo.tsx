@@ -602,7 +602,7 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
                             onChange={handleInpCountryCitiz}
                         />
                         <img
-                            src={hoverIconFpCitiz ? iconGreyShowFpCont : iconWhiteShowFpCont}
+                            src={iconGreyShowFpCont}
                             onClick={() => setIsFullPageCitizenship(true)}
                             onMouseOver={() => setHoverIconFpCitiz(true)}
                             onMouseLeave={() => setHoverIconFpCitiz(false)}
@@ -635,7 +635,7 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
                             onChange={handleInpCountryWoPer}
                         />
                         <img
-                            src={hoverIconFpWorkPermit ? iconGreyShowFpCont : iconWhiteShowFpCont}
+                            src={iconGreyShowFpCont}
                             onClick={() => setIsFullPageWorkPermit(true)}
                             onMouseOver={() => setHoverIconFpWorkPermit(true)}
                             onMouseLeave={() => setHoverIconFpWorkPermit(false)}

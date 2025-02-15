@@ -30,7 +30,7 @@ const StepResume3: React.FC<Props> = ({handleNextStep}) => {
         return(
             <div 
                 className="item-education"
-                style = {{border: arrSelectedEduc !== el ? '1px solid white' : '1px solid #007bff'}} 
+                style = {{border: arrSelectedEduc !== el ? '1px solid gray' : '1px solid #007bff'}} 
                 key = {el} 
                 onClick={() => handleSubmitEduc(el)}            
             >
