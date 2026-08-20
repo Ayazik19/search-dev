@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import iconCloseFpCont from '../../../../public/icons/iconCloseFpCont.png';
+import iconCloseFpCont from '../../../../dist/icons/iconCloseFpCont.png';
 import { Country } from 'country-state-city';
 
 interface PropsStepResTwo {

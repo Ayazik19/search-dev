@@ -25,7 +25,7 @@ const useStepsStyle = () => {
     const [arrBgColorStyles, setArrBgColorStyles] = useState<Styles['bgColorStep'][]>(
         Array.from({ length: 6 }, (_, i) => ({
             step: i + 1,
-            bgColor: 'rgb(98, 98, 98)'
+            bgColor: '#dce3eb'
         }))
     );
 
@@ -44,12 +44,12 @@ const useStepsStyle = () => {
                 if (item.step === currentStepUpd) {
                     return {
                         ...item,
-                        bgColor: 'linear-gradient(to right, #007bff 50%, rgb(98, 98, 98) 50%)'
+                        bgColor: 'linear-gradient(to right, #007bff 50%, #dce3eb 50%)'
                     };
                 }
                 return {
                     ...item,
-                    bgColor: 'rgb(98, 98, 98)' 
+                    bgColor: '#dce3eb' 
                 };
             });
 

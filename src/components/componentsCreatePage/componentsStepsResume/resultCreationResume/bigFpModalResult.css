@@ -1,0 +1,343 @@
+.big-fp-modal-result{
+    position: fixed;
+    z-index: 2147483649;
+    cursor: default;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(28, 31, 36, .75);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.fp-cont-result{
+    width: 900px;
+    height: 650px;
+    background-color: rgb(52 52 52);
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+
+.cont-result{
+    height: 500px;
+    width: 750px;
+    margin-left: 75px;
+    margin-top: 40px;
+}
+
+.cont-result_margin-zero{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-last-cont{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.text-content {
+    display: block;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.form-last-step-resume{
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.info-input{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 40%;
+    margin-bottom: 30px;
+}
+
+.name-input{
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+.input-last-step,
+.input-errors-last-step,
+.select-input{
+    padding-left: 7.5px;
+    height: 30px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.select-currency-salary{
+    margin-left: 10px;
+    font-size: 14px;
+    width: 34px;
+    border-radius: 6px;
+    border: 1px solid gray;
+    color: black;
+}
+.input-last-step{
+    border: 1px solid gray;
+    color: black;
+}
+
+.salary-input{
+    width: 40%;
+}
+
+.select-input{
+    width: 22%;
+    height: 33.6px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid gray;
+}
+
+.text-area-desc-resume{
+    width: 82.5%;
+    margin-top: 10px;
+    border: 1px solid gray;
+    resize: none;
+    min-height: 150px;
+    border-radius: 6px;
+    padding: 5px;
+    overflow: auto;
+}
+
+
+.text-area-desc-resume::-webkit-scrollbar {
+    width: 8px;
+}
+
+.text-area-desc-resume::-webkit-scrollbar-thumb {
+    background-color:#007bff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.text-area-desc-resume::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.text-area-desc-resume::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.input-errors-last-step{
+    width: 40%;
+}
+
+.select-errors-currency-salary{
+    margin-left: 10px;
+    font-size: 14px;
+    width: 34px;
+    border-radius: 6px;
+    border: 1px solid red;
+    color: black;
+}
+.input-errors-last-step{
+    color: red;
+    border: 1px solid red;
+}
+
+.inputs-salary{
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 10px;
+}
+
+.erorrs-inp-last-step{
+    color:red;
+    font-size: 14px;
+    margin-top: 7.5px;
+}
+
+.icon-subm-last-step{
+
+}
+
+.other-currencies-salary,
+.other-currencies{
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.text-is-show-other-currencies{
+    font-size: 14px;
+    color:#007bff;
+    cursor: pointer;
+    width: 48%;
+}
+.text-is-show-other-currencies:hover{
+    color:#007bff;
+    text-decoration: underline;
+    
+}
+
+.text-is-show-other-currencies_is-loading{
+    font-size: 14px;
+    color:#007bff;
+    cursor: pointer;
+    width: 48%;
+}
+
+.loading-other-currencies{
+    position: absolute;
+    height: 1px;
+    margin-left: 80px;
+}
+
+.text-currency{
+    font-size: 13px;
+    color: gray
+}
+
+.btn-subm-last-step{
+    border:1px solid #007bff;
+    width: 150px;
+    background-color: #007bff;
+    min-height: 40px;
+    font-size: 14px;
+    color: white;
+    border-radius: 8px;
+    margin-left: 615px;
+}
+
+/* .btn-subm-last-step:hover{
+    background-color: #007bff;
+    border:1px solid #007bff;
+    width: 40px;
+    height: 30px;
+} */
+
+.right-side-modal-cont{
+    margin-left: 50px;
+}
+
+.salary-cont,
+.bussynes-cont{
+}
+
+.bussynes-types-items,
+.work-shedules-types-items{
+    display: flex;
+    flex-direction: column;
+}
+.list-el-last-step_not-checked{
+    display: flex;
+    width: 320px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    background: none;
+    color: white;
+    background: none;
+    border: 1px solid gray;
+    align-items: center;
+}
+
+.list-el-last-step_checked {
+    display: flex;
+    width: 320px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    background: none;
+    color: white;
+    background: none;
+    border: 1px solid #007bff;
+    align-items: center;
+}
+
+
+.last-step-lists-label{
+    margin-left: 15px;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+}
+
+.last-step-lists-label::before{
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.checkbox-last-step-resume{
+    display: none;
+}
+
+.checkbox-last-step-resume:checked+.last-step-lists-label::before {
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+.checkbox-last-step-resume:not(:disabled):not(:checked)+.last-step-lists-label:hover::before {
+    border-color: #b3d7ff;
+}
+
+/* Стили для активного состояния чекбокса (при нажатии на него) */
+.checkbox-last-step-resume:not(:disabled):active+.last-step-lists-label::before {
+    background-color: #b3d7ff;
+    border-color: #b3d7ff;
+}
+
+/* Стили для чекбокса, находящегося в фокусе */
+.checkbox-last-step-resume:focus+.last-step-lists-label::before {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+.checkbox-last-step-resume:focus:not(:checked)+.last-step-lists-label::before {
+    border-color: #80bdff;
+}
+
+/* Стили для чекбокса, находящегося в состоянии disabled */
+.checkbox-last-step-resume:disabled+.last-step-lists-label::before {
+    background-color: #e9ecef;
+}
+
+/* Стили для отмеченного состояния */
+.checkbox-last-step-resume:checked+.last-step-lists-label::before {
+    background-color: #007bff;
+    /* Цвет фона для отмеченного состояния */
+    border-color: #007bff;
+    /* Цвет рамки для отмеченного состояния */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+.erorrs-inp-last-step_top-conts{
+    color: red;
+    position: absolute;
+    font-size: 14px;
+}
+
+
+
+

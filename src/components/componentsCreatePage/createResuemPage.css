@@ -1,12 +1,14 @@
 .footer-create-page{
     width: 100%;
     height: 100px;
-    background-color: #1e1e1e;
+    background-color: white;
     margin-top: 200px;
     position: fixed;
     bottom: 0; 
     left: 0;
     z-index: 1000
+}
+.create-resume-page{
 }
 .steps-success-items{
     display: flex;
@@ -47,7 +49,7 @@
     color: #007bff;
     width: 90px;
     background-color: #f3f9ff;
-    border: 1px solid rgb(148, 148, 148);
+    border: 1px solid white;
 }
 .b-next-step{
     width: 175px;

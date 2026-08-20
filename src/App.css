@@ -1,11 +1,16 @@
 body{
-    background-color: #1e1e1e;
     font-family: "Space Grotesk", sans-serif;
     color: white;
+    margin: 0 auto;
 }
 button{
     cursor: pointer;
 }
 button:active{
     transform: scale(1.02);
+}
+
+a:hover{
+    color: #fe725f;
+    text-decoration: none;
 }

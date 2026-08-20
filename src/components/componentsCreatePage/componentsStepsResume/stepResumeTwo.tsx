@@ -1,24 +1,24 @@
 import React, { ComponentType, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hookRedux";
 import { useForm } from "react-hook-form";
-import iconGreyShowFpCont from '../../../../public/icons/iconGreyShowFpCont.png';
-import iconWhiteShowFpCont from '../../../../public/icons/iconWhiteShowFpCont.png';
-import iconDeleteCountryItem from '../../../../public/icons/iconDeleteCountryItem.png';
+import iconGreyShowFpCont from '../../../../dist/icons/iconGreyShowFpCont.png';
+import iconWhiteShowFpCont from '../../../../dist/icons/iconWhiteShowFpCont.png';
+import iconDeleteCountryItem from '../../../../dist/icons/iconDeleteCountryItem.png';
 import { setBasicInfo } from "../../../store/resumesSlice";
 import FpContCountry from "./fpContCountry";
 import { TypesComponents } from "../createResumePage";
 import StepSuccess from "./stepsSucces";
-import { BasicInfo, ContactLinks } from "../../../types/typesResume";
+import { BasicInfo, ContactLinks, SocialNetwork } from "../../../types/typesResume";
 import { setChangeScroll } from "../../../store/isMainScrollSlice";
-import { arrSocialLinks } from "../../../dataArrays/listSocialContacts";
+import { arrSocialLinks, iconMap } from "../../../dataArrays/listSocialContacts";
 
-import iconFacebookSocial from '../../../../public/icons/iconFacebookSocial.png';
-import iconInstagramSocial from '../../../../public/icons/iconInstagramSocial.png';
-import iconPinterestSocial from '../../../../public/icons/iconPinterestSocial.png';
-import iconTelegramSocial from '../../../../public/icons/iconTelegramSocial.png';
-import iconTwitterSocial from '../../../../public/icons/iconTwitterSocial.png';
-import iconVkontakteSocial from '../../../../public/icons/iconVkontakteSocial.png';
-import iconHelpSocialInp from '../../../../public/icons/iconHelpSocialInp.png';
+import iconFacebookSocial from '../../../../dist/icons/iconFacebookSocial.png';
+import iconInstagramSocial from '../../../../dist/icons/iconInstagramSocial.png';
+import iconPinterestSocial from '../../../../dist/icons/iconPinterestSocial.png';
+import iconTelegramSocial from '../../../../dist/icons/iconTelegramSocial.png';
+import iconTwitterSocial from '../../../../dist/icons/iconTwitterSocial.png';
+import iconVkontakteSocial from '../../../../dist/icons/iconVkontakteSocial.png';
+import iconHelpSocialInp from '../../../../dist/icons/iconHelpSocialInp.png';
 import { Country } from "country-state-city";
 
 interface FormValues {
@@ -46,16 +46,8 @@ interface PropsHandle {
     stepsComponents: ComponentType<TypesComponents>[]
 }
 
-type SocialNetwork = 'facebook' | 'twitter' | 'vk' | 'instagram' | 'pinterest' | 'telegram';
 
-const iconMap: Record<SocialNetwork, string> = {
-    'facebook': iconFacebookSocial,
-    'twitter': iconTwitterSocial,
-    'vk': iconVkontakteSocial,
-    'instagram': iconInstagramSocial,
-    'pinterest': iconPinterestSocial,
-    'telegram': iconTelegramSocial
-};
+
 
 const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, handleBackStep }) => {
     const dispatch = useAppDispatch();
@@ -306,6 +298,7 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
 
     const handleSetSocialLink = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if(event.key === 'Enter'){
+            console.log('aa')
             event.preventDefault();
 
             handleAddContactSocialLink();
@@ -318,6 +311,7 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
         setArrSocialResumeLinks(updArrSocialsResume);
     }
 
+    
     const selectedSocialContacts = arrSocialResumeLinks.map((item, index) => {
         const iconSrc = iconMap[item.nameSelectedSocial as SocialNetwork];
 
@@ -343,7 +337,10 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
         );
     })
 
-
+    useEffect(() => {
+        console.log(arrSocialResumeLinks)
+    },[arrSocialResumeLinks])
+    
     return (
         <div className="step-resume-creation">
             <div className="resume-creation">

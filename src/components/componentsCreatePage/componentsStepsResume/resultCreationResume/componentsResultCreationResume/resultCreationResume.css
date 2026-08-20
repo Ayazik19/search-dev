@@ -1,0 +1,588 @@
+.result-resume {
+    height: 100%;
+    width: 100%;
+}
+
+.header-resume {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    background-color: gray;
+    border-radius: 4px 4px 0 0;
+    margin-left: 0px;
+}
+
+.img-resume-header {
+    height: 26px;
+    width: 26px;
+}
+
+.header-resume-info_scrolled-under {
+    width: 750px;
+    display: flex;
+    margin-left: 75px;
+    justify-content: space-between;
+    /* Растянуть пространство между элементами */
+    align-items: center;
+}
+
+.img-resume-header {
+    height: 26px;
+    width: 26px;
+    margin-right: 5px;
+}
+
+.start-side-header-result-creation-resume {
+    display: flex;
+    align-items: center;
+    /* Убедитесь, что никакие margin или padding не задаются */
+    /* margin-left и другие отступы удалите */
+}
+
+.left-side-header-main-text,
+.center-side-header-main-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+
+.header-text-resume {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-resume {
+    width: 750px;
+    height: 100%;
+    margin-left: 75px;
+    margin-top: 5px;
+    overflow-y: auto;
+}
+
+.main-resume::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-resume::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.main-resume::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.main-resume {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1);
+}
+
+.header-cont-resume-info {
+    display: flex;
+    align-items: center;
+}
+
+.resume-media {
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.img-resume-user {
+    height: 100px;
+    width: 100px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    border-radius: 3px;
+    position: sticky;
+    top: 20px;
+    align-self: center;
+}
+
+.img-resume {
+    display: flex;
+    justify-content: center;
+}
+
+.contact-name {
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+    margin-top: 7.5px;
+}
+
+.resume-name {
+    color: gray;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.pre-header,
+.contact-info,
+.default-contact {
+    color: white;
+    font-size: 16px;
+}
+
+
+
+.working-conditions-info,
+.resume-media,
+.contact-info,
+.pre-header,
+.main-resume,
+.result-resume,
+.location-works-contact,
+.main-contacts,
+.default-contact,
+.expirience-info,
+.education-info,
+.pet-projects-info,
+.item-expirience,
+.item-education-result-creation-resume,
+.item-pet-project-result-creation-resume,
+.post-item-info,
+.soft-skills-IS-result-creation-resume,
+.description-result-creation-resume {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-skills-result-creation-resume {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+
+.text-desc-result-creation-resume {
+    font-size: 16px;
+    color: white
+}
+
+.el-skill-result-creation-resume {
+    height: 30px;
+    font-size: 14px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color: #EEF1F7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2a3137;
+    margin-right: 10px;
+}
+
+.text-name-cont {
+    color: gray;
+    font-size: 16px;
+}
+
+.location-works-contact {
+    margin-bottom: 15px;
+}
+
+.main-contacts {
+    margin-top: 15px;
+}
+
+.resume-info {
+    margin-top: 30px;
+}
+
+.status-search-work {
+    height: 25px;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-finish-result {
+    border: 1px solid #007bff;
+    width: 150px;
+    background-color: #007bff;
+    min-height: 40px;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.social-contacts {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.link-to-social {
+    width: 25px;
+    height: 25px;
+    text-decoration: none;
+    color: none;
+}
+
+.text-edit-data {
+    color: #007bff;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.text-edit-data:hover {
+    color: #fe725f;
+    cursor: pointer;
+}
+
+.expirience-info,
+.education-info,
+.pet-projects-info,
+.soft-skills-IS-result-creation-resume,
+.description-result-creation-resume {
+    margin-top: 50px;
+}
+
+
+
+.link-to-social:hover {
+    transform: scale(1.08);
+    width: 25px;
+    height: 25px;
+    text-decoration: none;
+    color: none;
+}
+
+.icon-social {
+    height: 100%;
+    width: 100%;
+}
+
+.name-cont {
+    font-size: 24px;
+    color: gray;
+    font-weight: 600;
+}
+
+.name-company,
+.name-project,
+.name-instituation-creation-resume {
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+}
+
+.link-project-result-creation-resume {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.link-project-result-creation-resume:hover {
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 16px;
+}
+
+.desc-project {
+    color: white;
+    font-size: 14px;
+}
+
+
+.time-worked-company,
+.year-graduation-result-creation-ersume {
+    color: gray;
+    font-size: 16px;
+}
+
+.params-info {
+    margin-top: 5px;
+}
+
+
+
+.post-item-info {
+    margin-top: 7.5px;
+    font-size: 14px;
+    color: white
+}
+
+.btns-result-resumes {
+    display: flex;
+    justify-content: space-between;
+    width: 750px;
+    margin-left: 75px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.set-own-img-resume {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #007bff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 95px;
+    margin-top: 85px;
+    cursor: pointer;
+}
+
+.icon-set-user-resume-photo {
+    width: 12px;
+    height: 12px;
+    display: flex;
+}
+
+.cont-message-error-selected-photo-resume {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: 30px;
+    margin-left: -150px;
+    margin-top: -15px;
+    background-color: whitesmoke;
+    border-radius: 2px;
+    color: black;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.big-fp-preview-cont {
+    position: fixed;
+    z-index: 1000;
+    cursor: default;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.header-preview-cont {
+    height: 7.5%;
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 0.3s ease;
+    padding-left: 2.5%;
+}
+
+.text-preview-photo {
+    font-size: 22px;
+}
+
+.menu-preview-photo-resume {
+    display: flex;
+    align-items: center;
+}
+
+.menu-photo-resume {
+    display: flex;
+    align-items: center;
+    min-width: 60px;
+    justify-content: space-between;
+}
+
+.zoom-preview-photo-resume {
+    color: white;
+    font-size: 22px;
+}
+
+.img-current-photo-resume-wrap {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.img-current-photo-resume {
+    width: 600px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 2px;
+    user-select: none;
+    will-change: transform;
+    transform-origin: center center;
+}
+
+.footer-preview-cont {
+    width: 100%;
+    height: 7.5%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 2.5%;
+}
+
+.icon-menu-preview-photo-resume,
+.icon-menu-preview-photo-resume {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+}
+
+
+
+.menu-preview {
+    position: absolute;
+    width: 260px;
+    height: 175px;
+    background-color: white;
+    margin-top: 20px;
+    margin-left: -237.5px;
+    border-radius: 2px;
+    display: flex;
+    padding: 12px;
+    box-sizing: border-box;
+    z-index: 21474836499;
+
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.list-actions-menu-preview {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: 18px;
+}
+
+.action-menu-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex: 1;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.preview-add-other-photo-resume,
+.preview-install-photo-resume {
+    color: black
+}
+
+.preview-delete-photo-resume {
+    color: red
+}
+
+.action-menu-preview:hover {
+    background-color: #eaf4ff;
+}
+
+.icon-action-menu-preview {
+    width: 18px;
+    height: 18px;
+    margin-left: 6px;
+}
+
+.text-action-menu {
+    margin-right: 6px;
+}
+
+.footer-result-creation-resume {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    width: 750px;
+    margin-left: 75px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.btns-result-creation-resume {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-back-to-modal-resume-finish-details {
+    border: 1px solid #007bff;
+    width: 100px;
+    background-color: #007bff;
+    min-height: 40px;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #007bff;
+    background-color: #f3f9ff;
+    border: 1px solid white;
+}
+.header-info-completion-tips{
+    margin-bottom: 5px;
+}
+.resume-completion-tips{
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.list-completion-tips{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 12.5px;
+}
+
+.completion-tip{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    border-radius: 4px;
+    border: none;
+    background-color: #F1F4F9;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+}

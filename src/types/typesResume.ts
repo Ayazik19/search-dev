@@ -10,7 +10,6 @@ export type post = Post[];
 export interface Positions {
     [key: string]: any;
     idPosition?: number,
-    generalTimeWork?: string,
     nameCompany?: string,
     cityCompany?: string,
     post?: Post[],
@@ -29,7 +28,7 @@ export interface WorkingTime {
 }
 
 
-interface DateBirth {
+export interface DateBirth {
     day?: string,
     month?: string,
     year?: string
@@ -53,6 +52,8 @@ export interface ContactLinks{
     nameSelectedSocial: string,
     link: string
 }
+
+export type SocialNetwork = 'facebook' | 'twitter' | 'vk' | 'instagram' | 'pinterest' | 'telegram';
 
 //skils types
 export type skills = string[];
@@ -85,6 +86,18 @@ export interface Projects{
 export type statusSearchResume = string
 export type levelIsResume = string
 
+export interface Salary{
+    currency: string,
+    amount: string
+}
+
+export interface WorkingConditions{
+    salary?: Salary,
+    descriptionResume: string,
+    busyness?: string[], //занятость
+    workFormat?: string[] //формат работы
+}
+
 export type Resume = {
     idResumeDb?: string,
     nameResume?: string,
@@ -98,7 +111,12 @@ export type Resume = {
     petProjects?: Projects[],
     amountTimeWorked?: Date | string,
     statusSearchResume?: statusSearchResume,
-    levelIsResume?: levelIsResume
+    levelIsResume?: levelIsResume,
+    salary?: Salary,
+    descriptionResume?: string,
+    busyness?: string[], //занятость
+    workFormat?: string[], //формат работы
+    photo?: string // фото резюме
 }
 
 export type ResumeState = {

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProjectsProfileLinks, Projects, skills, statusSearchResume, levelIsResume } from "../types/typesResume";
+import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProjectsProfileLinks, Projects, skills, statusSearchResume, levelIsResume, Salary } from "../types/typesResume";
 import { FormValues } from "../components/componentsCreatePage/componentsStepsResume/stepResumeFour";
 import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
 import { ProjectsForm } from "../components/componentsCreatePage/componentsStepsResume/componentsStepFive/resumePetProjects";
@@ -17,9 +17,16 @@ const initialState: ResumeState = {
         typeWorkResume: '',
         positions: [],
         petProjects: [],
-        amountTimeWorked: {year: 0, month: 0},
-        statusSearchResume: 'Default',
+        amountTimeWorked: { year: 0, month: 0 },
+        statusSearchResume: '',
         levelIsResume: 'Middle Developer',
+        salary: {
+            amount: '',
+            currency: ''
+        },
+        busyness: [], //занятость
+        workFormat: [], //график работы
+        photo: ''
     }
 };
 
@@ -33,7 +40,6 @@ interface ChangePostArrPayload {
     post: Post[],
     mainIdPost: number
 }
-
 
 interface Funcs {
     formattedWorkingTimeDate: (sinceDate: string, toDate: string) => {
@@ -137,18 +143,19 @@ const resumesSlice = createSlice({
                 const newResume = {
                     nameResume: action.payload,
                     isResumeCompleted: false,
+
                 };
                 state.resumesState = newResume;
             }
         },
         setBasicInfo(state, action: PayloadAction<BasicInfo>) {
-            const basicInfoUpdates = action.payload; 
+            const basicInfoUpdates = action.payload;
 
             state.resumesState = {
                 ...state.resumesState,
                 basicInfo: {
                     ...state.resumesState.basicInfo,
-                    ...basicInfoUpdates, 
+                    ...basicInfoUpdates,
                 },
             };
         },
@@ -159,7 +166,7 @@ const resumesSlice = createSlice({
 
             state.resumesState = {
                 ...state.resumesState,
-                education: education, 
+                education: education,
             };
         },
         setEducation(state, action: PayloadAction<FormValues>) {
@@ -178,6 +185,11 @@ const resumesSlice = createSlice({
 
             if (resumesState) {
                 resumesState.typeWorkResume = action.payload;
+
+                if (action.payload === 'c') {
+                    state.resumesState.petProjects = [];
+                    state.resumesState.positions = [];
+                }
             }
         },
         setAmountTimeWorked(state) {
@@ -247,6 +259,38 @@ const resumesSlice = createSlice({
             else {
                 resumesState.positions = [finallyPost];
             }
+        },
+        setUpdCountTimeInToDate(state, action: PayloadAction<number>) {
+            const idPosUpdCountTimeToDate = action.payload;
+
+            const statePositions = state.resumesState.positions || [];
+            console.log(idPosUpdCountTimeToDate)
+
+            state.resumesState.positions = statePositions.map((item, index) => {
+                if (index === idPosUpdCountTimeToDate) {
+                    let formattedCountTime = { year: 0, month: 0 };
+
+                    const formattedWorkingTime = formattedWorkingTimeDate(item.workingTime?.sinceDate || '', item.workingTime?.toDate || '');
+
+                    formattedCountTime = formattedWorkingTime.calculateCountTime || { year: 0, month: 0 };
+
+                    console.log('formattedCountTime:', formattedCountTime, 'item.workingTime?.countTime:', item.workingTime?.countTime)
+
+                    if (JSON.stringify(item.workingTime?.countTime) !== JSON.stringify(formattedCountTime)) {
+                        return {
+                            ...item,
+                            workingTime: {
+                                ...item.workingTime,
+                                countTime: {
+                                    year: formattedCountTime.year,
+                                    month: formattedCountTime.month
+                                }
+                            }
+                        } as Positions;
+                    }
+                }
+                return item;
+            });
         },
         setUpdIdsPositions(state) {
             const resumesState = state.resumesState;
@@ -421,6 +465,9 @@ const resumesSlice = createSlice({
                 resumesState.levelIsResume = action.payload.value;
             }
         },
+        setStatusSearchResume(state, action: PayloadAction<string>) {
+            state.resumesState.statusSearchResume === action.payload;
+        },
         setResumeCompleted(state) {
             const resumesState = state.resumesState;
 
@@ -431,11 +478,43 @@ const resumesSlice = createSlice({
 
             resumesState.idResumeDb = action.payload;
         },
+        setSalary(state, action: PayloadAction<Salary>) {
+            
+                state.resumesState.salary = action.payload;
+        },
+        setDescriptionResume(state, action: PayloadAction<string>) {
+            const stateDescriptionResume = state.resumesState.descriptionResume;
+
+            if (stateDescriptionResume !== action.payload) {
+                state.resumesState.descriptionResume = action.payload;
+            }
+        },
+        setBusyness(state, action: PayloadAction<string[]>) {
+            state.resumesState.busyness = action.payload;
+        },
+        setWorkFormat(state, action: PayloadAction<string[]>) {
+
+            state.resumesState.workFormat = action.payload;
+        },
+        setPhotoResume(state, action: PayloadAction<string>) {
+            if (state.resumesState.photo) state.resumesState.photo = action.payload;
+        },
         deleteResume(state) {
             state.resumesState = {};
         },
     },
 });
 
-export const {  setValueModalCont, setIdResumeDb, setResumeCompleted, setSkills, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
+export const {
+    setUpdCountTimeInToDate,
+    setValueModalCont, setIdResumeDb, setResumeCompleted,
+    setSkills, setChangeProjectData, setChangeLinkProfile,
+    setFilterProjects, setPetProject, setLinkProfile,
+    setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions,
+    setFilterPositions, setAmountTimeWorked, setPosition,
+    setChangeTypeWork, setNameResume, setBasicInfo,
+    setEducationClass, setEducation, deleteResume,
+    setBusyness, setDescriptionResume, setSalary, setWorkFormat, setStatusSearchResume,
+    setPhotoResume
+} = resumesSlice.actions;
 export default resumesSlice.reducer;

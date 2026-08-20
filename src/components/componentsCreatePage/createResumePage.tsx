@@ -359,16 +359,17 @@ const CreateResumePage: React.FC = () => {
         }
         else {
             dispatch(setNameResume(data));
+            dispatch(setEducationClass('There is no education in IS'))
         }
         const stepNumb = getCurrentStep('next step', findCurrentStep?.currentStep || 0);
         dispatch(setNextStep(stepNumb))
     };
 
-    const handleStepThree = () => {
-        const stepNumb = getCurrentStep('next step', findCurrentStep?.currentStep || 0);
-        dispatch(setNextStep(stepNumb))
-        dispatch(setEducationClass('There is no education in IS'));
-    }
+    // const handleStepThree = () => {
+    //     const stepNumb = getCurrentStep('next step', findCurrentStep?.currentStep || 0);
+    //     dispatch(setNextStep(stepNumb))
+    //     dispatch(setEducationClass('There is no education in IS'));
+    // }
 
 
     const showCurrentStep = (stateArrStepsResume && stepsComponents) ? stateArrStepsResume.map((item, index) => {

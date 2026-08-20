@@ -36,7 +36,7 @@ const stepsResumeSlice = createSlice({
     initialState,
     reducers: {
         setFalseSteps(state) {
-            state.stateStepsResume.stepsResume = []; 
+            state.stateStepsResume.stepsResume = [];
         },
         setFirstStep(state) {
             const arr: StepResume[] = [{
@@ -56,7 +56,7 @@ const stepsResumeSlice = createSlice({
             const stateStepResume = state.stateStepsResume.stepsResume;
 
             if (stateStepResume) {
-                if (stateStepResume.length > 1 ) {
+                if (stateStepResume.length > 1) {
                     updArr = stateStepResume?.map((item, index) => {
                         const isPrefinalItem = index === stateStepResume.length - 1;
                         if (isPrefinalItem) {
@@ -85,36 +85,26 @@ const stepsResumeSlice = createSlice({
         },
         setBackStep(state, action: PayloadAction<number>) {
             const backStep = action.payload;
+            const stateStepResume = state.stateStepsResume.stepsResume ?? [];
 
-            const stateStepResume = state.stateStepsResume.stepsResume;
-            let updArr: StepResume[] = [];
-            if (stateStepResume) {
-                const lastElCurrentStep = stateStepResume[stateStepResume.length - 1]
-                updArr = stateStepResume.filter(item => item.currentStep !== lastElCurrentStep.currentStep)
-                updArr = updArr.map((item) => {
-                    if (item.currentStep === backStep) {
-                        
-                        return {
-                            ...item,
-                            status: 'beginning'
-                        }
-                    }
-                    return item;
-                })
-            }
-
-            state.stateStepsResume.stepsResume = updArr;
+            state.stateStepsResume.stepsResume = stateStepResume
+                .filter((item) => item.currentStep <= backStep)
+                .map((item) =>
+                    item.currentStep === backStep
+                        ? { ...item, status: 'beginning' }
+                        : item
+                );
         },
-        setFilterStep(state, action: PayloadAction<number>){
+        setFilterStep(state, action: PayloadAction<number>) {
             const filterStep = state.stateStepsResume.stepsResume.filter(step => step.currentStep !== action.payload)
             state.stateStepsResume.stepsResume = filterStep;
         },
-        setCheckIsCorrectsSteps(state){
+        setCheckIsCorrectsSteps(state) {
             let hasIncorrectsSteps = false;
 
             const stateStepsResume = state.stateStepsResume.stepsResume;
             //is unique or normal numbers steps
-            if(stateStepsResume && stateStepsResume.length > 0 && stateStepsResume.length <= 6){
+            if (stateStepsResume && stateStepsResume.length > 0 && stateStepsResume.length <= 6) {
                 let arrUniqueSteps: number[] = [];
 
                 stateStepsResume.forEach(steps => {
@@ -122,23 +112,23 @@ const stepsResumeSlice = createSlice({
 
                     const findStep = arrUniqueSteps.find(el => el === currentStep);
                     const isNormalNumber = currentStep >= 0 && currentStep <= 6;
-                    if(findStep || !isNormalNumber){
+                    if (findStep || !isNormalNumber) {
                         hasIncorrectsSteps = true;
                     }
-                    else{
+                    else {
                         arrUniqueSteps.push(currentStep);
                     }
                 })
             }
 
 
-            if(hasIncorrectsSteps){
+            if (hasIncorrectsSteps) {
                 state.stateStepsResume.stepsResume = [{
                     currentStep: 1,
                     status: 'beginning'
                 }];
             }
-            
+
         }
     }
 })
