@@ -22,6 +22,7 @@ interface Props {
     stepOneData: string;
     handleNextStep: (educClass?: string | undefined) => void;
     handleBackStep: () => void;
+    showCurrentStep: (stateArrStepsResume: Array<{ status: string }>) => React.ReactElement[] | null;
     stepsComponents: ComponentType<TypesComponents>[]
 }
 
@@ -56,7 +57,8 @@ const StepResume6: React.FC<Props> = ({
     stepOneData,
     handleNextStep,
     handleBackStep,
-    stepsComponents
+    stepsComponents,
+    showCurrentStep
 }) => {
     //variables
     const dispatch = useAppDispatch();
@@ -334,7 +336,7 @@ const StepResume6: React.FC<Props> = ({
 
     return (
         <>
-            {isShowBigFpModalResult && <BigFpModalResult setIsShowBigFpModalResult = {setIsShowBigFpModalResult}/>}
+            {isShowBigFpModalResult && <BigFpModalResult showCurrentStep={showCurrentStep} setIsShowBigFpModalResult = {setIsShowBigFpModalResult}/>}
             <div className="step-resume-creation">
                 <div className="resume-creation">
                     <span className="main-text-step">

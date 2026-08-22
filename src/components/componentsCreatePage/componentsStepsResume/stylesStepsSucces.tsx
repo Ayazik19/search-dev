@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "../../../hookRedux";
 
 interface Styles {
@@ -8,19 +8,18 @@ interface Styles {
     }
 }
 
-const useStepsStyle = () => {
+const useStepsStyle = (visibleStepNumbers: number[] = [1, 2, 3, 4, 5, 6]) => {
     const { stateStepsResume } = useAppSelector(state => state.stepsResume);
     const stateArrStepsResume = stateStepsResume.stepsResume;
 
     const findCurrentStep = stateArrStepsResume?.find(item => item.status === 'beginning');
     const currentStep = findCurrentStep?.currentStep;
 
-    const basicStyles = {
-        width: currentStep !== 6 && stateArrStepsResume.length !== 4 
-            ? '305px' : '380px',
+    const basicStyles = useMemo(() => ({
+        width: visibleStepNumbers.length <= 4 ? '305px' : '380px',
         height: '100%',
         borderRadius: '8px'
-    };
+    }), [visibleStepNumbers.length]);
 
     const [arrBgColorStyles, setArrBgColorStyles] = useState<Styles['bgColorStep'][]>(
         Array.from({ length: 6 }, (_, i) => ({
@@ -30,8 +29,7 @@ const useStepsStyle = () => {
     );
 
     const updateBgColorStyles = () => {
-        const findCurrentStep = stateArrStepsResume?.find(item => item.status === 'beginning');
-        const currentStepUpd = findCurrentStep?.currentStep;
+        const currentStepUpd = stateArrStepsResume?.find(item => item.status === 'beginning')?.currentStep;
         if (currentStepUpd) {
             const updatedStyles = arrBgColorStyles.map(item => {
                 if (item.step < currentStepUpd) {

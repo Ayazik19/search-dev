@@ -9,9 +9,10 @@ import ResumeFinishDetails from "./componentsResumeFinishDetails/resumeFinishDet
 
 interface Props {
     setIsShowBigFpModalResult: (value: boolean) => void;
+    showCurrentStep: (stateArrStepsResume: Array<{ status: string }>) => React.ReactElement[] | null;
 }
 
-const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult }) => {
+const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult, showCurrentStep }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { resumesState } = useAppSelector(state => state.resumes);
@@ -34,9 +35,9 @@ const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult }) => {
                         <LastStepResume />
                     }   */}
                     {isFinishedResumeDetails ?
-                        <ResultCreationResume isVisibleTitleCont = {isVisibleTitleCont}setIsVisibleTitleCont = {setIsVisibleTitleCont} setIsFinishedResumeDetails={setIsFinishedResumeDetails} setIsShowBigFpModalResult={setIsShowBigFpModalResult} />
+                        <ResultCreationResume showCurrentStep={showCurrentStep} isVisibleTitleCont={isVisibleTitleCont} setIsVisibleTitleCont={setIsVisibleTitleCont} setIsFinishedResumeDetails={setIsFinishedResumeDetails} setIsShowBigFpModalResult={setIsShowBigFpModalResult} />
                         :
-                        <ResumeFinishDetails isVisibleTitleCont={isVisibleTitleCont} setIsFinishedResumeDetails={setIsFinishedResumeDetails} setIsVisibleTitleCont={setIsVisibleTitleCont}/>
+                        <ResumeFinishDetails isVisibleTitleCont={isVisibleTitleCont} setIsFinishedResumeDetails={setIsFinishedResumeDetails} setIsVisibleTitleCont={setIsVisibleTitleCont} />
                     }
                 </div>
             </div>

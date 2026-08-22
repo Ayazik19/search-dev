@@ -1,4 +1,4 @@
-import React, { ComponentType, useEffect, useState } from "react";
+import React, { ComponentType, useCallback, useEffect, useMemo, useState } from "react";
 import StepResume1 from "./componentsStepsResume/stepResumeOne";
 import StepResume2 from "./componentsStepsResume/stepResumeTwo";
 import StepResume3 from "./componentsStepsResume/stepResumeThree";
@@ -17,7 +17,7 @@ type Funcs = {
     getCurrentStep: (typeOperationStep: string, stateSteps: number) => number;
     funcShowMainFooter: (
         findCurrentStep: StepResume | undefined,
-        stepsComponents: ComponentType<TypesComponents>[],
+        stepComponent: React.ComponentType<any> | undefined,
         setShowMainFooter: React.Dispatch<React.SetStateAction<boolean>>,
     ) => void;
 };
@@ -26,15 +26,13 @@ interface Steps {
     handleStepTwo: (data: { [key: string]: string }) => void;
     handleStepThree: (data: string) => void;
 }
-interface UpdSteps {
-    updStepsComponents: (setStepsComponents: React.Dispatch<React.SetStateAction<ComponentType<TypesComponents>[]>>, compOperation: ComponentType<TypesComponents>, stateField: string) => void;
-}
 export interface TypesComponents {
     onStepOneData: (value: string) => void;
     handleStepOne: (data: string) => void;
     stepOneData: string;
     handleNextStep: (educClass?: string | undefined) => void;
     handleBackStep: () => void;
+    showCurrentStep: (stateArrStepsResume: Array<{ status: string }>) => React.ReactElement[] | null;
     stepsComponents: ComponentType<TypesComponents>[]
 }
 
@@ -42,56 +40,19 @@ const getCurrentStep: Funcs['getCurrentStep'] = (typeOperationStep: string, stat
     return typeOperationStep === 'next step' ? stateSteps + 1 : stateSteps - 1;
 }
 
-
-
 const funcShowMainFooter: Funcs['funcShowMainFooter'] = (
     findCurrentStep,
-    stepsComponents,
+    stepComponent,
     setShowMainFooter,
 ) => {
-    const currentNameComponent: ComponentType<TypesComponents>[] = []
-    if (findCurrentStep) {
-        const index = findCurrentStep.currentStep - 1;
-        const StepComponent = stepsComponents[index];
-        if (StepComponent) {
-            currentNameComponent.push(StepComponent);
-        }
-    }
-    const compsUniqueFooter = [StepResume1, StepResume3];
+    const isUniqueFooterCurrentComp = stepComponent === StepResume1 || stepComponent === StepResume3;
 
-
-    const isUniqueFooterCurrentComp = compsUniqueFooter.find(component => component === currentNameComponent[0]) ? true : false;
-
-    if (isUniqueFooterCurrentComp) {
+    if (findCurrentStep && isUniqueFooterCurrentComp) {
         setShowMainFooter(true)
     }
     else {
         setShowMainFooter(false)
     }
-}
-
-
-const updStepsComponents: UpdSteps['updStepsComponents'] = (setStepsComponents, compOperation, stateField) => {
-    setStepsComponents(prevComponents => {
-        let newComponents: ComponentType<TypesComponents>[] = [...prevComponents];
-
-        if (stateField === 'There is no education in IS' || stateField === 'c') {
-            newComponents = compOperation === StepResume4
-                ? newComponents.filter(el => el !== StepResume4)
-                : newComponents.filter(el => el !== StepResume5);
-        } else {
-            if (!newComponents.includes(compOperation)) {
-                if (compOperation === StepResume4) {
-                    newComponents.splice(3, 0, StepResume4);
-                } else {
-                    newComponents.splice(4, 0, StepResume5);
-                }
-            }
-        }
-
-
-        return newComponents;
-    });
 }
 
 const CreateResumePage: React.FC = () => {
@@ -113,18 +74,37 @@ const CreateResumePage: React.FC = () => {
 
     const stateArrStepsResume = stateStepsResume.stepsResume;
 
+    const findCurrentStep = stateArrStepsResume?.find(item => item.status === 'beginning');
+    const currentStep = findCurrentStep?.currentStep;
 
+    const stepComponentByNumber: Record<number, React.ComponentType<any>> = {
+        1: StepResume1,
+        2: StepResume2,
+        3: StepResume3,
+        4: StepResume4,
+        5: StepResume5,
+        6: StepResume6,
+    };
 
-    const findCurrentStep = stateArrStepsResume?.find(item => item.status === 'beginning')
+    const getVisibleStepNumbers = useCallback((): number[] => {
+        const visibleSteps = [1, 2, 3, 4, 5, 6];
 
-    const [stepsComponents, setStepsComponents] = useState<ComponentType<TypesComponents>[]>([
-        StepResume1,
-        StepResume2,
-        StepResume3,
-        StepResume4,
-        StepResume5,
-        StepResume6
-    ]);
+        if (stateEducClass === 'There is no education in IS') {
+            return visibleSteps.filter(step => step !== 4).filter(step => stateTypeWorkResume === 'c' ? step !== 5 : true);
+        }
+
+        if (stateTypeWorkResume === 'c') {
+            return visibleSteps.filter(step => step !== 5);
+        }
+
+        return visibleSteps;
+    }, [stateEducClass, stateTypeWorkResume]);
+
+    const visibleStepNumbers = useMemo(() => getVisibleStepNumbers(), [getVisibleStepNumbers]);
+    const visibleStepsComponents = useMemo(
+        () => visibleStepNumbers.map(stepNumber => stepComponentByNumber[stepNumber]).filter(Boolean),
+        [visibleStepNumbers],
+    );
 
     const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
@@ -133,21 +113,12 @@ const CreateResumePage: React.FC = () => {
     };
 
     useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
-
-
-    useEffect(() => {
         funcShowMainFooter(
             findCurrentStep,
-            stepsComponents,
+            stepComponentByNumber[currentStep ?? 0],
             setShowMainFooter,
         )
-    }, [stateArrStepsResume, stepsComponents])
+    }, [findCurrentStep, currentStep]);
 
     const showsModalConts = (statusShowsModal: string) => {
         let timer: ReturnType<typeof setTimeout> | null = null;
@@ -212,105 +183,27 @@ const CreateResumePage: React.FC = () => {
     }
 
 
-    useEffect(() => {
-        if (stateEducClass) {
-            updStepsComponents(setStepsComponents, StepResume4, stateEducClass);
-        }
-        if (stateTypeWorkResume) {
-            updStepsComponents(setStepsComponents, StepResume5, stateTypeWorkResume);
-        }
-    }, [stateEducClass, stateTypeWorkResume, stateArrStepsResume]);
+    const getRelativeVisibleStep = (direction: 'next' | 'back') => {
+        const currentVisibleStepNumbers = visibleStepNumbers;
+        const currentVisibleStep = currentStep ?? currentVisibleStepNumbers[0];
+        const currentIndex = currentVisibleStepNumbers.indexOf(currentVisibleStep);
+        const safeIndex = currentIndex === -1 ? (direction === 'next' ? -1 : currentVisibleStepNumbers.length) : currentIndex;
+        const targetIndex = direction === 'next' ? safeIndex + 1 : safeIndex - 1;
 
-
-
-    const handleIsStepComponent = (stepNumb: number): ComponentType<TypesComponents> | undefined => {
-        const ComponentBackStep = stepsComponents[stepNumb]
-        const isStepComponent = stepsComponents?.find(el => el === ComponentBackStep)
-        return isStepComponent ? isStepComponent : undefined;
-    }
-
-
-    const handleSearchNumbComp = (stepNumb: number, typeOperation: string): number => {
-        let isStepComponent = handleIsStepComponent(stepNumb);
-
-        while (isStepComponent === undefined) {
-            if (typeOperation === 'back step') {
-                stepNumb = stepNumb - 1;
-            } else {
-                stepNumb = stepNumb + 1;
-            }
-
-            if (stepNumb < 0 || stepNumb > 6) {
-                break;
-            }
-
-            isStepComponent = handleIsStepComponent(stepNumb);
-
-            if (stepNumb === 6) {
-                return stepNumb;
-            }
+        if (targetIndex < 0) {
+            return currentVisibleStepNumbers[0];
         }
 
-        return stepNumb;
+        if (targetIndex >= currentVisibleStepNumbers.length) {
+            return currentVisibleStepNumbers[currentVisibleStepNumbers.length - 1];
+        }
+
+        return currentVisibleStepNumbers[targetIndex];
     };
 
-    const stepNotThreeNextStep = (typeOperation: string): number => {
-        const stepNumb = getCurrentStep(typeOperation, findCurrentStep?.currentStep || 0);
-        const checkCurrentStepComp = handleSearchNumbComp(stepNumb, typeOperation)
-        return checkCurrentStepComp;
-    }
-
-    const calculateNextStep: TypesComponents['handleNextStep'] = (educClass) => {
-        let nextStep: number;
+    const calculateNextStep: TypesComponents['handleNextStep'] = () => {
         if (findCurrentStep?.currentStep !== 6) {
-            if (findCurrentStep?.currentStep === 3) {
-                nextStep = stepNotThreeNextStep('next step');
-                if (stateTypeWorkResume === 'c') {
-                    if (educClass === undefined) {
-                        if (stateEducClass === 'There is no education in IS') {
-                            nextStep = 6;
-                        }
-                    }
-                    else {
-                        if (stateEducClass === 'There is no education in IS' && educClass !== 'There is no education in IS') {
-                            nextStep -= 2;
-                        } else {
-                            nextStep += 2;
-                        }
-                    }
-                }
-                else {
-                    if (educClass === undefined) {
-                        if (stateEducClass === 'There is no education in IS') {
-                            if (stepsComponents.length === 5) {
-                                nextStep += 1;
-                            }
-                            else {
-                                nextStep = 6;
-                            }
-                        }
-                    }
-                    else {
-                        if (stateEducClass === 'There is no education in IS'
-                            && educClass !== 'There is no education in IS'
-                            && stepsComponents.length === 6) {
-                            nextStep -= 2;
-                        } else {
-                            if (stepsComponents.length === 6 && educClass === 'There is no education in IS') {
-                                nextStep += 1;
-                            }
-                        }
-                    }
-                }
-            } else {
-                nextStep = stepNotThreeNextStep('next step');
-            }
-
-            if (nextStep > 6) {
-                nextStep = 6;
-            }
-
-            dispatch(setNextStep(nextStep));
+            dispatch(setNextStep(getRelativeVisibleStep('next')));
         }
     }
 
@@ -323,26 +216,19 @@ const CreateResumePage: React.FC = () => {
 
     useEffect(() => {
         showsModalConts('show')
+
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+
     }, [])
 
     const calculateBackStep: TypesComponents['handleBackStep'] = () => {
-        let backStep: number;
-        if (findCurrentStep?.currentStep === 5 && stepsComponents.length === 5) {
-            backStep = stepNotThreeNextStep('back step')
-
-            dispatch(setBackStep(backStep - 1))
-
-        }
-        else if (findCurrentStep?.currentStep === 6) {
-            backStep = stepNotThreeNextStep('back step')
-            if (stateTypeWorkResume !== 'c' && stepsComponents.length === 5) {
-                backStep += 1;
-            }
-            dispatch(setBackStep(backStep))
-        }
-        else {
-            const backStep = stepNotThreeNextStep('back step')
-            dispatch(setBackStep(backStep))
+        if (findCurrentStep?.currentStep !== 1) {
+            dispatch(setBackStep(getRelativeVisibleStep('back')));
         }
     };
 
@@ -372,36 +258,34 @@ const CreateResumePage: React.FC = () => {
     // }
 
 
-    const showCurrentStep = (stateArrStepsResume && stepsComponents) ? stateArrStepsResume.map((item, index) => {
-        const StepComponent = stepsComponents[index];
-        const isBeginningStep = item.status === 'beginning';
+    const showCurrentStep = useCallback(() => {
+        if (!currentStep) return null;
 
+        const StepComponent = stepComponentByNumber[currentStep];
 
+        if (!StepComponent) return null;
 
-        return isBeginningStep && StepComponent ? (
-            <div key={index}>
+        return [
+            <div key={currentStep}>
                 <StepComponent
                     onStepOneData={setStepOneData}
                     handleStepOne={handleStepOne}
-                    stepsComponents={stepsComponents}
+                    stepsComponents={visibleStepsComponents}
                     stepOneData={stepOneData}
+                    showCurrentStep={showCurrentStep}
                     handleBackStep={handleBackStep}
                     handleNextStep={handleNextStep}
                 />
             </div>
-        ) : null;
-    }) : null;
-
-
+        ];
+    }, [currentStep, setStepOneData, handleStepOne, stepOneData, handleBackStep, handleNextStep, visibleStepsComponents]);
 
     const [showMainFooter, setShowMainFooter] = useState<boolean>(true);
-
-    const currentStep = findCurrentStep?.currentStep;
 
     return (
         <div className="create-resume-page">
             <div className="steps-operation-creation">
-                {showCurrentStep}
+                {showCurrentStep()}
             </div>
             <ModalContResumeInfo
                 showsModalConts={showsModalConts}
@@ -410,7 +294,7 @@ const CreateResumePage: React.FC = () => {
             />
             {showMainFooter ?
                 <div className="footer-create-page main">
-                    <StepSuccess stepsComponents={stepsComponents} />
+                    <StepSuccess visibleStepNumbers={visibleStepNumbers} />
                     <div className={currentStep !== 1 ? "footer-main-create-page" : "footer-main-create-page_step-one-true"}>
                         {currentStep !== 1 && <button className="b-back-step" onClick={() => handleBackStep()}>
                             Back

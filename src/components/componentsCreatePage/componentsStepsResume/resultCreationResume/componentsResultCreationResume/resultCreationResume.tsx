@@ -7,7 +7,7 @@ import imgDefaultUser from '../../../../../../dist/images/imgDefaultUser.png';
 import iconSetUserPhoto from '../../../../../../dist/icons/iconSetUserPhoto.png'
 import { iconMap } from "../../../../../dataArrays/listSocialContacts";
 import { SocialNetwork } from "../../../../../types/typesResume";
-import { setPhotoResume } from "../../../../../store/resumesSlice";
+import { setChangeTypeWork, setPhotoResume } from "../../../../../store/resumesSlice";
 import iconMenuPreviewPhotoResume from '../../../../../../dist/icons/iconMenuPreviewPhotoResume.png'
 import iconCloseFpContReview from '../../../../../../dist/icons/iconRemoveValSearchStack.png'
 import iconAddOtherPhotoResume from '../../../../../../dist/icons/iconAddOtherPhotoResume.png'
@@ -30,6 +30,7 @@ interface Props {
     isVisibleTitleCont: boolean;
     setIsShowBigFpModalResult: (value: boolean) => void;
     setIsFinishedResumeDetails: (value: boolean) => void;
+    showCurrentStep: (stateArrStepsResume: Array<{ status: string }>) => React.ReactElement[] | null;
 }
 
 interface EditDataComponents {
@@ -48,8 +49,9 @@ interface CompletionTips {
     funcGoToEdit?: any // подумать над этим, для тех мест, где не нужно передавать номер степа
 }
 
-const ResultCreationResume: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibleTitleCont, setIsShowBigFpModalResult, setIsFinishedResumeDetails }) => {
+const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTitleCont, isVisibleTitleCont, setIsShowBigFpModalResult, setIsFinishedResumeDetails }) => {
     const { resumesState } = useAppSelector(state => state.resumes);
+    const { stateStepsResume } = useAppSelector(state => state.stepsResume)
     const dispatch = useAppDispatch();
     const amountTimeWorked = resumesState.amountTimeWorked;
     const mainResumeRef = useRef<HTMLDivElement>(null);
@@ -85,7 +87,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibl
             ])
         }
 
-        if (resumesState.petProjects) { // это не правильно работает
+        if (resumesState.petProjects) { 
             if (resumesState.petProjects.length === 0) {
                 setArrCompletionTips(prev => [
                     ...prev,
@@ -94,12 +96,13 @@ const ResultCreationResume: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibl
             }
         }
 
-        if (resumesState.positions) {// это не правильно работает
+        if (resumesState.positions) {
             if (resumesState.positions.length === 0) {
                 setArrCompletionTips(prev => [
                     ...prev,
                     { id: arrCompletionTips.length + 1, textCompletion: 'Add your work experience in companies', stepToEditData: 5 }
                 ])
+
             }
         }
 
@@ -134,7 +137,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibl
             if (resumesState.photo === '') {
                 setArrCompletionTips(prev => [
                     ...prev,
-                    { id: arrCompletionTips.length + 1, textCompletion: 'Upload a photo to your resume', stepToEditData: null  }
+                    { id: arrCompletionTips.length + 1, textCompletion: 'Upload a photo to your resume', stepToEditData: null }
                 ])
             }
         }
@@ -437,7 +440,8 @@ const ResultCreationResume: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibl
 
     const handleGoToEditResume = (currentStepToEdit: number) => {
         setIsShowBigFpModalResult(false);
-        dispatch(setBackStep(currentStepToEdit))
+        dispatch(setBackStep(currentStepToEdit));
+        showCurrentStep(stateStepsResume.stepsResume)
     }
 
     const handleBackToFinishResumeDetails = () => {
@@ -449,6 +453,8 @@ const ResultCreationResume: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibl
         arrCompletionTips.slice().map((item, index) => {
             const textCompletion = item.textCompletion
             let calcWidthCont: string = '';
+
+            const stepToEdit: number | null = item.stepToEditData ?? null;
 
             if (textCompletion === 'Add more links to social profiles') {
                 calcWidthCont = '260px';
@@ -466,9 +472,22 @@ const ResultCreationResume: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibl
                 calcWidthCont = '230px';
             }
 
+            const handleTip = () => {
+                if (stepToEdit !== null) {
+                    handleGoToEditResume(stepToEdit);
+
+                    if (stepToEdit === 5) {
+                        return textCompletion === 'Add your pet projects' ? dispatch(setChangeTypeWork('b')) : dispatch(setChangeTypeWork('a'))
+                    }
+                }
+                else{
+                    handleBackToFinishResumeDetails();
+                }
+            }
+
 
             return (
-                <div key={index} className="completion-tip" style={{ width: calcWidthCont }} onClick={() => handleGoToEditResume(item.stepToEditData ?? 0)}>
+                <div key={index} className="completion-tip" style={{ width: calcWidthCont }} onClick={() => handleTip()}>
                     <span className="text-completion-tip">{item.textCompletion}</span>
                 </div>
             );

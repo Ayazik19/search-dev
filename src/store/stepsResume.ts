@@ -1,6 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface StepResume {
     currentStep: number,
@@ -47,87 +45,90 @@ const stepsResumeSlice = createSlice({
         },
         setNextStep(state, action: PayloadAction<number>) {
             const nextStep = action.payload;
-            const newStep: StepResume = {
-                currentStep: nextStep,
-                status: 'beginning'
-            };
+            const stateStepResume = state.stateStepsResume.stepsResume ?? [];
+            const existingIndex = stateStepResume.findIndex(item => item.currentStep === nextStep);
 
-            let updArr: StepResume[] = [];
-            const stateStepResume = state.stateStepsResume.stepsResume;
-
-            if (stateStepResume) {
-                if (stateStepResume.length > 1) {
-                    updArr = stateStepResume?.map((item, index) => {
-                        const isPrefinalItem = index === stateStepResume.length - 1;
-                        if (isPrefinalItem) {
-                            return {
-                                ...item,
-                                status: 'completed'
-                            }
-                        }
-                        return item;
-                    })
-                } else {
-                    updArr = stateStepResume.map(item => {
-                        if (item.currentStep === nextStep - 1) {
-                            return {
-                                ...item,
-                                status: 'completed'
-                            };
-                        }
-                        return item;
-                    });
-                }
+            if (existingIndex !== -1) {
+                state.stateStepsResume.stepsResume = stateStepResume
+                    .slice(0, existingIndex + 1)
+                    .map((item, index, array) => ({
+                        ...item,
+                        status: index === array.length - 1 ? 'beginning' : 'completed'
+                    }));
+                return;
             }
 
-            updArr.push(newStep);
-            state.stateStepsResume.stepsResume = updArr;
+            if (stateStepResume.length === 0) {
+                state.stateStepsResume.stepsResume = [{
+                    currentStep: nextStep,
+                    status: 'beginning'
+                }];
+                return;
+            }
+
+            state.stateStepsResume.stepsResume = stateStepResume.map((item, index, array) => ({
+                ...item,
+                status: index === array.length - 1 ? 'completed' : item.status
+            }));
+
+            state.stateStepsResume.stepsResume.push({
+                currentStep: nextStep,
+                status: 'beginning'
+            });
         },
         setBackStep(state, action: PayloadAction<number>) {
             const backStep = action.payload;
             const stateStepResume = state.stateStepsResume.stepsResume ?? [];
+            const existingIndex = stateStepResume.findIndex(item => item.currentStep === backStep);
+
+            if (stateStepResume.length === 0) {
+                state.stateStepsResume.stepsResume = [{
+                    currentStep: backStep,
+                    status: 'beginning'
+                }];
+                return;
+            }
+
+            if (existingIndex === -1) {
+                state.stateStepsResume.stepsResume = stateStepResume.map((item) => ({
+                    ...item,
+                    status: 'completed'
+                }));
+
+                state.stateStepsResume.stepsResume[state.stateStepsResume.stepsResume.length - 1] = {
+                    currentStep: backStep,
+                    status: 'beginning'
+                };
+
+                return;
+            }
 
             state.stateStepsResume.stepsResume = stateStepResume
-                .filter((item) => item.currentStep <= backStep)
-                .map((item) =>
-                    item.currentStep === backStep
-                        ? { ...item, status: 'beginning' }
-                        : item
-                );
+                .slice(0, existingIndex + 1)
+                .map((item, index, array) => ({
+                    ...item,
+                    status: index === array.length - 1 ? 'beginning' : 'completed'
+                }));
         },
         setFilterStep(state, action: PayloadAction<number>) {
             const filterStep = state.stateStepsResume.stepsResume.filter(step => step.currentStep !== action.payload)
             state.stateStepsResume.stepsResume = filterStep;
         },
         setCheckIsCorrectsSteps(state) {
-            let hasIncorrectsSteps = false;
-
             const stateStepsResume = state.stateStepsResume.stepsResume;
-            //is unique or normal numbers steps
-            if (stateStepsResume && stateStepsResume.length > 0 && stateStepsResume.length <= 6) {
-                let arrUniqueSteps: number[] = [];
 
-                stateStepsResume.forEach(steps => {
-                    const currentStep = steps.currentStep;
-
-                    const findStep = arrUniqueSteps.find(el => el === currentStep);
-                    const isNormalNumber = currentStep >= 0 && currentStep <= 6;
-                    if (findStep || !isNormalNumber) {
-                        hasIncorrectsSteps = true;
-                    }
-                    else {
-                        arrUniqueSteps.push(currentStep);
-                    }
-                })
-            }
-
-
-            if (hasIncorrectsSteps) {
+            if (!stateStepsResume || stateStepsResume.length === 0) {
                 state.stateStepsResume.stepsResume = [{
                     currentStep: 1,
                     status: 'beginning'
                 }];
+                return;
             }
+
+            state.stateStepsResume.stepsResume = stateStepsResume.map((item, index, array) => ({
+                ...item,
+                status: index === array.length - 1 ? 'beginning' : 'completed'
+            }));
 
         }
     }

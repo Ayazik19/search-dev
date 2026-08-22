@@ -84,6 +84,7 @@ const Home: React.FC = () => {
         navigate('/create-resume');
         
         dispatch(setChangeTypeWork('a'));
+        dispatch(setFirstStep())
         // }
         // else if (typeAgreement === 'Find Dev' && typeFindDev !== true) {
         //     dispatch(setChangeIsFindDev(true))
