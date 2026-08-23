@@ -67,6 +67,8 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
     const [isPreviewDragging, setIsPreviewDragging] = useState<boolean>(false);
     const [isShowMenuReviewPhotoResume, setIsShowMenuReviewPhotoResume] = useState<boolean>(false);
     const previewDragStartRef = useRef<{ x: number; y: number; offsetX: number; offsetY: number } | null>(null);
+    const [isHoveredCompTips, setIsHoveredCompTips] = useState<boolean>(false);
+    const [lineWidth, setLineWidth] = useState<number>(125)
 
     const [arrCompletionTips, setArrCompletionTips] = useState<CompletionTips[]>([])
 
@@ -87,7 +89,7 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
             ])
         }
 
-        if (resumesState.petProjects) { 
+        if (resumesState.petProjects) {
             if (resumesState.petProjects.length === 0) {
                 setArrCompletionTips(prev => [
                     ...prev,
@@ -156,6 +158,23 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
             }
         }
     }
+
+    useEffect(() => {
+        let timeout1: ReturnType<typeof setTimeout>;
+        let timeout2: ReturnType<typeof setTimeout>; 
+
+        if (isHoveredCompTips) {
+            timeout1 = setTimeout(() => setLineWidth(250), 0);
+            timeout2 = setTimeout(() => setLineWidth(375), 500); 
+        } else {
+            setLineWidth(150);
+        }
+
+        return () => {
+            clearTimeout(timeout1);
+            clearTimeout(timeout2); 
+        };
+    }, [isHoveredCompTips]);
 
     const displayWorkFormats = resumesState?.workFormat?.map((el, index) => {
         return (
@@ -480,7 +499,7 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
                         return textCompletion === 'Add your pet projects' ? dispatch(setChangeTypeWork('b')) : dispatch(setChangeTypeWork('a'))
                     }
                 }
-                else{
+                else {
                     handleBackToFinishResumeDetails();
                 }
             }
@@ -675,7 +694,19 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
                             <header className="header-info-completion-tips">
                                 <span className="main-text-info-completion-tips">What’s missing from the resume? Fill in all missing fields for better responses.</span>
                             </header>
-                            <main className="list-completion-tips">
+                            <div
+                                className="line-btw-info"
+                                style={{
+                                    width: lineWidth,
+                                    transition: 'width 0.8s ease',
+                                }}
+                            >
+
+                            </div>
+                            <main className="list-completion-tips"
+                                onMouseEnter={() => setIsHoveredCompTips(true)}
+                                onMouseLeave={() => setIsHoveredCompTips(false)}
+                            >
                                 {displayListCompletionTips}
                             </main>
                         </div>

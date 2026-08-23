@@ -1,6 +1,9 @@
 .result-resume {
     height: 100%;
     width: 100%;
+    word-wrap: break-word;      /* переносит длинные слова */
+    overflow-wrap: break-word;  /* современный аналог word-wrap */
+    word-break: break-all; 
 }
 
 .header-resume {
@@ -198,6 +201,20 @@
 .resume-info {
     margin-top: 30px;
 }
+.line-btw-info {
+    background-color: gray;
+    height: 3px;
+    width: 150px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: width 0.8s ease; /* плавный возврат */
+}
+
+/* При наведении на list-completion-tips — запускаем анимацию линии */
+.list-completion-tips:hover ~ .line-btw-info {
+    animation: lineGrow 2.5s ease forwards;
+}
+
 
 .status-search-work {
     height: 25px;
@@ -305,6 +322,7 @@
 
 .params-info {
     margin-top: 5px;
+    
 }
 
 
