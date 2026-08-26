@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import './resumeFinishDetails.css'
 import { useAppDispatch, useAppSelector } from "../../../../../hookRedux";
 import TitleContsResult from "../componentsResultCreationResume/titleContsResult";
@@ -13,37 +13,32 @@ import {
     arrStatusSearchResume,
     arrWorkFormatResume,
 } from "../../../../../dataArrays/listsResumeOptions";
-import { setBusyness, setSalary, setStatusSearchResume, setWorkFormat } from "../../../../../store/resumesSlice";
+import { setBusyness, setDescriptionResume, setSalary, setStatusSearchResume, setWorkFormat } from "../../../../../store/resumesSlice";
 
 interface Props {
     setIsVisibleTitleCont: (value: boolean) => void;
     isVisibleTitleCont: boolean;
     setIsFinishedResumeDetails: (value: boolean) => void;
+    isScrollFormResumeFinishDetailsToBottom: boolean;
+    setIsScrollFormResumeFinishDetailsToBottom: (value: boolean) => void;
 }
 
-interface FormResumeFinishDetailsValues {
-    statusSearchResume: string,
-    busyness: string[],
-    workFormat: string[],
-    salary: Salary
-}
-
-const ResumeFinishDetails: React.FC<Props> = ({ setIsVisibleTitleCont, isVisibleTitleCont, setIsFinishedResumeDetails }) => {
+const ResumeFinishDetails: React.FC<Props> = ({
+    isScrollFormResumeFinishDetailsToBottom, setIsScrollFormResumeFinishDetailsToBottom,
+    setIsVisibleTitleCont, isVisibleTitleCont, setIsFinishedResumeDetails
+}) => {
     const dispatch = useAppDispatch();
     const { resumesState } = useAppSelector(state => state.resumes)
+
+    const formRef = useRef<HTMLFormElement | null>(null)
+    const [formScroll, setFormScroll] = useState<number>(0);
 
     const [selectedStatus, setSelectedStatus] = useState<string>(resumesState.statusSearchResume ?? arrStatusSearchResume[0])
     const [selectedBusyness, setSelectedBusyness] = useState<string[]>(resumesState.busyness ?? [])
     const [selectedWorkFormat, setSelectedWorkFormat] = useState<string[]>(resumesState.workFormat ?? [])
     const [selectedCurrency, setSelectedCurrency] = useState<string>(resumesState.salary?.currency ?? 'USD')
     const [salaryValue, setSalaryValue] = useState<string>(resumesState.salary?.amount ?? '')
-
-    const [errorInpStatus, setErrorInpStatus] = useState<string>('');
-    const [errorInpBusyness, setErrorInpBusyness] = useState<string>('');
-    const [errorWorkFormat, setErrorWorkFormat] = useState<string>('');
-    const [errorInpSalaryValue, setErrorInpSalaryValue] = useState<string>('');
-
-
+    const [aboutDev, setAboutDev] = useState<string>(resumesState.descriptionResume ?? '')
 
     const [isStatusOpen, setIsStatusOpen] = useState<boolean>(false)
     const [isBusynessOpen, setIsBusynessOpen] = useState<boolean>(false)
@@ -51,6 +46,24 @@ const ResumeFinishDetails: React.FC<Props> = ({ setIsVisibleTitleCont, isVisible
     const [isWorkFormatOpen, setIsWorkFormatOpen] = useState<boolean>(false)
     const [isOpenSelectStatus, setIsOpenSelectStatus] = useState<boolean>(false);
 
+    if (isScrollFormResumeFinishDetailsToBottom) {
+        const scrollFormToBottom = () => {
+            requestAnimationFrame(() => {
+                if (!formRef.current) return
+
+                setTimeout(() => {
+                    formRef.current?.scrollTo({
+                        top: formRef.current.scrollHeight,
+                        behavior: 'smooth',
+                    });
+                }, 150);
+            })
+        }
+
+        scrollFormToBottom()
+
+        setIsScrollFormResumeFinishDetailsToBottom(false)
+    }
 
     const handleCheckboxToggle = (
         value: string,
@@ -63,6 +76,8 @@ const ResumeFinishDetails: React.FC<Props> = ({ setIsVisibleTitleCont, isVisible
         )
     }
 
+
+
     const handleSubmitDataFinishDetailsValue = () => {
         if (selectedStatus === '') {
         }
@@ -74,15 +89,16 @@ const ResumeFinishDetails: React.FC<Props> = ({ setIsVisibleTitleCont, isVisible
             dispatch(setBusyness(selectedBusyness));
         }
 
-
-        // Для workFormat
         if (selectedWorkFormat.length > 0 || (selectedWorkFormat.length === 0 && (resumesState.workFormat?.length ?? 0) > 0)) {
             dispatch(setWorkFormat(selectedWorkFormat));
         }
 
-        // Для salary
         if (salaryValue !== '' || (salaryValue === '' && resumesState.salary?.amount !== '')) {
             dispatch(setSalary({ currency: selectedCurrency, amount: salaryValue }));
+        }
+
+        if (aboutDev !== '' || (aboutDev === '' && resumesState.descriptionResume !== '')) {
+            dispatch(setDescriptionResume(aboutDev));
         }
 
 
@@ -116,6 +132,11 @@ const ResumeFinishDetails: React.FC<Props> = ({ setIsVisibleTitleCont, isVisible
         setIsBusynessOpen(false)
     }
 
+    const handleScroll = () => {
+        if (!formRef.current) return
+        setFormScroll(formRef.current.scrollTop)
+    }
+
 
     return isVisibleTitleCont ?
         <TitleContsResult
@@ -132,7 +153,7 @@ const ResumeFinishDetails: React.FC<Props> = ({ setIsVisibleTitleCont, isVisible
                     <span className="desc-resume-finish-details">
                         You’ve filled most of your resume. Add the missing details below to finish it.
                     </span>
-                    <form className="form-resume-finish-details">
+                    <form className="form-resume-finish-details" ref={formRef} onScroll={handleScroll}>
                         <div className="info-select-resume-finish-details">
                             <span className="main-text-info-resume-finish-details">
                                 Job search status
@@ -248,11 +269,27 @@ const ResumeFinishDetails: React.FC<Props> = ({ setIsVisibleTitleCont, isVisible
                                 />
                             </div>
                         </div>
+
+                        <div className="info-select-resume-finish-details">
+                            <span className="main-text-info-resume-finish-details">
+                                About you
+                            </span>
+                            <div className="selects-salary-resume-finish-details">
+                                <textarea
+                                    className="text-area-resume-finish-details"
+                                    value={aboutDev}
+                                    placeholder="Tell about yourself"
+                                    onChange={(e) => setAboutDev(e.target.value)}
+                                >
+                                    {aboutDev}
+                                </textarea>
+                            </div>
+                        </div>
                     </form>
-                    <footer className="footer-resume-finish-details">
-                        <button className="btn-resume-finish-details" onClick={handleSubmitDataFinishDetailsValue}>Next</button>
-                    </footer>
                 </main>
+                <footer className="footer-resume-finish-details">
+                    <button className="btn-resume-finish-details" onClick={handleSubmitDataFinishDetailsValue}>Next</button>
+                </footer>
             </div>
         )
 }

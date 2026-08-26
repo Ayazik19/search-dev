@@ -20,6 +20,8 @@ const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult, showCurr
 
     const [isFinishedResumeDetails, setIsFinishedResumeDetails] = useState<boolean>(false);
 
+    const [isScrollFormResumeFinishDetailsToBottom, setIsScrollFormResumeFinishDetailsToBottom] = useState<boolean>(false)
+
 
     dispatch(setChangeScroll(false));
 
@@ -35,9 +37,23 @@ const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult, showCurr
                         <LastStepResume />
                     }   */}
                     {isFinishedResumeDetails ?
-                        <ResultCreationResume showCurrentStep={showCurrentStep} isVisibleTitleCont={isVisibleTitleCont} setIsVisibleTitleCont={setIsVisibleTitleCont} setIsFinishedResumeDetails={setIsFinishedResumeDetails} setIsShowBigFpModalResult={setIsShowBigFpModalResult} />
+                        <ResultCreationResume
+                            isScrollFormResumeFinishDetailsToBottom={isScrollFormResumeFinishDetailsToBottom}
+                            setIsScrollFormResumeFinishDetailsToBottom={setIsScrollFormResumeFinishDetailsToBottom}
+                            showCurrentStep={showCurrentStep}
+                            isVisibleTitleCont={isVisibleTitleCont}
+                            setIsVisibleTitleCont={setIsVisibleTitleCont}
+                            setIsFinishedResumeDetails={setIsFinishedResumeDetails}
+                            setIsShowBigFpModalResult={setIsShowBigFpModalResult}
+                        />
                         :
-                        <ResumeFinishDetails isVisibleTitleCont={isVisibleTitleCont} setIsFinishedResumeDetails={setIsFinishedResumeDetails} setIsVisibleTitleCont={setIsVisibleTitleCont} />
+                        <ResumeFinishDetails
+                            isScrollFormResumeFinishDetailsToBottom={isScrollFormResumeFinishDetailsToBottom}
+                            setIsScrollFormResumeFinishDetailsToBottom={setIsScrollFormResumeFinishDetailsToBottom}
+                            isVisibleTitleCont={isVisibleTitleCont}
+                            setIsFinishedResumeDetails={setIsFinishedResumeDetails}
+                            setIsVisibleTitleCont={setIsVisibleTitleCont}
+                        />
                     }
                 </div>
             </div>

@@ -1,9 +1,12 @@
 .result-resume {
     height: 100%;
     width: 100%;
-    word-wrap: break-word;      /* переносит длинные слова */
-    overflow-wrap: break-word;  /* современный аналог word-wrap */
-    word-break: break-all; 
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .header-resume {
@@ -14,6 +17,7 @@
     background-color: gray;
     border-radius: 4px 4px 0 0;
     margin-left: 0px;
+    flex: 0 0 auto;
 }
 
 .img-resume-header {
@@ -26,7 +30,6 @@
     display: flex;
     margin-left: 75px;
     justify-content: space-between;
-    /* Растянуть пространство между элементами */
     align-items: center;
 }
 
@@ -39,8 +42,6 @@
 .start-side-header-result-creation-resume {
     display: flex;
     align-items: center;
-    /* Убедитесь, что никакие margin или padding не задаются */
-    /* margin-left и другие отступы удалите */
 }
 
 .left-side-header-main-text,
@@ -63,28 +64,38 @@
 
 .main-resume {
     width: 750px;
-    height: 100%;
     margin-left: 75px;
     margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.45) rgba(255, 255, 255, 0.08);
+    -ms-overflow-style: auto;
 }
 
 .main-resume::-webkit-scrollbar {
-    width: 8px;
-}
-
-.main-resume::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    width: 10px;
+    height: 10px;
 }
 
 .main-resume::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
 }
 
-.main-resume {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1);
+.main-resume::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    border: 2px solid rgba(0, 0, 0, 0.12);
+}
+
+.main-resume::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.65);
 }
 
 .header-cont-resume-info {

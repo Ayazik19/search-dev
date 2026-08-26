@@ -31,6 +31,8 @@ interface Props {
     setIsShowBigFpModalResult: (value: boolean) => void;
     setIsFinishedResumeDetails: (value: boolean) => void;
     showCurrentStep: (stateArrStepsResume: Array<{ status: string }>) => React.ReactElement[] | null;
+    isScrollFormResumeFinishDetailsToBottom: boolean;
+    setIsScrollFormResumeFinishDetailsToBottom: (value: boolean) => void;
 }
 
 interface EditDataComponents {
@@ -49,7 +51,7 @@ interface CompletionTips {
     funcGoToEdit?: any // подумать над этим, для тех мест, где не нужно передавать номер степа
 }
 
-const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTitleCont, isVisibleTitleCont, setIsShowBigFpModalResult, setIsFinishedResumeDetails }) => {
+const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDetailsToBottom, showCurrentStep, setIsVisibleTitleCont, isVisibleTitleCont, setIsShowBigFpModalResult, setIsFinishedResumeDetails }) => {
     const { resumesState } = useAppSelector(state => state.resumes);
     const { stateStepsResume } = useAppSelector(state => state.stepsResume)
     const dispatch = useAppDispatch();
@@ -135,13 +137,18 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
             }
         }
 
-        if (resumesState.photo) {
-            if (resumesState.photo === '') {
-                setArrCompletionTips(prev => [
-                    ...prev,
-                    { id: arrCompletionTips.length + 1, textCompletion: 'Upload a photo to your resume', stepToEditData: null }
-                ])
-            }
+        if (resumesState.photo === '') {
+            setArrCompletionTips(prev => [
+                ...prev,
+                { id: arrCompletionTips.length + 1, textCompletion: 'Upload a photo to your resume', stepToEditData: null }
+            ])
+        }
+
+        if (resumesState.descriptionResume === '') {
+            setArrCompletionTips(prev => [
+                ...prev,
+                { id: arrCompletionTips.length + 1, textCompletion: 'Add information about yourself', stepToEditData: null }
+            ])
         }
     }, [resumesState])
 
@@ -161,18 +168,18 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
 
     useEffect(() => {
         let timeout1: ReturnType<typeof setTimeout>;
-        let timeout2: ReturnType<typeof setTimeout>; 
+        let timeout2: ReturnType<typeof setTimeout>;
 
         if (isHoveredCompTips) {
             timeout1 = setTimeout(() => setLineWidth(250), 0);
-            timeout2 = setTimeout(() => setLineWidth(375), 500); 
+            timeout2 = setTimeout(() => setLineWidth(375), 500);
         } else {
             setLineWidth(150);
         }
 
         return () => {
             clearTimeout(timeout1);
-            clearTimeout(timeout2); 
+            clearTimeout(timeout2);
         };
     }, [isHoveredCompTips]);
 
@@ -468,6 +475,11 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
         setIsVisibleTitleCont(false)
     }
 
+    const handleBackToFinishResumeDetailsEditDesc = () => {
+        handleBackToFinishResumeDetails();
+        setIsScrollFormResumeFinishDetailsToBottom(true)
+    }
+
     const displayListCompletionTips = arrCompletionTips &&
         arrCompletionTips.slice().map((item, index) => {
             const textCompletion = item.textCompletion
@@ -500,7 +512,11 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
                     }
                 }
                 else {
-                    handleBackToFinishResumeDetails();
+                    if (textCompletion === 'Add information about yourself')
+                        handleBackToFinishResumeDetailsEditDesc();
+                    else {
+                        handleBackToFinishResumeDetails();
+                    }
                 }
             }
 
@@ -678,15 +694,15 @@ const ResultCreationResume: React.FC<Props> = ({ showCurrentStep, setIsVisibleTi
                             {displaySkills}
                         </div>
                     </div>
-                    {/* <div className="description-result-creation-resume">
+                    {resumesState.descriptionResume && <div className="description-result-creation-resume">
                         <div className="header-cont-resume-info">
                             <span className="name-cont">About me</span>
-                            <span className="text-edit-data" style={{ marginLeft: '15px' }}>Edit</span>
+                            <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleBackToFinishResumeDetailsEditDesc()}>Edit</span>
                         </div>
                         <span className="params-info text-desc-result-creation-resume">
                             {resumesState.descriptionResume}
                         </span>
-                    </div> */}
+                    </div>}
                 </main>
                 <footer className="footer-result-creation-resume">
                     {arrCompletionTips.length > 0 &&
