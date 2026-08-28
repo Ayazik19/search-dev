@@ -137,7 +137,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
             }
         }
 
-        if (resumesState.photo === '') {
+        if (resumesState.photo === '' || resumesState.photo === undefined) {
             setArrCompletionTips(prev => [
                 ...prev,
                 { id: arrCompletionTips.length + 1, textCompletion: 'Upload a photo to your resume', stepToEditData: null }
@@ -148,6 +148,13 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
             setArrCompletionTips(prev => [
                 ...prev,
                 { id: arrCompletionTips.length + 1, textCompletion: 'Add information about yourself', stepToEditData: null }
+            ])
+        }
+
+        if (resumesState.statusSearchResume === '') {
+            setArrCompletionTips(prev => [
+                ...prev,
+                { id: arrCompletionTips.length + 1, textCompletion: 'What is your search status?', stepToEditData: null }
             ])
         }
     }, [resumesState])
@@ -164,6 +171,20 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                 setChangeHeader(false);
             }
         }
+    }
+
+    const handleScrollTop = () => {
+        requestAnimationFrame(() => {
+            if(!mainResumeRef.current) return
+
+            setTimeout(() => {
+                mainResumeRef.current?.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                })
+            }, 100)
+        })
+
     }
 
     useEffect(() => {
@@ -512,11 +533,15 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                     }
                 }
                 else {
-                    if (textCompletion === 'Add information about yourself')
-                        handleBackToFinishResumeDetailsEditDesc();
-                    else {
-                        handleBackToFinishResumeDetails();
+                    if (textCompletion !== 'Upload a photo to your resume') {
+                        if (textCompletion === 'Add information about yourself')
+                            handleBackToFinishResumeDetailsEditDesc();
+                        else {
+                            handleBackToFinishResumeDetails();
+                        }
+                        return
                     }
+                    handleScrollTop()
                 }
             }
 
@@ -609,9 +634,14 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                                 Work permit: {displayWorkPermit}
                             </span>
                         </div>
-                        <div className="status-search-work" style={styleStatusSearch}>
-                            {resumesState.statusSearchResume}
-                        </div>
+                        {resumesState.statusSearchResume !== '' && <div className="info-status-search-work">
+                            <div>
+                                <span className="text-edit-data" onClick={handleBackToFinishResumeDetails}>Edit</span>
+                            </div>
+                            <div className="status-search-work" style={styleStatusSearch}>
+                                {resumesState.statusSearchResume}
+                            </div>
+                        </div>}
                         <div className="main-contacts">
                             <div>
                                 <span className="text-edit-data" onClick={() => handleGoToEditResume(2)}>Edit</span>

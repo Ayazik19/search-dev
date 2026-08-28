@@ -2,7 +2,7 @@ import React, { ComponentType, Suspense, useEffect, useState } from 'react';
 import { TypesComponents } from '../createResumePage';
 import StepSuccess from './stepsSucces';
 import { useAppDispatch, useAppSelector } from '../../../hookRedux';
-import iconCloseRecomSkils from '../../../../dist/icons/iconCloseRecomSlils.png';
+import iconCloseRecomSkils from '../../../../dist/icons/iconRemoveValSearchStack.png';
 import iconRemoveSelectedSkill from '../../../../dist/icons/iconRemoveSelectedSkills.png';
 import { arrAllTagesSearch, arrayStacks, arrBackTagsSearch, arrDevOpsEngineerTagesSearch, arrFrontTagsSearch, arrFullTagsSearch, arrLeadTagesSearch, arrMobileTagsSearch, arrQaEngineerTagesSearch, arrTeamLeadTagesSearch } from '../../../dataArrays/listsStackDevops';
 import { Resume, skills } from '../../../types/typesResume';

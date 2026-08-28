@@ -479,8 +479,8 @@ const resumesSlice = createSlice({
             resumesState.idResumeDb = action.payload;
         },
         setSalary(state, action: PayloadAction<Salary>) {
-            
-                state.resumesState.salary = action.payload;
+
+            state.resumesState.salary = action.payload;
         },
         setDescriptionResume(state, action: PayloadAction<string>) {
             const stateDescriptionResume = state.resumesState.descriptionResume;

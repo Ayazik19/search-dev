@@ -33,7 +33,7 @@ const ResumeFinishDetails: React.FC<Props> = ({
     const formRef = useRef<HTMLFormElement | null>(null)
     const [formScroll, setFormScroll] = useState<number>(0);
 
-    const [selectedStatus, setSelectedStatus] = useState<string>(resumesState.statusSearchResume ?? arrStatusSearchResume[0])
+    const [selectedStatus, setSelectedStatus] = useState<string>(resumesState.statusSearchResume ?? '')
     const [selectedBusyness, setSelectedBusyness] = useState<string[]>(resumesState.busyness ?? [])
     const [selectedWorkFormat, setSelectedWorkFormat] = useState<string[]>(resumesState.workFormat ?? [])
     const [selectedCurrency, setSelectedCurrency] = useState<string>(resumesState.salary?.currency ?? 'USD')
@@ -164,6 +164,7 @@ const ResumeFinishDetails: React.FC<Props> = ({
                                 onChange={(e) => setSelectedStatus(e.target.value)}
                                 className="select-resume-finish-details"
                             >
+                                <option value="" disabled selected>Select status search</option>
                                 {arrStatusSearchResume.map((status) => (
                                     <option key={status} value={status}>
                                         {status}

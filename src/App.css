@@ -14,3 +14,8 @@ a:hover{
     color: #fe725f;
     text-decoration: none;
 }
+
+input:-webkit-autofill {
+    background-color: transparent !important;
+    transition: background-color 5000s ease-in-out 0s;
+}

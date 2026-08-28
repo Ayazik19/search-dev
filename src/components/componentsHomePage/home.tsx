@@ -13,7 +13,7 @@ import { arrAllTagesSearch, arrayStacks } from "../../dataArrays/listsStackDevop
 import { PulseLoader } from "react-spinners";
 import BtnGoToFullSearchResume from "./btnGoToFullSearchResume";
 import { setFirstStep } from "../../store/stepsResume";
-import { setBusyness, setChangeTypeWork, setResumeCompleted, setWorkFormat } from "../../store/resumesSlice";
+import { setBusyness, setChangeTypeWork, setNameResume, setResumeCompleted, setStatusSearchResume, setWorkFormat } from "../../store/resumesSlice";
 import useSetUpdAmountTimeWorkedPoss, { updCountTimeToDatePos } from "../../globalFuncs";
 
 
@@ -85,6 +85,7 @@ const Home: React.FC = () => {
         
         dispatch(setChangeTypeWork('a'));
         dispatch(setFirstStep())
+        dispatch(setNameResume(''))
         // }
         // else if (typeAgreement === 'Find Dev' && typeFindDev !== true) {
         //     dispatch(setChangeIsFindDev(true))

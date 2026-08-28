@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './bigFpModalResult.css'
 import { useAppDispatch, useAppSelector } from "../../../../hookRedux";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,13 @@ const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult, showCurr
 
     const [isScrollFormResumeFinishDetailsToBottom, setIsScrollFormResumeFinishDetailsToBottom] = useState<boolean>(false)
 
+    useEffect(() => {
+        if(isVisibleTitleCont){
+            setTimeout(() => {
+                setIsVisibleTitleCont(false);
+            }, 6000)
+        }
+    },[isVisibleTitleCont])
 
     dispatch(setChangeScroll(false));
 
