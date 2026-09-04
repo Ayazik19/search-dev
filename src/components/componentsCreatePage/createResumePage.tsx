@@ -112,6 +112,8 @@ const CreateResumePage: React.FC = () => {
         }
     };
 
+    
+
     useEffect(() => {
         funcShowMainFooter(
             findCurrentStep,
@@ -123,17 +125,20 @@ const CreateResumePage: React.FC = () => {
     const showsModalConts = (statusShowsModal: string) => {
         let timer: ReturnType<typeof setTimeout> | null = null;
 
+
         if (statusShowsModal === 'show') {
             const randomNumber = Math.floor(Math.random() * 2) + 1;
 
+            console.log(randomNumber)
+
             if (randomNumber === 1) {
-                if (stateLevelIsResume === undefined || stateLevelIsResume === '') {
+                if (stateLevelIsResume === undefined) {
                     setShowModalContSearchStatus(false);
                     setShowModalContLevelIs(true);
                 }
             }
             else {
-                if (stateStatusSearchResume === undefined || stateStatusSearchResume === '') {
+                if (stateStatusSearchResume === undefined) {
                     setShowModalContLevelIs(false);
                     setShowModalContSearchStatus(true);
                 }
@@ -142,7 +147,7 @@ const CreateResumePage: React.FC = () => {
         else if (statusShowsModal === 'completed') {
             if (showModalContSearchStatus) {
                 setShowModalContSearchStatus(false);
-                if (stateLevelIsResume === undefined || stateLevelIsResume === '') {
+                if (stateLevelIsResume === undefined) {
 
                     timer = setTimeout(() => {
                         setShowModalContLevelIs(true);
@@ -151,7 +156,7 @@ const CreateResumePage: React.FC = () => {
             }
             else {
                 setShowModalContLevelIs(false);
-                if (stateStatusSearchResume === undefined || stateStatusSearchResume === '') {
+                if (stateStatusSearchResume === undefined) {
 
                     timer = setTimeout(() => {
                         setShowModalContSearchStatus(true);
@@ -225,6 +230,8 @@ const CreateResumePage: React.FC = () => {
         };
 
     }, [])
+
+    
 
     const calculateBackStep: TypesComponents['handleBackStep'] = () => {
         if (findCurrentStep?.currentStep !== 1) {

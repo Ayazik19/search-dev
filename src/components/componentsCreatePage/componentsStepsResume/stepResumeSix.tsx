@@ -5,11 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../hookRedux';
 import iconCloseRecomSkils from '../../../../dist/icons/iconRemoveValSearchStack.png';
 import iconRemoveSelectedSkill from '../../../../dist/icons/iconRemoveSelectedSkills.png';
 import { arrAllTagesSearch, arrayStacks, arrBackTagsSearch, arrDevOpsEngineerTagesSearch, arrFrontTagsSearch, arrFullTagsSearch, arrLeadTagesSearch, arrMobileTagsSearch, arrQaEngineerTagesSearch, arrTeamLeadTagesSearch } from '../../../dataArrays/listsStackDevops';
-import { Resume, skills } from '../../../types/typesResume';
-import { setIdResumeDb, setResumeCompleted, setSkills } from '../../../store/resumesSlice';
-import { db } from '../../../firebase';
-import { doc, DocumentReference, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
+import { setSkills } from '../../../store/resumesSlice';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import './stepResume.css';
@@ -106,51 +102,8 @@ const StepResume6: React.FC<Props> = ({
         else {
             dispatch(setSkills(selectedSkill));
 
-            if (resumesState.idResumeDb) {
-                // const docRef = doc(db, 'resumes', resumesState.idResumeDb);
-                // const docSnapshot = await getDoc(docRef);
-
-                // if (docSnapshot.exists()) {
-                //     const currentDataDb: Resume = docSnapshot.data();
-
-                //     const updResume: Resume = { ...currentDataDb, ...resumesState };
-
-                //     await updateDoc(docRef, updResume);
-                // }
-            }
-            else {
-                // try {
-                //     const uniqueId = uuidv4();
-                //     const docRef = doc(db, 'resumes', uniqueId);
-
-                //     const formattedResumes: Resume = {
-                //         nameResume: resumesState.nameResume,
-                //         basicInfo: resumesState.basicInfo,
-                //         education: resumesState.education,
-                //         projectsProfile: resumesState.projectsProfile || [],
-                //         petProjects: resumesState.petProjects || [],
-                //         positions: resumesState.positions || [],
-                //         amountTimeWorked: resumesState.amountTimeWorked || 'No expirience',
-                //         skills: selectedSkill,
-                //         statusSearchResume: resumesState.statusSearchResume || 'Default',
-                //         levelIsResume: resumesState.levelIsResume || 'Default'
-                //     }
-
-                //     console.log(formattedResumes)
-
-                //     await setDoc(docRef, formattedResumes);
-                //     setLoading(false)
-
-                //     dispatch(setResumeCompleted());
-                //     dispatch(setIdResumeDb(uniqueId));
-                //     navigate('/')
-                // } catch (error) {
-                //     setLoading(false);
-                //     console.log(error);
-                // }
-                setLoading(false);
-                setIsShowBigFpModalResult(true);
-            }
+            setIsShowBigFpModalResult(true)
+            setLoading(false);            
         }
     }
 

@@ -18,11 +18,11 @@ const initialState: ResumeState = {
         positions: [],
         petProjects: [],
         amountTimeWorked: { year: 0, month: 0 },
-        statusSearchResume: '',
-        levelIsResume: 'Middle Developer',
+        statusSearchResume: undefined,
+        levelIsResume: undefined,
         salary: {
             amount: '',
-            currency: ''
+            currency: undefined // может быть ошибка
         },
         busyness: [], //занятость
         workFormat: [], //график работы
@@ -135,6 +135,9 @@ const resumesSlice = createSlice({
     name: "resume",
     initialState,
     reducers: {
+        setInitial(state){
+            state.resumesState = initialState.resumesState;
+        },
         setNameResume(state, action: PayloadAction<string>) {
             if (state.resumesState) {
                 state.resumesState.nameResume = action.payload;
@@ -158,6 +161,9 @@ const resumesSlice = createSlice({
                     ...basicInfoUpdates,
                 },
             };
+
+            state = initialState;
+
         },
         setEducationClass(state, action: PayloadAction<string>) {
             const education: Education = {
@@ -452,21 +458,23 @@ const resumesSlice = createSlice({
             resumesState.skills = action.payload;
         },
         setValueModalCont(state, action: PayloadAction<{
-            typeField: string,
-            value: string
+            typeField: 'status search' | 'level search',
+            value: statusSearchResume | levelIsResume
         }>) {
             const resumesState = state.resumesState;
 
-
             if (action.payload.typeField === 'status search') {
-                resumesState.statusSearchResume = action.payload.value;
+                resumesState.statusSearchResume = action.payload.value as statusSearchResume;
             }
             else {
-                resumesState.levelIsResume = action.payload.value;
+                resumesState.levelIsResume = action.payload.value as levelIsResume;
             }
         },
-        setStatusSearchResume(state, action: PayloadAction<string>) {
-            state.resumesState.statusSearchResume === action.payload;
+        setLevelIsResume(state, action: PayloadAction<levelIsResume>){
+            state.resumesState.levelIsResume = action.payload;
+        },
+        setStatusSearchResume(state, action: PayloadAction<statusSearchResume | undefined>) {
+            state.resumesState.statusSearchResume = action.payload;
         },
         setResumeCompleted(state) {
             const resumesState = state.resumesState;
@@ -515,6 +523,6 @@ export const {
     setChangeTypeWork, setNameResume, setBasicInfo,
     setEducationClass, setEducation, deleteResume,
     setBusyness, setDescriptionResume, setSalary, setWorkFormat, setStatusSearchResume,
-    setPhotoResume
+    setPhotoResume, setLevelIsResume, setInitial
 } = resumesSlice.actions;
 export default resumesSlice.reducer;

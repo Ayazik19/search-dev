@@ -27,7 +27,7 @@ export const updDesiredPositionAndSalary = (
     }
     
     dispatch(setNameResume(nameResume));
-    dispatch(setValueModalCont({typeField: '', value: updLevelIsresume}))
+    dispatch(setValueModalCont({typeField: 'level search', value: updLevelIsresume}))
     dispatch(setSalary(updSalary))
     dispatch(setBasicInfo(updBasicInfo))
     dispatch(setValueModalCont({typeField: 'status search', value: updStatusSearchResume}))

@@ -186,7 +186,7 @@ const LastStepResume: React.FC = () => {
     const salaryAmount = watch('salary.amount');
 
     useEffect(() => {
-        setValue('salary.currency', '₽')
+        setValue('salary.currency', 'RUB')
     }, [])
 
     const salaryCurrency = watch('salary.currency')
@@ -200,8 +200,8 @@ const LastStepResume: React.FC = () => {
                     { symbol: '€', name: 'EUR' }
                 ];
 
-                const filterNeededConvertedCurrencies = listCurrencies.filter(currency => currency.symbol !== salaryCurrency);
-                const findNeededConvertedCurrency = listCurrencies.find(currency => currency.symbol === salaryCurrency);
+                const filterNeededConvertedCurrencies = listCurrencies.filter(currency => currency.name !== salaryCurrency);
+                const findNeededConvertedCurrency = listCurrencies.find(currency => currency.name === salaryCurrency);
 
                 const salaryToConvertedCurrency = {
                     amount: salaryAmount || '1000',
@@ -235,10 +235,10 @@ const LastStepResume: React.FC = () => {
     }
     useEffect(() => {
         if (salaryAmount !== '') {
-            if (Number(salaryAmount) >= 10 && salaryCurrency !== '₽') {
+            if (Number(salaryAmount) >= 10 && salaryCurrency !== 'RUB') {
                 setIsOperatOtherCurrencies(true);
             }
-            else if (Number(salaryAmount) >= 1000 && salaryCurrency === '₽') {
+            else if (Number(salaryAmount) >= 1000 && salaryCurrency === 'RUB') {
                 setIsOperatOtherCurrencies(true);
             }
             else {
@@ -266,8 +266,8 @@ const LastStepResume: React.FC = () => {
     const submitForm = async (data: WorkingConditions) => {
         if (hasTrueValuesBussynes && hasTrueValuesWorkFormat) {
             dispatch(setSalary({
-                amount: data.salary?.amount || '0',
-                currency: data.salary?.currency || '0'
+                amount: data.salary?.amount ?? '0',
+                currency: data.salary?.currency ?? 'RUB'
             }));
             dispatch(setBusyness(data.busyness || []));
             dispatch(setWorkFormat(data.workFormat || []));
@@ -361,13 +361,13 @@ const LastStepResume: React.FC = () => {
                             onClick={handleReFetchConvertedCurrencies}
                             className={!errors.salary?.amount ? "select-currency-salary" : "select-errors-currency-salary"}
                         >
-                            <option value="₽">
+                            <option value="RUB">
                                 ₽
                             </option>
-                            <option value="$">
+                            <option value="USD">
                                 $
                             </option>
-                            <option value="€">
+                            <option value="EUR">
                                 €
                             </option>
                         </select>

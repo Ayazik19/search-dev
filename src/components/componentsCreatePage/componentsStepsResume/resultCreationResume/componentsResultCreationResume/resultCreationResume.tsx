@@ -6,14 +6,18 @@ import './resultCreationResume.css';
 import imgDefaultUser from '../../../../../../dist/images/imgDefaultUser.png';
 import iconSetUserPhoto from '../../../../../../dist/icons/iconSetUserPhoto.png'
 import { iconMap } from "../../../../../dataArrays/listSocialContacts";
-import { SocialNetwork } from "../../../../../types/typesResume";
-import { setChangeTypeWork, setPhotoResume } from "../../../../../store/resumesSlice";
+import { SocialNetwork, statusSearchResume } from "../../../../../types/typesResume";
+import { setChangeTypeWork, setPhotoResume, setIdResumeDb, setResumeCompleted } from "../../../../../store/resumesSlice";
 import iconMenuPreviewPhotoResume from '../../../../../../dist/icons/iconMenuPreviewPhotoResume.png'
 import iconCloseFpContReview from '../../../../../../dist/icons/iconRemoveValSearchStack.png'
 import iconAddOtherPhotoResume from '../../../../../../dist/icons/iconAddOtherPhotoResume.png'
 import iconInstallPhotoResume from '../../../../../../dist/icons/iconInstallPhotoResume.png'
 import iconDeletePhotoResume from '../../../../../../dist/icons/iconDeletePhotoResume.png'
 import { setBackStep } from "../../../../../store/stepsResume";
+import { Resume } from '../../../../../types/typesResume';
+import { db } from '../../../../../firebase';
+import { doc, DocumentReference, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
 
 
 const MIN_ZOOM = 1;
@@ -47,8 +51,7 @@ export interface SelectedPhotoResume {
 interface CompletionTips {
     id: number,
     textCompletion: string,
-    stepToEditData: number | null,
-    funcGoToEdit?: any // подумать над этим, для тех мест, где не нужно передавать номер степа
+    stepToEditData: number | null
 }
 
 const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDetailsToBottom, showCurrentStep, setIsVisibleTitleCont, isVisibleTitleCont, setIsShowBigFpModalResult, setIsFinishedResumeDetails }) => {
@@ -151,10 +154,17 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
             ])
         }
 
-        if (resumesState.statusSearchResume === '') {
+        if (!resumesState.statusSearchResume) {
             setArrCompletionTips(prev => [
                 ...prev,
                 { id: arrCompletionTips.length + 1, textCompletion: 'What is your search status?', stepToEditData: null }
+            ])
+        }
+
+        if(!resumesState.levelIsResume){
+            setArrCompletionTips(prev => [
+                ...prev,
+                { id: arrCompletionTips.length + 1, textCompletion: 'What is your skill grade?', stepToEditData: null }
             ])
         }
     }, [resumesState])
@@ -175,7 +185,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
 
     const handleScrollTop = () => {
         requestAnimationFrame(() => {
-            if(!mainResumeRef.current) return
+            if (!mainResumeRef.current) return
 
             setTimeout(() => {
                 mainResumeRef.current?.scrollTo({
@@ -310,23 +320,27 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
     })
 
     let styleStatusSearch: {} = {};
-    const statusSearchWork = resumesState.statusSearchResume;
-    if (statusSearchWork === 'I am actively looking') {
-        styleStatusSearch = {
-            backgroundColor: '#a7ffbf',
-            color: 'black',
+    
+    if(resumesState.statusSearchResume){
+        const statusSearchWork: statusSearchResume = resumesState.statusSearchResume;
+        
+        if (statusSearchWork === 'Actively looking for a job') {
+            styleStatusSearch = {
+                backgroundColor: '#a7ffbf',
+                color: 'black',
+            }
         }
-    }
-    else if (statusSearchWork === 'Passive job search') {
-        styleStatusSearch = {
-            backgroundColor: 'rgb(255, 255, 156)',
-            color: 'black',
+        else if (statusSearchWork === 'Not looking for a job') {
+            styleStatusSearch = {
+                backgroundColor: 'rgb(255, 255, 156)',
+                color: 'black',
+            }
         }
-    }
-    else {
-        styleStatusSearch = {
-            backgroundColor: 'rgb(54, 33, 33)',
-            color: 'white',
+        else {
+            styleStatusSearch = {
+                backgroundColor: 'rgb(54, 33, 33)',
+                color: 'white',
+            }
         }
     }
 
@@ -441,6 +455,8 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                             }
                         };
                         reader.readAsDataURL(file);
+
+                        setArrCompletionTips(prev => prev.filter(complTip => complTip.textCompletion !== 'Upload a photo to your resume'))
                     }
                     else {
                         setTextErrorSelectedPhoto('Размер фото должен быть не больше 5 MB');
@@ -501,6 +517,58 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
         setIsScrollFormResumeFinishDetailsToBottom(true)
     }
 
+    const handleSubmitCreationResume = async () => {
+
+        if (resumesState.idResumeDb) {
+            const docRef = doc(db, 'resumes', resumesState.idResumeDb);
+            const docSnapshot = await getDoc(docRef);
+
+            if (docSnapshot.exists()) {
+                const currentDataDb: Resume = docSnapshot.data();
+
+                const updResume: Resume = { ...currentDataDb, ...resumesState };
+
+                await updateDoc(docRef, updResume);
+            }
+        }
+        else {
+            try {
+                const uniqueId = uuidv4();
+                const docRef = doc(db, 'resumes', uniqueId);
+
+                const formattedResumes: Resume = {
+                    nameResume: resumesState.nameResume,
+                    basicInfo: resumesState.basicInfo,
+                    education: resumesState.education,
+                    skills: resumesState.skills,
+                    projectsProfile: resumesState.projectsProfile,
+                    typeWorkResume: resumesState.typeWorkResume,
+                    positions: resumesState.positions,
+                    petProjects: resumesState.petProjects,
+                    amountTimeWorked: resumesState.amountTimeWorked,
+                    statusSearchResume: resumesState.statusSearchResume,
+                    levelIsResume: resumesState.levelIsResume,
+                    salary: resumesState.salary,
+                    busyness: resumesState.busyness, 
+                    workFormat: resumesState.workFormat, 
+                    photo: resumesState.photo
+                }
+
+                console.log(formattedResumes)
+
+                await setDoc(docRef, formattedResumes);
+                // setLoading(false)
+
+                dispatch(setResumeCompleted());
+                dispatch(setIdResumeDb(uniqueId));
+                // navigate('/')
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+    }
+
     const displayListCompletionTips = arrCompletionTips &&
         arrCompletionTips.slice().map((item, index) => {
             const textCompletion = item.textCompletion
@@ -534,7 +602,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                 }
                 else {
                     if (textCompletion !== 'Upload a photo to your resume') {
-                        if (textCompletion === 'Add information about yourself')
+                        if (textCompletion === 'Add information about yourself' || textCompletion === 'What is your skill grade?')
                             handleBackToFinishResumeDetailsEditDesc();
                         else {
                             handleBackToFinishResumeDetails();
@@ -634,7 +702,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                                 Work permit: {displayWorkPermit}
                             </span>
                         </div>
-                        {resumesState.statusSearchResume !== '' && <div className="info-status-search-work">
+                        {resumesState.statusSearchResume && <div className="info-status-search-work">
                             <div>
                                 <span className="text-edit-data" onClick={handleBackToFinishResumeDetails}>Edit</span>
                             </div>
@@ -766,6 +834,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                         </button>
                         <button
                             className="btn-finish-result"
+                            onClick={handleSubmitCreationResume}
                         >
                             Finish
                         </button>

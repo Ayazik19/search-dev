@@ -3,17 +3,18 @@ import './resumeFinishDetails.css'
 import { useAppDispatch, useAppSelector } from "../../../../../hookRedux";
 import TitleContsResult from "../componentsResultCreationResume/titleContsResult";
 import { useForm } from "react-hook-form";
-import { Salary } from "../../../../../types/typesResume";
+import { currenySalary, levelIsResume, Salary, statusSearchResume } from "../../../../../types/typesResume";
 import iconDownDropdownOpen from '../../../../../../dist/icons/iconDownDropdownOpen.png';
 import iconUpDropdownHide from '../../../../../../dist/icons/iconUpDropdownHide.png';
 
 import {
     arrBusynessResume,
     arrCurrencyResume,
+    arrLevelsGradeResume,
     arrStatusSearchResume,
     arrWorkFormatResume,
 } from "../../../../../dataArrays/listsResumeOptions";
-import { setBusyness, setDescriptionResume, setSalary, setStatusSearchResume, setWorkFormat } from "../../../../../store/resumesSlice";
+import { setBusyness, setDescriptionResume, setLevelIsResume, setSalary, setStatusSearchResume, setWorkFormat } from "../../../../../store/resumesSlice";
 
 interface Props {
     setIsVisibleTitleCont: (value: boolean) => void;
@@ -33,11 +34,14 @@ const ResumeFinishDetails: React.FC<Props> = ({
     const formRef = useRef<HTMLFormElement | null>(null)
     const [formScroll, setFormScroll] = useState<number>(0);
 
-    const [selectedStatus, setSelectedStatus] = useState<string>(resumesState.statusSearchResume ?? '')
+    const [selectedStatus, setSelectedStatus] = useState<statusSearchResume | undefined>(
+        resumesState.statusSearchResume
+    )
+    const [selectedSkillGrade, setSelectedSkillGrade] = useState<levelIsResume | undefined>(resumesState.levelIsResume ?? undefined)
     const [selectedBusyness, setSelectedBusyness] = useState<string[]>(resumesState.busyness ?? [])
     const [selectedWorkFormat, setSelectedWorkFormat] = useState<string[]>(resumesState.workFormat ?? [])
-    const [selectedCurrency, setSelectedCurrency] = useState<string>(resumesState.salary?.currency ?? 'USD')
-    const [salaryValue, setSalaryValue] = useState<string>(resumesState.salary?.amount ?? '')
+    const [selectedCurrency, setSelectedCurrency] = useState<currenySalary>(resumesState.salary?.currency !== undefined ? resumesState.salary?.currency : 'USD')
+    const [salaryValue, setSalaryValue] = useState<string>(resumesState.salary?.amount !== undefined ? resumesState.salary.amount : '')
     const [aboutDev, setAboutDev] = useState<string>(resumesState.descriptionResume ?? '')
 
     const [isStatusOpen, setIsStatusOpen] = useState<boolean>(false)
@@ -45,6 +49,7 @@ const ResumeFinishDetails: React.FC<Props> = ({
     const [isCurrencyOpen, setIsCurrencyOpen] = useState<boolean>(false)
     const [isWorkFormatOpen, setIsWorkFormatOpen] = useState<boolean>(false)
     const [isOpenSelectStatus, setIsOpenSelectStatus] = useState<boolean>(false);
+    const [isOpenSelectSkillGrade, setIsOpenSelectSkillGrade] = useState<boolean>(false);
 
     if (isScrollFormResumeFinishDetailsToBottom) {
         const scrollFormToBottom = () => {
@@ -79,10 +84,8 @@ const ResumeFinishDetails: React.FC<Props> = ({
 
 
     const handleSubmitDataFinishDetailsValue = () => {
-        if (selectedStatus === '') {
-        }
-        else {
-            dispatch(setStatusSearchResume(selectedStatus))
+        if (selectedStatus) {
+            dispatch(setStatusSearchResume(selectedStatus));
         }
 
         if (selectedBusyness.length > 0 || (selectedBusyness.length === 0 && (resumesState.busyness?.length ?? 0) > 0)) {
@@ -99,6 +102,10 @@ const ResumeFinishDetails: React.FC<Props> = ({
 
         if (aboutDev !== '' || (aboutDev === '' && resumesState.descriptionResume !== '')) {
             dispatch(setDescriptionResume(aboutDev));
+        }
+
+        if (selectedSkillGrade !== undefined || (selectedSkillGrade === undefined && resumesState.levelIsResume !== undefined)) {
+            if(selectedSkillGrade !== undefined) dispatch(setLevelIsResume(selectedSkillGrade));
         }
 
 
@@ -159,9 +166,12 @@ const ResumeFinishDetails: React.FC<Props> = ({
                                 Job search status
                             </span>
                             <select
-                                value={selectedStatus}
+                                value={selectedStatus ?? ''}
                                 onClick={() => setIsOpenSelectStatus(prev => !prev)}
-                                onChange={(e) => setSelectedStatus(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setSelectedStatus(value ? (value as statusSearchResume) : undefined);
+                                }}
                                 className="select-resume-finish-details"
                             >
                                 <option value="" disabled selected>Select status search</option>
@@ -250,7 +260,7 @@ const ResumeFinishDetails: React.FC<Props> = ({
                                     className="select-resume-finish-details"
                                     value={selectedCurrency}
                                     onClick={() => setIsCurrencyOpen(prev => !prev)}
-                                    onChange={(e) => setSelectedCurrency(e.target.value)}
+                                    onChange={(e) => setSelectedCurrency(e.target.value as currenySalary)}
                                 >
                                     {arrCurrencyResume.map((currency) => (
                                         <option key={currency} value={currency}>{currency}</option>
@@ -269,6 +279,33 @@ const ResumeFinishDetails: React.FC<Props> = ({
                                     placeholder="Amount"
                                 />
                             </div>
+                        </div>
+
+                        <div className="info-select-resume-finish-details">
+                            <span className="main-text-info-resume-finish-details">
+                                Skill grade
+                            </span>
+                            <select
+                                value={selectedSkillGrade ?? ''}
+                                onClick={() => setIsOpenSelectSkillGrade(prev => !prev)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setSelectedSkillGrade(value ? (value as levelIsResume) : undefined);
+                                }}
+                                className="select-resume-finish-details"
+                            >
+                                <option value="" disabled selected>Select skill grade</option>
+                                {arrLevelsGradeResume.map((level) => (
+                                    <option key={level} value={level}>
+                                        {level}
+                                    </option>
+                                ))}
+                            </select>
+                            <img
+                                src={isOpenSelectSkillGrade ? iconUpDropdownHide : iconDownDropdownOpen}
+                                className="icon-dropdown-toggle"
+                                onClick={() => setIsOpenSelectSkillGrade(prev => !prev)}
+                            />
                         </div>
 
                         <div className="info-select-resume-finish-details">

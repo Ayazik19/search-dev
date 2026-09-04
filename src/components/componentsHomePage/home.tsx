@@ -13,7 +13,7 @@ import { arrAllTagesSearch, arrayStacks } from "../../dataArrays/listsStackDevop
 import { PulseLoader } from "react-spinners";
 import BtnGoToFullSearchResume from "./btnGoToFullSearchResume";
 import { setFirstStep } from "../../store/stepsResume";
-import { setBusyness, setChangeTypeWork, setNameResume, setResumeCompleted, setStatusSearchResume, setWorkFormat } from "../../store/resumesSlice";
+import { setBasicInfo, setBusyness, setChangeTypeWork, setInitial, setNameResume, setResumeCompleted, setStatusSearchResume, setWorkFormat } from "../../store/resumesSlice";
 import useSetUpdAmountTimeWorkedPoss, { updCountTimeToDatePos } from "../../globalFuncs";
 
 
@@ -75,6 +75,7 @@ const Home: React.FC = () => {
 
         // if (typeAgreement === 'Find Work' && typeFindWork !== true) {
         //     dispatch(setChangeIsFindWork(true))
+        
 
         const stateIsResumeCompleted = resumesState.isResumeCompleted;
         if (stateIsResumeCompleted) {
@@ -84,8 +85,6 @@ const Home: React.FC = () => {
         navigate('/create-resume');
         
         dispatch(setChangeTypeWork('a'));
-        dispatch(setFirstStep())
-        dispatch(setNameResume(''))
         // }
         // else if (typeAgreement === 'Find Dev' && typeFindDev !== true) {
         //     dispatch(setChangeIsFindDev(true))

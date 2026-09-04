@@ -16,7 +16,7 @@ export interface Positions {
     workingTime?: WorkingTime,
 }
 
-export interface Date{
+export interface Date {
     year: number,
     month: number
 }
@@ -48,7 +48,7 @@ export interface BasicInfo {
     phoneNumber?: string,
 }
 
-export interface ContactLinks{
+export interface ContactLinks {
     nameSelectedSocial: string,
     link: string
 }
@@ -76,26 +76,40 @@ type workResume = string;
 // b - No, but I have pet projects
 // c -I have no pet projects and commercial experience
 
-export interface Projects{
+export interface Projects {
     idProject: number,
     name: string,
     description: string,
     url: string
 }
 
-export type statusSearchResume = string
-export type levelIsResume = string
+export type statusSearchResume = 
+'Actively looking for a job' | 'Considering offers' | 
+'Offered a job, still deciding' | 'Starting a new job soon' |
+'Not looking for a job'
 
-export interface Salary{
-    currency: string,
+export type levelIsResume = 
+'Intern' | 'Junior' | 
+'Middle' | 'Senior'
+
+export type currenySalary = 
+'USD' | 'EUR' | 'GBP'|
+'RUB' | 'KZT' | 'UAH'
+
+export type workFormat = 'On-site' | 'Remote' | 'Hybrid'
+
+export type busyness = 'Permanent job' | 'Part-time job' | 'Internship'
+
+export interface Salary {
+    currency: currenySalary | undefined,
     amount: string
 }
 
-export interface WorkingConditions{
+export interface WorkingConditions {
     salary?: Salary,
     descriptionResume: string,
-    busyness?: string[], //занятость
-    workFormat?: string[] //формат работы
+    busyness?: busyness[], //занятость
+    workFormat?: workFormat[] //формат работы
 }
 
 export type Resume = {
