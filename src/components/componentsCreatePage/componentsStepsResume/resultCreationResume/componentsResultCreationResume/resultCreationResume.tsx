@@ -18,6 +18,8 @@ import { Resume } from '../../../../../types/typesResume';
 import { db } from '../../../../../firebase';
 import { doc, DocumentReference, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from "react-router-dom";
+import { ClipLoader, GridLoader, SquareLoader } from "react-spinners";
 
 
 const MIN_ZOOM = 1;
@@ -58,6 +60,7 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
     const { resumesState } = useAppSelector(state => state.resumes);
     const { stateStepsResume } = useAppSelector(state => state.stepsResume)
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const amountTimeWorked = resumesState.amountTimeWorked;
     const mainResumeRef = useRef<HTMLDivElement>(null);
     const initialSelectedPhoto = { photoUrl: '', photoFile: null } as SelectedPhotoResume;
@@ -65,8 +68,11 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
     //сделать по типу setLoading(true)
     const [textErrorSelectedPhoto, setTextErrorSelectedPhoto] = useState<string>('');
     const [selectedFilePhoto, setSelectedFilePhoto] = useState<SelectedPhotoResume>(initialSelectedPhoto);
+
     const [changeHeader, setChangeHeader] = useState<boolean>(false);
     const [isShowPreviewPhotoResume, setIsShowPreviewPhotoResume] = useState<boolean>(false);
+    const [isLoadingFinishCreationResume, setIsLoadingFinishCreationResume] = useState<boolean>(false);
+
     const [previewScale, setPreviewScale] = useState<number>(1);
     const [previewOffset, setPreviewOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const [isPreviewDragging, setIsPreviewDragging] = useState<boolean>(false);
@@ -161,13 +167,13 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
             ])
         }
 
-        if(!resumesState.levelIsResume){
+        if (!resumesState.levelIsResume) {
             setArrCompletionTips(prev => [
                 ...prev,
                 { id: arrCompletionTips.length + 1, textCompletion: 'What is your skill grade?', stepToEditData: null }
             ])
         }
-    }, [resumesState])
+    }, [resumesState, resumesState.photo])
 
 
     const handleScroll = () => {
@@ -320,10 +326,10 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
     })
 
     let styleStatusSearch: {} = {};
-    
-    if(resumesState.statusSearchResume){
+
+    if (resumesState.statusSearchResume) {
         const statusSearchWork: statusSearchResume = resumesState.statusSearchResume;
-        
+
         if (statusSearchWork === 'Actively looking for a job') {
             styleStatusSearch = {
                 backgroundColor: '#a7ffbf',
@@ -496,6 +502,10 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
     }
 
     const handleDeletePhotoResume = () => {
+        setArrCompletionTips(prev => [
+            ...prev,
+            { id: arrCompletionTips.length + 1, textCompletion: 'Upload a photo to your resume', stepToEditData: null }
+        ])
         setSelectedFilePhoto(initialSelectedPhoto);
         setIsShowMenuReviewPhotoResume(false);
         setIsShowPreviewPhotoResume(false);
@@ -518,6 +528,9 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
     }
 
     const handleSubmitCreationResume = async () => {
+        setIsLoadingFinishCreationResume(true);
+
+        setPhotoResume(selectedFilePhoto.photoUrl)
 
         if (resumesState.idResumeDb) {
             const docRef = doc(db, 'resumes', resumesState.idResumeDb);
@@ -526,9 +539,12 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
             if (docSnapshot.exists()) {
                 const currentDataDb: Resume = docSnapshot.data();
 
-                const updResume: Resume = { ...currentDataDb, ...resumesState };
+                const updResume: Resume = { ...currentDataDb, ...resumesState, photo: selectedFilePhoto.photoUrl };
 
                 await updateDoc(docRef, updResume);
+
+                setIsLoadingFinishCreationResume(false);
+                navigate('/');
             }
         }
         else {
@@ -546,24 +562,24 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                     positions: resumesState.positions,
                     petProjects: resumesState.petProjects,
                     amountTimeWorked: resumesState.amountTimeWorked,
-                    statusSearchResume: resumesState.statusSearchResume,
-                    levelIsResume: resumesState.levelIsResume,
                     salary: resumesState.salary,
-                    busyness: resumesState.busyness, 
-                    workFormat: resumesState.workFormat, 
-                    photo: resumesState.photo
+                    busyness: resumesState.busyness,
+                    workFormat: resumesState.workFormat,
+                    photo: selectedFilePhoto.photoUrl,
+                    descriptionResume: resumesState.descriptionResume,
+                    statusSearchResume: resumesState.statusSearchResume,
+                    levelIsResume: resumesState.levelIsResume
                 }
 
-                console.log(formattedResumes)
-
                 await setDoc(docRef, formattedResumes);
-                // setLoading(false)
 
                 dispatch(setResumeCompleted());
                 dispatch(setIdResumeDb(uniqueId));
-                // navigate('/')
+                setIsLoadingFinishCreationResume(false);
+                navigate('/');
             }
             catch (error) {
+                setIsLoadingFinishCreationResume(false);
                 console.log(error)
             }
         }
@@ -623,229 +639,234 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
 
     return isVisibleTitleCont ? <TitleContsResult textTitle={'Its almost there...'} setIsVisibleTitleCont={setIsVisibleTitleCont} /> : (
         <>
-            <div className="result-resume">
-                <header className="header-resume">
-                    {changeHeader ?
-                        <div className="header-resume-info_scrolled-under">
-                            <div className="start-side-header-result-creation-resume">
-                                <img src={selectedFilePhoto.photoUrl !== '' ? selectedFilePhoto.photoUrl : imgDefaultUser} className="img-resume-header" />
-                                <span className="left-side-header-main-text">{resumesState.basicInfo?.firstName} {resumesState.basicInfo?.lastName}</span>
+            {!isLoadingFinishCreationResume ?
+                <div className="result-resume">
+                    <header className="header-resume">
+                        {changeHeader ?
+                            <div className="header-resume-info_scrolled-under">
+                                <div className="start-side-header-result-creation-resume">
+                                    <img src={selectedFilePhoto.photoUrl !== '' ? selectedFilePhoto.photoUrl : imgDefaultUser} className="img-resume-header" />
+                                    <span className="left-side-header-main-text">{resumesState.basicInfo?.firstName} {resumesState.basicInfo?.lastName}</span>
+                                </div>
+                                <div className="end-side-header-result-creation-resume">
+                                    <span className="center-side-header-main-text">{resumesState.levelIsResume} {resumesState.nameResume}</span>
+                                </div>
                             </div>
-                            <div className="end-side-header-result-creation-resume">
-                                <span className="center-side-header-main-text">{resumesState.levelIsResume} {resumesState.nameResume}</span>
-                            </div>
-                        </div>
-                        :
-                        <span className="header-text-resume">
-                            Your completed resume
-                        </span>
-                    }
-                </header>
-                <main className="main-resume" ref={mainResumeRef} onScroll={handleScroll}>
-                    <div className="resume-media">
-                        <div className="img-resume-user" style={{ backgroundColor: selectedFilePhoto.photoUrl === '' ? 'gray' : undefined }}>
-                            <img
-                                src={selectedFilePhoto.photoUrl !== '' ? selectedFilePhoto.photoUrl : imgDefaultUser}
-                                style={{
-                                    width: selectedFilePhoto.photoUrl !== '' ? '100%' : undefined,
-                                    height: selectedFilePhoto.photoUrl !== '' ? '100%' : undefined,
-                                    cursor: selectedFilePhoto.photoUrl !== '' ? 'pointer' : 'auto'
-                                }}
-                                onClick={() => selectedFilePhoto.photoUrl !== '' && setIsShowPreviewPhotoResume(true)}
-                                className="img-resume"
-                            />
-                            <div className="set-own-img-resume" onClick={handleSetPhotoResume}>
-                                <img src={iconSetUserPhoto} className="icon-set-user-resume-photo" />
-                            </div>
-                        </div>
-                        <span className="contact-name">
-                            {resumesState.basicInfo?.firstName} {resumesState.basicInfo?.lastName} {resumesState.basicInfo?.patronymic}
-                        </span>
-                        <span className="resume-name">
-                            {resumesState.levelIsResume} {resumesState.nameResume}
-                        </span>
-                    </div>
-                    <div className="pre-header">
-                        <div className="resume-info working-conditions-info">
-                            <div>
-                                <span className="text-edit-data" onClick={handleBackToFinishResumeDetails}>Edit</span>
-                            </div>
-                            <span className="params-info">
-                                Work format: {displayWorkFormats}
+                            :
+                            <span className="header-text-resume">
+                                Your completed resume
                             </span>
-                            <span className="params-info">
-                                Busyness: {displayBusyness}
+                        }
+                    </header>
+                    <main className="main-resume" ref={mainResumeRef} onScroll={handleScroll}>
+                        <div className="resume-media">
+                            <div className="img-resume-user" style={{ backgroundColor: selectedFilePhoto.photoUrl === '' ? 'gray' : undefined }}>
+                                <img
+                                    src={selectedFilePhoto.photoUrl !== '' ? selectedFilePhoto.photoUrl : imgDefaultUser}
+                                    style={{
+                                        width: selectedFilePhoto.photoUrl !== '' ? '100%' : undefined,
+                                        height: selectedFilePhoto.photoUrl !== '' ? '100%' : undefined,
+                                        cursor: selectedFilePhoto.photoUrl !== '' ? 'pointer' : 'auto'
+                                    }}
+                                    onClick={() => selectedFilePhoto.photoUrl !== '' && setIsShowPreviewPhotoResume(true)}
+                                    className="img-resume"
+                                />
+                                <div className="set-own-img-resume" onClick={handleSetPhotoResume}>
+                                    <img src={iconSetUserPhoto} className="icon-set-user-resume-photo" />
+                                </div>
+                            </div>
+                            <span className="contact-name">
+                                {resumesState.basicInfo?.firstName} {resumesState.basicInfo?.lastName} {resumesState.basicInfo?.patronymic}
                             </span>
-                            <span className="params-info">
-                                Salary conditions - {resumesState.salary?.amount}{resumesState.salary?.currency}
+                            <span className="resume-name">
+                                {resumesState.levelIsResume} {resumesState.nameResume}
                             </span>
                         </div>
-                        <div>
-                            <span className="text-edit-data" onClick={() => handleGoToEditResume(2)}>Edit</span>
-                        </div>
-                        <div className="params-info main-contact" >
-                            <span>
-                                {resumesState.basicInfo?.gender || 'Male'},
-                            </span>
-                            <span style={{ marginLeft: '3px' }}>
-                                {resumesState.basicInfo?.dateBirth?.day}.{resumesState.basicInfo?.dateBirth?.month}.{resumesState.basicInfo?.dateBirth?.year},
-                            </span>
-                            <span style={{ marginLeft: '3px' }}>
-                                {resumesState.basicInfo?.city}
-                            </span>
-                        </div>
-                        <div className="location-works-contact">
-                            <span className="params-info citizensip-text">
-                                Citizenship: {displayCitiz}
-                            </span>
-                            <span className="params-info work-permit-text">
-                                Work permit: {displayWorkPermit}
-                            </span>
-                        </div>
-                        {resumesState.statusSearchResume && <div className="info-status-search-work">
-                            <div>
-                                <span className="text-edit-data" onClick={handleBackToFinishResumeDetails}>Edit</span>
+                        <div className="pre-header">
+                            <div className="resume-info working-conditions-info">
+                                <div>
+                                    <span className="text-edit-data" onClick={handleBackToFinishResumeDetails}>Edit</span>
+                                </div>
+                                <span className="params-info">
+                                    Work format: {displayWorkFormats}
+                                </span>
+                                <span className="params-info">
+                                    Busyness: {displayBusyness}
+                                </span>
+                                <span className="params-info">
+                                    Salary conditions - {resumesState.salary?.amount}{resumesState.salary?.currency}
+                                </span>
                             </div>
-                            <div className="status-search-work" style={styleStatusSearch}>
-                                {resumesState.statusSearchResume}
-                            </div>
-                        </div>}
-                        <div className="main-contacts">
                             <div>
                                 <span className="text-edit-data" onClick={() => handleGoToEditResume(2)}>Edit</span>
                             </div>
+                            <div className="params-info main-contact" >
+                                <span>
+                                    {resumesState.basicInfo?.gender || 'Male'},
+                                </span>
+                                <span style={{ marginLeft: '3px' }}>
+                                    {resumesState.basicInfo?.dateBirth?.day}.{resumesState.basicInfo?.dateBirth?.month}.{resumesState.basicInfo?.dateBirth?.year},
+                                </span>
+                                <span style={{ marginLeft: '3px' }}>
+                                    {resumesState.basicInfo?.city}
+                                </span>
+                            </div>
+                            <div className="location-works-contact">
+                                <span className="params-info citizensip-text">
+                                    Citizenship: {displayCitiz}
+                                </span>
+                                <span className="params-info work-permit-text">
+                                    Work permit: {displayWorkPermit}
+                                </span>
+                            </div>
+                            {resumesState.statusSearchResume && <div className="info-status-search-work">
+                                <div>
+                                    <span className="text-edit-data" onClick={handleBackToFinishResumeDetails}>Edit</span>
+                                </div>
+                                <div className="status-search-work" style={styleStatusSearch}>
+                                    {resumesState.statusSearchResume}
+                                </div>
+                            </div>}
+                            <div className="main-contacts">
+                                <div>
+                                    <span className="text-edit-data" onClick={() => handleGoToEditResume(2)}>Edit</span>
+                                </div>
 
-                            <span className="params-info text-name-cont">Contacts:</span>
-                            <div className="default-contact">
-                                <span className="params-info phone-number-text">
-                                    {resumesState.basicInfo?.phoneNumber}
-                                </span>
-                                <span className="params-info email-text">
-                                    {resumesState.basicInfo?.elAddress}
-                                </span>
-                            </div>
-                            <div className="params-info social-contacts">
-                                {displaySocials}
-                            </div>
-                        </div>
-                    </div>
-                    {resumesState.positions && resumesState.positions.length > 0 && <div className="expirience-info">
-                        <div className="header-cont-resume-info">
-                            <span className="name-cont">
-                                {typeof amountTimeWorked === 'object' ?
-                                    <div>
-                                        {amountTimeWorked.year !== 0 &&
-                                            <>
-                                                <span>{amountTimeWorked.year}</span>
-                                                <span style={{ marginLeft: '5px' }}>{amountTimeWorked.year > 1 ? 'years' : 'year'}</span>
-                                            </>
-                                        }
-                                        <span style={{ marginLeft: amountTimeWorked.year !== 0 ? '5px' : '0px' }}>{amountTimeWorked.month}</span>
-                                        <span style={{ marginLeft: '5px' }}>{amountTimeWorked.month > 1 ? 'months' : 'month'}</span>
-                                        <span style={{ marginLeft: '5px' }}>expirience</span>
-                                    </div> :
-                                    <span>
-                                        {amountTimeWorked} year expirience
+                                <span className="params-info text-name-cont">Contacts:</span>
+                                <div className="default-contact">
+                                    <span className="params-info phone-number-text">
+                                        {resumesState.basicInfo?.phoneNumber}
                                     </span>
-                                }
-                            </span>
-                            <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleGoToEditResume(5)}>Edit</span>
+                                    <span className="params-info email-text">
+                                        {resumesState.basicInfo?.elAddress}
+                                    </span>
+                                </div>
+                                <div className="params-info social-contacts">
+                                    {displaySocials}
+                                </div>
+                            </div>
                         </div>
-                        <div className="params-info positions-resume">
-                            {displayExpiriences}
-                        </div>
-                    </div>}
-                    {resumesState.petProjects && resumesState.petProjects.length > 0 &&
-                        <div className="pet-projects-info">
+                        {resumesState.positions && resumesState.positions.length > 0 && <div className="expirience-info">
                             <div className="header-cont-resume-info">
                                 <span className="name-cont">
-                                    Pet projects
+                                    {typeof amountTimeWorked === 'object' ?
+                                        <div>
+                                            {amountTimeWorked.year !== 0 &&
+                                                <>
+                                                    <span>{amountTimeWorked.year}</span>
+                                                    <span style={{ marginLeft: '5px' }}>{amountTimeWorked.year > 1 ? 'years' : 'year'}</span>
+                                                </>
+                                            }
+                                            <span style={{ marginLeft: amountTimeWorked.year !== 0 ? '5px' : '0px' }}>{amountTimeWorked.month}</span>
+                                            <span style={{ marginLeft: '5px' }}>{amountTimeWorked.month > 1 ? 'months' : 'month'}</span>
+                                            <span style={{ marginLeft: '5px' }}>expirience</span>
+                                        </div> :
+                                        <span>
+                                            {amountTimeWorked} year expirience
+                                        </span>
+                                    }
                                 </span>
                                 <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleGoToEditResume(5)}>Edit</span>
                             </div>
-                            <div className="params-info pet-projects-resume">
-                                {displayPetProjects}
+                            <div className="params-info positions-resume">
+                                {displayExpiriences}
                             </div>
-                        </div>
-                    }
-                    {resumesState.education?.educationClass !== 'There is no education in IS' &&
-                        <div className="education-info">
+                        </div>}
+                        {resumesState.petProjects && resumesState.petProjects.length > 0 &&
+                            <div className="pet-projects-info">
+                                <div className="header-cont-resume-info">
+                                    <span className="name-cont">
+                                        Pet projects
+                                    </span>
+                                    <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleGoToEditResume(5)}>Edit</span>
+                                </div>
+                                <div className="params-info pet-projects-resume">
+                                    {displayPetProjects}
+                                </div>
+                            </div>
+                        }
+                        {resumesState.education?.educationClass !== 'There is no education in IS' &&
+                            <div className="education-info">
+                                <div className="header-cont-resume-info">
+                                    <span className="name-cont">
+                                        Education
+                                    </span>
+                                    <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleGoToEditResume(3)}>Edit</span>
+                                </div>
+                                <div className="params-info item-education-result-creation-resume">
+                                    <span className="params-info name-instituation-creation-resume">{resumesState.education?.nameInstituation}</span>
+                                    <span className="params-info name-faculty-creation-resume">{resumesState.education?.faculty}</span>
+                                    <span className="params-info year-graduation-result-creation-ersume">{resumesState.education?.yearGraduation}</span>
+                                </div>
+                            </div>
+                        }
+                        <div className="soft-skills-IS-result-creation-resume">
                             <div className="header-cont-resume-info">
-                                <span className="name-cont">
-                                    Education
-                                </span>
-                                <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleGoToEditResume(3)}>Edit</span>
+                                <span className="name-cont">Skills</span>
+                                <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleGoToEditResume(6)}>Edit</span>
                             </div>
-                            <div className="params-info item-education-result-creation-resume">
-                                <span className="params-info name-instituation-creation-resume">{resumesState.education?.nameInstituation}</span>
-                                <span className="params-info name-faculty-creation-resume">{resumesState.education?.faculty}</span>
-                                <span className="params-info year-graduation-result-creation-ersume">{resumesState.education?.yearGraduation}</span>
+                            <div className="list-skills-result-creation-resume">
+                                {displaySkills}
                             </div>
                         </div>
-                    }
-                    <div className="soft-skills-IS-result-creation-resume">
-                        <div className="header-cont-resume-info">
-                            <span className="name-cont">Skills</span>
-                            <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleGoToEditResume(6)}>Edit</span>
-                        </div>
-                        <div className="list-skills-result-creation-resume">
-                            {displaySkills}
-                        </div>
-                    </div>
-                    {resumesState.descriptionResume && <div className="description-result-creation-resume">
-                        <div className="header-cont-resume-info">
-                            <span className="name-cont">About me</span>
-                            <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleBackToFinishResumeDetailsEditDesc()}>Edit</span>
-                        </div>
-                        <span className="params-info text-desc-result-creation-resume">
-                            {resumesState.descriptionResume}
-                        </span>
-                    </div>}
-                </main>
-                <footer className="footer-result-creation-resume">
-                    {arrCompletionTips.length > 0 &&
-                        <div className="resume-completion-tips">
-                            <header className="header-info-completion-tips">
-                                <span className="main-text-info-completion-tips">What’s missing from the resume? Fill in all missing fields for better responses.</span>
-                            </header>
-                            <div
-                                className="line-btw-info"
-                                style={{
-                                    width: lineWidth,
-                                    transition: 'width 0.8s ease',
-                                }}
-                            >
+                        {resumesState.descriptionResume && <div className="description-result-creation-resume">
+                            <div className="header-cont-resume-info">
+                                <span className="name-cont">About me</span>
+                                <span className="text-edit-data" style={{ marginLeft: '15px' }} onClick={() => handleBackToFinishResumeDetailsEditDesc()}>Edit</span>
+                            </div>
+                            <span className="params-info text-desc-result-creation-resume">
+                                {resumesState.descriptionResume}
+                            </span>
+                        </div>}
+                    </main>
+                    <footer className="footer-result-creation-resume">
+                        {arrCompletionTips.length > 0 &&
+                            <div className="resume-completion-tips">
+                                <header className="header-info-completion-tips">
+                                    <span className="main-text-info-completion-tips">What’s missing from the resume? Fill in all missing fields for better responses.</span>
+                                </header>
+                                <div
+                                    className="line-btw-info"
+                                    style={{
+                                        width: lineWidth,
+                                        transition: 'width 0.8s ease',
+                                    }}
+                                >
 
+                                </div>
+                                <main className="list-completion-tips"
+                                    onMouseEnter={() => setIsHoveredCompTips(true)}
+                                    onMouseLeave={() => setIsHoveredCompTips(false)}
+                                >
+                                    {displayListCompletionTips}
+                                </main>
                             </div>
-                            <main className="list-completion-tips"
-                                onMouseEnter={() => setIsHoveredCompTips(true)}
-                                onMouseLeave={() => setIsHoveredCompTips(false)}
+                        }
+                        <div className="btns-result-creation-resume">
+                            <button
+                                className="btn-back-to-modal-resume-finish-details"
+                                onClick={handleBackToFinishResumeDetails}
                             >
-                                {displayListCompletionTips}
-                            </main>
+                                Back
+                            </button>
+                            <button
+                                className="btn-finish-result"
+                                onClick={handleSubmitCreationResume}
+                            >
+                                Finish
+                            </button>
+                        </div>
+                    </footer>
+                    {textErrorSelectedPhoto !== '' &&
+                        <div className="cont-message-error-selected-photo-resume" style={{ width: textErrorSelectedPhoto === 'Фото слишком много весит' ? '260px' : '340px' }}>
+                            <span className="text-error-selected-photo">{textErrorSelectedPhoto}</span>
                         </div>
                     }
-                    <div className="btns-result-creation-resume">
-                        <button
-                            className="btn-back-to-modal-resume-finish-details"
-                            onClick={handleBackToFinishResumeDetails}
-                        >
-                            Back
-                        </button>
-                        <button
-                            className="btn-finish-result"
-                            onClick={handleSubmitCreationResume}
-                        >
-                            Finish
-                        </button>
-                    </div>
-                </footer>
-                {textErrorSelectedPhoto !== '' &&
-                    <div className="cont-message-error-selected-photo-resume" style={{ width: textErrorSelectedPhoto === 'Фото слишком много весит' ? '260px' : '340px' }}>
-                        <span className="text-error-selected-photo">{textErrorSelectedPhoto}</span>
-                    </div>
-                }
-            </div>
+                </div> :
+                <div className="result-resume_status-finish">
+                    <ClipLoader color="#007bff" size={60} />
+                </div>
+            }
             {isShowPreviewPhotoResume &&
                 <div
                     className="big-fp-preview-cont"
@@ -881,7 +902,9 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
                                                     onClick={handleDeletePhotoResume}
                                                 >
                                                     <img src={iconDeletePhotoResume} className="icon-action-menu-preview icon-delete-photo-resume" />
-                                                    <span className="text-action-menu">Удалить</span>
+                                                    <span className="text-action-menu">
+                                                        Удалить
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

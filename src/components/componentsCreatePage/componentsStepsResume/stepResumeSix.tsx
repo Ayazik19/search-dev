@@ -58,7 +58,6 @@ const StepResume6: React.FC<Props> = ({
 }) => {
     //variables
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
     const { resumesState } = useAppSelector(state => state.resumes);
     const nameResume = resumesState.nameResume || '';
     const tagsMapping: { [key in typeof arrayStacks[number]]: string[] } = {
@@ -74,7 +73,7 @@ const StepResume6: React.FC<Props> = ({
     //hooks
     const [inpSkillsValue, setinpSkillsValue] = useState<string>('');
     const [currentArrStackTags, setCurrentArrStackTags] = useState<string[]>();
-    const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
+    const [selectedSkill, setSelectedSkill] = useState<string[]>(resumesState.skills ? resumesState.skills : []);
     const [showRecomSkilsCont, setShowRecomSkilsCont] = useState<boolean>(false);
     const [isAddEffect, setIsAddEffect] = useState<boolean>(false);
     const [addEffect, setAddEffect] = useState<boolean>(false);
