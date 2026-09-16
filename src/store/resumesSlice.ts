@@ -1,18 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProjectsProfileLinks, Projects, skills, statusSearchResume, levelIsResume, Salary } from "../types/typesResume";
 import { FormValues } from "../components/componentsCreatePage/componentsStepsResume/stepResumeFour";
 import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
 =======
+=======
+>>>>>>> Stashed changes
 import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProfileLinks, Projects, skills, statusSearchResume, levelIsResume } from "../types/typesResume";
 import { FormValues } from "../components/componentsCreatePage/componentsStepsResume/stepResumeFour";
 import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
 import { act, useState } from "react";
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import { ProjectsForm } from "../components/componentsCreatePage/componentsStepsResume/componentsStepFive/resumePetProjects";
 
 
 const initialState: ResumeState = {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     resumesState: {
         idResumeDb: '',
@@ -39,6 +46,9 @@ const initialState: ResumeState = {
 =======
     resumesState: []
 >>>>>>> Stashed changes
+=======
+    resumesState: []
+>>>>>>> Stashed changes
 };
 
 interface ChangeFieldPayload {
@@ -53,6 +63,10 @@ interface ChangePostArrPayload {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -151,6 +165,7 @@ const resumesSlice = createSlice({
     initialState,
     reducers: {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         setInitial(state){
             state.resumesState = initialState.resumesState;
         },
@@ -158,6 +173,8 @@ const resumesSlice = createSlice({
             if (state.resumesState) {
                 state.resumesState.nameResume = action.payload;
 =======
+=======
+>>>>>>> Stashed changes
 
         setNameResume(state, action: PayloadAction<string>) {
             if (state.resumesState.length > 0) {
@@ -222,6 +239,7 @@ const resumesSlice = createSlice({
             const payloadObject = action.payload;
             const resumesState = state.resumesState;
 
+<<<<<<< Updated upstream
 
             if (resumesState && resumesState.education) {
                 resumesState.education.nameInstituation = payloadObject.nameInstituation;
@@ -554,6 +572,8 @@ const resumesSlice = createSlice({
             const payloadObject = action.payload;
             const resumesState = state.resumesState;
 
+=======
+>>>>>>> Stashed changes
             const lastResume = resumesState[resumesState.length - 1];
 
             if (lastResume && lastResume.education) {
@@ -864,6 +884,7 @@ const resumesSlice = createSlice({
 });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export const {
     setUpdCountTimeInToDate,
     setValueModalCont, setIdResumeDb, setResumeCompleted,
@@ -877,6 +898,10 @@ export const {
     setPhotoResume, setLevelIsResume, setInitial
 } = resumesSlice.actions;
 export default resumesSlice.reducer;
+=======
+export const { setValueModalCont, setSkills, setChang, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
+export default resumesSlice.reducer;
+>>>>>>> Stashed changes
 =======
 export const { setValueModalCont, setSkills, setChang, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
 export default resumesSlice.reducer;

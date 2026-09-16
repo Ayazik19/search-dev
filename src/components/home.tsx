@@ -12,6 +12,7 @@ const Home: React.FC = () => {
     const navigate = useNavigate();
     // const { userState } = useAppSelector(state => state.user);
 
+
     const [valueQuality, setValueQuality] = useState<number>(5);
 
 

@@ -26,6 +26,7 @@ const MainContent: React.FC = () => {
             <Route path='/create-resume' element={<CreateResumePage />} />
         </Routes>
 
+
     );
 };
 
