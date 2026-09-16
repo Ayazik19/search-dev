@@ -1,5 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import userReducer from './userSlice'
+import searchResumesReducer from './resumesSlice';
+import stepsResumeReducer from "./stepsResume";
+import isMainScrollSliceReducer from './isMainScrollSlice';
 
 import {
     persistStore,
@@ -15,9 +17,10 @@ import storage from "redux-persist/lib/storage";
 
 
 const rootReducer = combineReducers({
-    user: userReducer,
+    resumes: searchResumesReducer,
+    stepsResume: stepsResumeReducer,
+    mainScroll: isMainScrollSliceReducer
 })
-
 const persistConfig = {
     key: 'root',
     storage,

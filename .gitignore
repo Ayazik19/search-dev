@@ -1,1 +1,2 @@
-src/firebase.ts
+node_modules
+firebase.ts

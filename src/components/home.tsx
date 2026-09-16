@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hookRedux";
 import logoSite from './logoSite.jpg';
-import { setUserQuality } from "../store/userSlice";
+// import { setUserQuality } from "../store/userSlice";
 import imgReviewsContent2 from './imgReviewsContent2.jpg';
 import imgContentArticles from './imgContentArticles.jpeg'
 import './home.css';
@@ -10,8 +10,7 @@ import './home.css';
 const Home: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { userState } = useAppSelector(state => state.user);
-
+    // const { userState } = useAppSelector(state => state.user);
     const [valueQuality, setValueQuality] = useState<number>(5);
 
 
@@ -24,7 +23,7 @@ const Home: React.FC = () => {
 
     const handleSetQualitySite: HandleChanges['handleSetQualitySite'] = (event) => {
         event.preventDefault();
-        dispatch(setUserQuality(valueQuality))
+        // dispatch(setUserQuality(valueQuality))
     }
 
     const handleChangeAgreement: HandleChanges['handleChangeAgreement'] = (typeAgreement: string) => {
