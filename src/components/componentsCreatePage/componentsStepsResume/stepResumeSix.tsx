@@ -1,4 +1,4 @@
-import React, { ComponentType, Suspense, useEffect, useState } from 'react';
+import React, { ComponentType , useEffect, useState } from 'react';
 import { TypesComponents } from '../createResumePage';
 import StepSuccess from './stepsSucces';
 import { useAppDispatch, useAppSelector } from '../../../hookRedux';
@@ -6,7 +6,6 @@ import iconCloseRecomSkils from '../../../../dist/icons/iconRemoveValSearchStack
 import iconRemoveSelectedSkill from '../../../../dist/icons/iconRemoveSelectedSkills.png';
 import { arrAllTagesSearch, arrayStacks, arrBackTagsSearch, arrDevOpsEngineerTagesSearch, arrFrontTagsSearch, arrFullTagsSearch, arrLeadTagesSearch, arrMobileTagsSearch, arrQaEngineerTagesSearch, arrTeamLeadTagesSearch } from '../../../dataArrays/listsStackDevops';
 import { setSkills } from '../../../store/resumesSlice';
-import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import './stepResume.css';
 import BigFpModalResult from './resultCreationResume/bigFpModalResult';
@@ -48,10 +47,6 @@ function FomattedTextErrorsStack(nameResume: string): string {
 }
 
 const StepResume6: React.FC<Props> = ({
-    onStepOneData,
-    handleStepOne,
-    stepOneData,
-    handleNextStep,
     handleBackStep,
     stepsComponents,
     showCurrentStep
@@ -284,7 +279,6 @@ const StepResume6: React.FC<Props> = ({
     }, [inpSkillsValue, isAddedSkills])
 
     const formattedTextNameStack = FomattedTextErrorsStack(nameResume);
-    //тут есть ошибка у новых стэков разработки
 
     return (
         <>

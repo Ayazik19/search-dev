@@ -1,16 +1,13 @@
 import React, { ComponentType, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hookRedux";
-import { useForm } from "react-hook-form";
-import { setFilterStep, setNextStep } from "../../../store/stepsResume";
+import { setFilterStep } from "../../../store/stepsResume";
 import { setChangeTypeWork } from "../../../store/resumesSlice";
 import ResumePetProjects from "./componentsStepFive/resumePetProjects";
 import ResumeWorkExpirience from "./componentsStepFive/resumeWorkExpirience";
 import iconIsRequiredFalse from '../../../../dist/icons/iconIsRequiredFalse.png'
 import iconIsRequiredTrue from '../../../../dist/icons/iconIsRequiredTrue.png'
 import FpContModalWarning from "./componentsStepFive/fpConts/contModalWarning";
-import useStepsStyle from "./stylesStepsSucces";
 import { TypesComponents } from "../createResumePage";
-import submitDataStepFive from "./componentsStepFive/submitDataStepFive";
 import StepSuccess from "./stepsSucces";
 
 interface Props {
@@ -34,22 +31,16 @@ const StepResume5: React.FC<Props> = ({ stepsComponents, handleBackStep, handleN
 
     const stateTypeWorkResume = resumesState && resumesState.typeWorkResume;
 
-    const styleSuccesSteps = useStepsStyle();
-
-
 
     useEffect(() => {
         if (stateTypeWorkResume === 'a') {
             setValueTypeWorkInp('Yes, i have commercial experience')
-            console.log(valueTypeWorkInp)
         }
         else if (stateTypeWorkResume === 'b') {
             setValueTypeWorkInp('No, but I have pet projects')
-            console.log(valueTypeWorkInp)
         }
         else if (stateTypeWorkResume === 'c') {
             setValueTypeWorkInp('I have no pet projects and commercial experience')
-            console.log(valueTypeWorkInp)
         }
     }, [stateTypeWorkResume])
 
@@ -62,13 +53,11 @@ const StepResume5: React.FC<Props> = ({ stepsComponents, handleBackStep, handleN
     const [valueTypeWorkInp, setValueTypeWorkInp] = useState<string>('');
     const [errorsTypeWorkInp, setErrorsTypeWorkInp] = useState<string>('');
 
-    const [isChangedTypeWorkResume, setIsChangedTypeWorkResume] = useState<boolean>(false);
 
     const handleInpValueTypeWork = (event: React.ChangeEvent<HTMLSelectElement>, isChangedTypeWorkResume: boolean) => {
         const value = event.target.value;
         if (isChangedTypeWorkResume) { setValueTypeWorkInp(event.target.value) }
         if (value === 'Yes, i have commercial experience') {
-            // boolean state, which setting type user dont have commercial expirence, but he have pet projects
             dispatch(setChangeTypeWork('a'))
         }
         else if (value === 'No, but I have pet projects') {
@@ -130,10 +119,9 @@ const StepResume5: React.FC<Props> = ({ stepsComponents, handleBackStep, handleN
         const findProjectsState = resumesState.petProjects;
 
         if (dataErrorModal.isShowModalWarningData) {
-            return; // Если модалка уже открыта, ничего не делаем
+            return; 
         }
 
-        console.log(findPositionsState && findPositionsState.length > 0)
 
         if (stateTypeWorkResume === 'a' && !(findPositionsState && findPositionsState.length > 0)) {
             setDataErrorModal({

@@ -170,10 +170,6 @@
     margin-top: 7.5px;
 }
 
-.icon-subm-last-step{
-
-}
-
 .other-currencies-salary,
 .other-currencies{
     display: flex;
@@ -222,19 +218,9 @@
     margin-left: 615px;
 }
 
-/* .btn-subm-last-step:hover{
-    background-color: #007bff;
-    border:1px solid #007bff;
-    width: 40px;
-    height: 30px;
-} */
 
 .right-side-modal-cont{
     margin-left: 50px;
-}
-
-.salary-cont,
-.bussynes-cont{
 }
 
 .bussynes-types-items,
@@ -302,33 +288,26 @@
     border-color: #b3d7ff;
 }
 
-/* Стили для активного состояния чекбокса (при нажатии на него) */
 .checkbox-last-step-resume:not(:disabled):active+.last-step-lists-label::before {
     background-color: #b3d7ff;
     border-color: #b3d7ff;
 }
 
-/* Стили для чекбокса, находящегося в фокусе */
 .checkbox-last-step-resume:focus+.last-step-lists-label::before {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* Стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
 .checkbox-last-step-resume:focus:not(:checked)+.last-step-lists-label::before {
     border-color: #80bdff;
 }
 
-/* Стили для чекбокса, находящегося в состоянии disabled */
 .checkbox-last-step-resume:disabled+.last-step-lists-label::before {
     background-color: #e9ecef;
 }
 
-/* Стили для отмеченного состояния */
 .checkbox-last-step-resume:checked+.last-step-lists-label::before {
     background-color: #007bff;
-    /* Цвет фона для отмеченного состояния */
     border-color: #007bff;
-    /* Цвет рамки для отмеченного состояния */
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
 }
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db } from '../firebase';
 import { useAppDispatch, useAppSelector } from '../hookRedux';
 import { deleteResume } from '../store/resumesSlice';
-import { setFalseSteps, setFirstStep } from '../store/stepsResume';
+import { setFirstStep } from '../store/stepsResume';
 
 interface Props{
     setModalContIsChangeResume: (value: boolean) => void;
@@ -25,7 +25,7 @@ const FpModalContIsChangeResume: React.FC<Props> = ({setModalContIsChangeResume}
             const docRef = doc(db, 'resumes', idResumeDb);
 
             try{
-                // await deleteDoc(docRef);
+                await deleteDoc(docRef);
                 dispatch(setFirstStep());
                 dispatch(deleteResume());
                 setModalContIsChangeResume(false);

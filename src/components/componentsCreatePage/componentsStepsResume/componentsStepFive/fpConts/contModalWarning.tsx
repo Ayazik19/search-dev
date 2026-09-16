@@ -1,8 +1,6 @@
 import React from "react";
 import { ErrorModalData } from "../../stepsResumeFive";
 import iconCloseModal from '../../../../../../dist/icons/iconCloseFpCont.png';
-import { useAppDispatch } from "../../../../../hookRedux";
-import { setChangeTypeWork } from "../../../../../store/resumesSlice";
 
 interface Props {
     dataErrorModal: ErrorModalData,
@@ -17,7 +15,6 @@ const FpContModalWarning: React.FC<Props> = ({
     removeDataModal, 
     handleInpValueTypeWork,
 }) => {
-    const dispatch = useAppDispatch()
     const typeError = dataErrorModal.typeError
     const styleMainCont = (): string => {
         return typeError === 'NO-DATA-SUBMIT' ?

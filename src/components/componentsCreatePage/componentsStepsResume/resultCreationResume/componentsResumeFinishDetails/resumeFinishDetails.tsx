@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import './resumeFinishDetails.css'
 import { useAppDispatch, useAppSelector } from "../../../../../hookRedux";
 import TitleContsResult from "../componentsResultCreationResume/titleContsResult";
-import { useForm } from "react-hook-form";
-import { currenySalary, levelIsResume, Salary, statusSearchResume } from "../../../../../types/typesResume";
+import { currenySalary, levelIsResume, statusSearchResume } from "../../../../../types/typesResume";
 import iconDownDropdownOpen from '../../../../../../dist/icons/iconDownDropdownOpen.png';
 import iconUpDropdownHide from '../../../../../../dist/icons/iconUpDropdownHide.png';
 

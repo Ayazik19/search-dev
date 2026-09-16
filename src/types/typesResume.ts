@@ -108,8 +108,8 @@ export interface Salary {
 export interface WorkingConditions {
     salary?: Salary,
     descriptionResume: string,
-    busyness?: busyness[], //занятость
-    workFormat?: workFormat[] //формат работы
+    busyness?: busyness[], 
+    workFormat?: workFormat[] 
 }
 
 export type Resume = {
@@ -128,9 +128,9 @@ export type Resume = {
     levelIsResume?: levelIsResume,
     salary?: Salary,
     descriptionResume?: string,
-    busyness?: string[], //занятость
-    workFormat?: string[], //формат работы
-    photo?: string // фото резюме
+    busyness?: string[], 
+    workFormat?: string[], 
+    photo?: string 
 }
 
 export type ResumeState = {

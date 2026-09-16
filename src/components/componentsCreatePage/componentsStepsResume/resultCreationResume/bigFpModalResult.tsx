@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import './bigFpModalResult.css'
-import { useAppDispatch, useAppSelector } from "../../../../hookRedux";
-import { useNavigate } from "react-router-dom";
+import { useAppDispatch  } from "../../../../hookRedux";
 import { setChangeScroll } from "../../../../store/isMainScrollSlice";
 import ResultCreationResume from "./componentsResultCreationResume/resultCreationResume";
-import LastStepResume from "./componentsResultCreationResume/lastStepResume";
 import ResumeFinishDetails from "./componentsResumeFinishDetails/resumeFinishDetails";
 
 interface Props {
@@ -14,8 +12,6 @@ interface Props {
 
 const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult, showCurrentStep }) => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const { resumesState } = useAppSelector(state => state.resumes);
     const [isVisibleTitleCont, setIsVisibleTitleCont] = useState<boolean>(true);
 
     const [isFinishedResumeDetails, setIsFinishedResumeDetails] = useState<boolean>(false);
@@ -35,14 +31,7 @@ const BigFpModalResult: React.FC<Props> = ({ setIsShowBigFpModalResult, showCurr
     return (
         <div className="big-fp-modal-result">
             <div className="fp-cont-result">
-                {/* тут сделать такое условие {"cont-result" : "cont-result_margin-0"} */}
                 <div className="cont-result_margin-zero">
-                    {/* {
-                        resumesState.isResumeCompleted ? 
-                        <ResultCreationResume />
-                        :
-                        <LastStepResume />
-                    }   */}
                     {isFinishedResumeDetails ?
                         <ResultCreationResume
                             isScrollFormResumeFinishDetailsToBottom={isScrollFormResumeFinishDetailsToBottom}

@@ -232,10 +232,9 @@
     width: 150px;
     border-radius: 4px;
     margin-bottom: 10px;
-    transition: width 0.8s ease; /* плавный возврат */
+    transition: width 0.8s ease; 
 }
 
-/* При наведении на list-completion-tips — запускаем анимацию линии */
 .list-completion-tips:hover ~ .line-btw-info {
     animation: lineGrow 2.5s ease forwards;
 }

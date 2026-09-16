@@ -129,8 +129,6 @@ const CreateResumePage: React.FC = () => {
         if (statusShowsModal === 'show') {
             const randomNumber = Math.floor(Math.random() * 2) + 1;
 
-            console.log(randomNumber)
-
             if (randomNumber === 1) {
                 if (stateLevelIsResume === undefined) {
                     setShowModalContSearchStatus(false);

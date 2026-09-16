@@ -99,7 +99,7 @@ const FpContCountry: React.FC<PropsStepResTwo> = (props) => {
             newCountriesCitiz.push(...props.arrSelectedCitizenship);
             setArrSelectedCitiz(newCountriesCitiz);
 
-            let isCheckedUpd = [...isCheckedCitiz]; // Создаем копию для обновления
+            let isCheckedUpd = [...isCheckedCitiz]; 
 
             for (let i = 0; i < props.arrSelectedCitizenship.length; i++) {
                 const savedCountry = props.arrSelectedCitizenship[i];
@@ -110,14 +110,13 @@ const FpContCountry: React.FC<PropsStepResTwo> = (props) => {
 
             }
 
-            // Устанавливаем новое состояние
             setIsCheckedCitiz(isCheckedUpd);
         }
         if (props.isFullPageWorkPermit && props.arrSelectedWorkPermit && props.arrSelectedWorkPermit.length > 0) {
             newCountriesWoPer.push(...props.arrSelectedWorkPermit);
             setArrSelectedWoPer(newCountriesWoPer);
 
-            let isCheckedUpd = [...isCheckedWoPer]; // Создаем копию для обновления
+            let isCheckedUpd = [...isCheckedWoPer]; 
 
             for (let i = 0; i < props.arrSelectedWorkPermit.length; i++) {
                 const savedCountry = props.arrSelectedWorkPermit[i];
@@ -127,7 +126,6 @@ const FpContCountry: React.FC<PropsStepResTwo> = (props) => {
                 isCheckedUpd[existingCountryIndex] = { ...isCheckedUpd[existingCountryIndex], value: true };
             }
 
-            // Устанавливаем новое состояние
             setIsCheckedWoPer(isCheckedUpd);
         }
     }, [props.arrSelectedCitizenship, props.arrSelectedWorkPermit]);
@@ -145,13 +143,11 @@ const FpContCountry: React.FC<PropsStepResTwo> = (props) => {
             const isSelected = checkedCitiz.value;
 
             if (isSelected) {
-                // Удаление элемента
                 setArrSelectedCitiz(arrSelectedCitiz.filter(country => country !== el));
                 setIsCheckedCitiz(isCheckedCitiz.map(item =>
                     item.country === el ? { ...item, value: false } : item
                 ));
             } else if (!isSelected && isLimitLength) {
-                // Добавление элемента
                 setArrSelectedCitiz([...arrSelectedCitiz, el]);
                 setIsCheckedCitiz(isCheckedCitiz.map(item =>
                     item.country === el ? { ...item, value: true } : item
@@ -187,13 +183,11 @@ const FpContCountry: React.FC<PropsStepResTwo> = (props) => {
             const isSelected = checkedWoPer.value;
 
             if (isSelected) {
-                // Удаление элемента
                 setArrSelectedWoPer(arrSelectedWoPer.filter(country => country !== el));
                 setIsCheckedWoPer(isCheckedWoPer.map(item =>
                     item.country === el ? { ...item, value: false } : item
                 ));
             } else if (!isSelected && isLimitLength) {
-                // Добавление элемента
                 setArrSelectedWoPer([...arrSelectedWoPer, el]);
                 setIsCheckedWoPer(isCheckedWoPer.map(item =>
                     item.country === el ? { ...item, value: true } : item

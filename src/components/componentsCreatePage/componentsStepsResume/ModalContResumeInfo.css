@@ -84,8 +84,6 @@
     border: 1px solid #b3d7ff;
 }
 
-
-
 .close-status-resume,
 .close-levle-resume{
     width: 12%;
@@ -180,7 +178,6 @@
     background-color: #e9ecef;
 }
 
-/* Стили для отмеченного состояния */
 .input-modal-cont:checked+.custom-label-modal::before {
     background-color: #007bff;
     border-color: #007bff;

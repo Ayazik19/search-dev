@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../../hookRedux";
 import TitleContsResult from "./titleContsResult";
-import defaultIcon from '../../../../../../dist/icons/iconInstagramSocial.png';
 import './resultCreationResume.css';
 import imgDefaultUser from '../../../../../../dist/images/imgDefaultUser.png';
 import iconSetUserPhoto from '../../../../../../dist/icons/iconSetUserPhoto.png'
@@ -16,20 +15,15 @@ import iconDeletePhotoResume from '../../../../../../dist/icons/iconDeletePhotoR
 import { setBackStep } from "../../../../../store/stepsResume";
 import { Resume } from '../../../../../types/typesResume';
 import { db } from '../../../../../firebase';
-import { doc, DocumentReference, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
-import { ClipLoader, GridLoader, SquareLoader } from "react-spinners";
+import { ClipLoader} from "react-spinners";
 
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 3.5;
 const ZOOM_STEP = 0.15;
-
-interface ComponentEdit {
-    [componentName: string]: React.ReactNode,
-    isCurrentEdit: boolean
-}
 
 interface Props {
     setIsVisibleTitleCont: (value: boolean) => void;
@@ -39,10 +33,6 @@ interface Props {
     showCurrentStep: (stateArrStepsResume: Array<{ status: string }>) => React.ReactElement[] | null;
     isScrollFormResumeFinishDetailsToBottom: boolean;
     setIsScrollFormResumeFinishDetailsToBottom: (value: boolean) => void;
-}
-
-interface EditDataComponents {
-    [componentName: string]: ComponentEdit,
 }
 
 export interface SelectedPhotoResume {
@@ -64,8 +54,6 @@ const ResultCreationResume: React.FC<Props> = ({ setIsScrollFormResumeFinishDeta
     const amountTimeWorked = resumesState.amountTimeWorked;
     const mainResumeRef = useRef<HTMLDivElement>(null);
     const initialSelectedPhoto = { photoUrl: '', photoFile: null } as SelectedPhotoResume;
-    //перенести это в тот момент, когда происходит конечный сабмит
-    //сделать по типу setLoading(true)
     const [textErrorSelectedPhoto, setTextErrorSelectedPhoto] = useState<string>('');
     const [selectedFilePhoto, setSelectedFilePhoto] = useState<SelectedPhotoResume>(initialSelectedPhoto);
 

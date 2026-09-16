@@ -2,7 +2,6 @@ import React, { ComponentType, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hookRedux";
 import { useForm } from "react-hook-form";
 import iconGreyShowFpCont from '../../../../dist/icons/iconGreyShowFpCont.png';
-import iconWhiteShowFpCont from '../../../../dist/icons/iconWhiteShowFpCont.png';
 import iconDeleteCountryItem from '../../../../dist/icons/iconDeleteCountryItem.png';
 import { setBasicInfo } from "../../../store/resumesSlice";
 import FpContCountry from "./fpContCountry";
@@ -11,13 +10,6 @@ import StepSuccess from "./stepsSucces";
 import { BasicInfo, ContactLinks, SocialNetwork } from "../../../types/typesResume";
 import { setChangeScroll } from "../../../store/isMainScrollSlice";
 import { arrSocialLinks, iconMap } from "../../../dataArrays/listSocialContacts";
-
-import iconFacebookSocial from '../../../../dist/icons/iconFacebookSocial.png';
-import iconInstagramSocial from '../../../../dist/icons/iconInstagramSocial.png';
-import iconPinterestSocial from '../../../../dist/icons/iconPinterestSocial.png';
-import iconTelegramSocial from '../../../../dist/icons/iconTelegramSocial.png';
-import iconTwitterSocial from '../../../../dist/icons/iconTwitterSocial.png';
-import iconVkontakteSocial from '../../../../dist/icons/iconVkontakteSocial.png';
 import iconHelpSocialInp from '../../../../dist/icons/iconHelpSocialInp.png';
 import { Country } from "country-state-city";
 
@@ -298,7 +290,6 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
 
     const handleSetSocialLink = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if(event.key === 'Enter'){
-            console.log('aa')
             event.preventDefault();
 
             handleAddContactSocialLink();
@@ -337,10 +328,6 @@ const StepResume2: React.FC<PropsHandle> = ({ stepsComponents, handleNextStep, h
         );
     })
 
-    useEffect(() => {
-        console.log(arrSocialResumeLinks)
-    },[arrSocialResumeLinks])
-    
     return (
         <div className="step-resume-creation">
             <div className="resume-creation">

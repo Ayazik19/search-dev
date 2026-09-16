@@ -1,9 +1,8 @@
-import React, { useState, useEffect, ComponentType } from "react";
+import React, { useState , ComponentType } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hookRedux";
 import { useForm } from "react-hook-form";
 import './stepResume.css'
 import { setEducation } from "../../../store/resumesSlice";
-import useStepsStyle from "./stylesStepsSucces";
 import { TypesComponents } from "../createResumePage";
 import StepSuccess from "./stepsSucces";
 

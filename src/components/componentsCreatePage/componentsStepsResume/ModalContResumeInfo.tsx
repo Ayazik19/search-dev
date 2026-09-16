@@ -1,11 +1,8 @@
-import React, { ComponentType, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hookRedux';
 import './ModalContResumeInfo.css';
 import iconCloseModalContResumeInfo from '../../../../dist/icons/iconCloseRecomSlils.png';
 import { setValueModalCont } from '../../../store/resumesSlice';
-import { StepResume } from '../../../store/stepsResume';
-import { TypesComponents } from '../createResumePage';
-import StepResume1 from './stepResumeOne';
 import { arrLevelsGradeResume, arrStatusSearchResume } from '../../../dataArrays/listsResumeOptions';
 import type { levelIsResume, statusSearchResume } from '../../../types/typesResume';
 
@@ -20,7 +17,6 @@ const ModalContResumeInfo: React.FC<Props> = ({
     showModalContSearchStatus,
     showModalContLevelIs
 }) => {
-    //variables
     const dispatch = useAppDispatch();
     const { resumesState } = useAppSelector(state => state.resumes);
     const { stateStepsResume } = useAppSelector(state => state.stepsResume)
@@ -147,7 +143,7 @@ const ModalContResumeInfo: React.FC<Props> = ({
             }
         }
         else {
-            styleModalStepFive = 'undefined-type-work' //тут доделать
+            styleModalStepFive = 'undefined-type-work' 
         }
     }
 

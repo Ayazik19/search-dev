@@ -4,9 +4,6 @@ export interface StepResume {
     currentStep: number,
     status: 'beginning' | 'completed';
 }
-//status have 2 types: 
-// - beginning - step resume
-// - completed - passed resume complete
 
 export type stepResume = {
     stepsResume: StepResume[]
@@ -23,10 +20,6 @@ const initialState: stateStepsResume = {
             status: 'beginning'
         }],
     }
-}
-
-interface Handles {
-    getStateEducationClass: () => string;
 }
 
 const stepsResumeSlice = createSlice({

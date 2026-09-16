@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import TitleContsResult from "./titleContsResult";
 import { useForm } from 'react-hook-form'
-import { Resume, WorkingConditions } from "../../../../../types/typesResume";
-import { useAppDispatch, useAppSelector } from "../../../../../hookRedux";
+import {  WorkingConditions } from "../../../../../types/typesResume";
+import { useAppDispatch } from "../../../../../hookRedux";
 import { PropagateLoader } from "react-spinners";
-import { setBusyness, setDescriptionResume, setIdResumeDb, setResumeCompleted, setSalary, setWorkFormat } from "../../../../../store/resumesSlice";
+import { setBusyness, setDescriptionResume,  setSalary, setWorkFormat } from "../../../../../store/resumesSlice";
 import { arrBusynessResume } from "../../../../../dataArrays/listsResumeOptions";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../../../firebase";
-import { v4 as uuidv4 } from 'uuid';
 
 
 interface Currencies {
@@ -40,7 +37,6 @@ const LastStepResume: React.FC = () => {
 
     const [isLoadingOtherCurrencies, setIsLoadingOtherCurrencies] = useState<boolean>(false);
 
-    const { resumesState } = useAppSelector(state => state.resumes);
     const arrBussynesTypes = arrBusynessResume;
     const arrWorkFormatsTypes = ['On-site', 'Remote', 'Hybrid'];
 
@@ -58,7 +54,6 @@ const LastStepResume: React.FC = () => {
     const [checkedWorkFormat, setCheckedWorkFormat] = useState<CheckedWorkFormat>(initialCheckedWorkFormat);
 
     const handleSetChecked = (el: string) => {
-        console.log(el)
         if (el in checkedBussynes) {
             if (checkedBussynes[el as keyof CheckedBussynes]) {
                 setCheckedBussynes(prev => ({
@@ -177,7 +172,6 @@ const LastStepResume: React.FC = () => {
             setIsLoadingOtherCurrencies(false);
             return convertedCurrencies;
         } catch (error) {
-            console.error("Ошибка при получении курсов валют:", error);
             setIsLoadingOtherCurrencies(false);
             return [];
         }
@@ -272,37 +266,6 @@ const LastStepResume: React.FC = () => {
             dispatch(setBusyness(data.busyness || []));
             dispatch(setWorkFormat(data.workFormat || []));
             dispatch(setDescriptionResume(data.descriptionResume));
-
-            //тут эту логику нужно перенести в посл след степа, где будет редактирование
-
-            // try {
-            //     const uniqueId = uuidv4();
-            //     const docRef = doc(db, 'resumes', uniqueId);
-
-            //     const formattedResumes: Resume = {
-            //         nameResume: resumesState.nameResume,
-            //         basicInfo: resumesState.basicInfo,
-            //         education: resumesState.education,
-            //         projectsProfile: resumesState.projectsProfile || [],
-            //         petProjects: resumesState.petProjects || [],
-            //         positions: resumesState.positions || [],
-            //         amountTimeWorked: resumesState.amountTimeWorked || 'No expirience',
-            //         skills: resumesState.skills,
-            //         statusSearchResume: resumesState.statusSearchResume || 'Default',
-            //         levelIsResume: resumesState.levelIsResume || 'Default',
-            //         salary: data.salary,
-            //         descriptionResume: data.descriptionResume,
-            //         busyness: data.busyness,
-            //         workFormat: data.workFormat
-            //     }
-
-            //     await setDoc(docRef, formattedResumes);
-
-            //     dispatch(setIdResumeDb(uniqueId));
-            // } catch (error) {
-            //     console.log(error);
-            // }
-            // dispatch(setResumeCompleted());
             return;
         }
         else {

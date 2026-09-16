@@ -39,16 +39,11 @@ const handleSetValuesInps = (
 const ResumePetProjects: React.FC = () => {
     const { register, formState: { errors }, handleSubmit, setValue, watch } = useForm<ProjectsForm>({ mode: 'onChange' })
     const dispatch = useAppDispatch();
-    //variables
-   
-    
-    //states
     const { resumesState } = useAppSelector(state => state.resumes);
     const stateProject = resumesState.petProjects;
     const lengthProject = stateProject?.length;
     const findStateGitLink = resumesState?.projectsProfile?.find(item => item.nameLink === 'github')
     const stateGitLink = findStateGitLink?.url;
-    //hooks
     const [changeProject, setChangeProject] = useState<boolean>(false);
     const [gitHubUrlAcc, setGitHubUrlAcc] = useState<string>(stateGitLink ? stateGitLink : '');
     const [isFpContPetProject, setIsFpContPetProject] = useState<boolean>(false)
@@ -74,9 +69,7 @@ const ResumePetProjects: React.FC = () => {
 
 
     const validateGitHubUrlProject = (value: string) => {
-        console.log(gitHubUrlAcc + '/', value)
         if (gitHubUrlAcc !== '') {
-            console.log(value.startsWith(gitHubUrlAcc + '/') || 'Incorrect url project')
             return value.startsWith(gitHubUrlAcc + '/') || 'Incorrect url project';
         }
     }
