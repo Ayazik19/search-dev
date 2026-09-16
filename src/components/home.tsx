@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hookRedux";
 import logoSite from './logoSite.jpg';
+import { setUserQuality } from "../store/userSlice";
 import imgReviewsContent2 from './imgReviewsContent2.jpg';
 import imgContentArticles from './imgContentArticles.jpeg'
 import './home.css';
@@ -10,7 +11,6 @@ const Home: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { userState } = useAppSelector(state => state.user);
-    const {stateStepsResume} = useAppSelector(state => state.stepsResume);
 
     const [valueQuality, setValueQuality] = useState<number>(5);
 
@@ -18,9 +18,14 @@ const Home: React.FC = () => {
 
     interface HandleChanges {
         handleChangeAgreement: (typeAgreement: string) => void;
+        handleSetQualitySite: (event: React.FormEvent<HTMLFormElement>) => void;
     }
     
 
+    const handleSetQualitySite: HandleChanges['handleSetQualitySite'] = (event) => {
+        event.preventDefault();
+        dispatch(setUserQuality(valueQuality))
+    }
 
     const handleChangeAgreement: HandleChanges['handleChangeAgreement'] = (typeAgreement: string) => {
         // if (typeAgreement === 'Find Work' && typeFindWork !== true) {
@@ -123,7 +128,7 @@ const Home: React.FC = () => {
                                         <br></br>to do this, we need your help!
                                     </span>
                                 </div>
-                                <form className="reviews-operation">
+                                <form className="reviews-operation" onSubmit={handleSetQualitySite}>
                                     <label htmlFor="select-review">Leave a rating of 1-5</label>
                                     <select 
                                     id="select-review" 
