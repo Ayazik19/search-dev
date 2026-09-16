@@ -1,11 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+<<<<<<< Updated upstream
 import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProjectsProfileLinks, Projects, skills, statusSearchResume, levelIsResume, Salary } from "../types/typesResume";
 import { FormValues } from "../components/componentsCreatePage/componentsStepsResume/stepResumeFour";
 import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
+=======
+import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProfileLinks, Projects, skills, statusSearchResume, levelIsResume } from "../types/typesResume";
+import { FormValues } from "../components/componentsCreatePage/componentsStepsResume/stepResumeFour";
+import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
+import { act, useState } from "react";
+>>>>>>> Stashed changes
 import { ProjectsForm } from "../components/componentsCreatePage/componentsStepsResume/componentsStepFive/resumePetProjects";
 
 
 const initialState: ResumeState = {
+<<<<<<< Updated upstream
     resumesState: {
         idResumeDb: '',
         nameResume: '',
@@ -28,6 +36,9 @@ const initialState: ResumeState = {
         workFormat: [], //график работы
         photo: ''
     }
+=======
+    resumesState: []
+>>>>>>> Stashed changes
 };
 
 interface ChangeFieldPayload {
@@ -41,6 +52,10 @@ interface ChangePostArrPayload {
     mainIdPost: number
 }
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 interface Funcs {
     formattedWorkingTimeDate: (sinceDate: string, toDate: string) => {
         formattedSinceDate: string,
@@ -135,12 +150,40 @@ const resumesSlice = createSlice({
     name: "resume",
     initialState,
     reducers: {
+<<<<<<< Updated upstream
         setInitial(state){
             state.resumesState = initialState.resumesState;
         },
         setNameResume(state, action: PayloadAction<string>) {
             if (state.resumesState) {
                 state.resumesState.nameResume = action.payload;
+=======
+
+        setNameResume(state, action: PayloadAction<string>) {
+            if (state.resumesState.length > 0) {
+                // state.resumesState.some((item: Resume) => {
+                //     const isResumeCompleted = item.isResumeCompleted;
+
+                //     if (isResumeCompleted) {
+                //         const { resumesState } = state;
+                //         const lengthArr = resumesState?.length || 0;
+
+                //         const validResumesState = Array.isArray(resumesState) ? resumesState : [];
+
+                //         const newResume = {
+                //             idResume: lengthArr + 1,
+                //             nameResume: action.payload,
+                //             isResumeCompleted: false,
+                //         };
+                //         state.resumesState = [...validResumesState, newResume];
+                //     }
+                //     else {
+                //         return state;
+                //     }
+                // })
+
+                state.resumesState[0].nameResume = action.payload;
+>>>>>>> Stashed changes
             }
             else {
                 const newResume = {
@@ -507,12 +550,320 @@ const resumesSlice = createSlice({
         setPhotoResume(state, action: PayloadAction<string>) {
             if (state.resumesState.photo) state.resumesState.photo = action.payload;
         },
+        setEducation(state, action: PayloadAction<FormValues>) {
+            const payloadObject = action.payload;
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            if (lastResume && lastResume.education) {
+                lastResume.education.nameInstituation = payloadObject.nameInstituation;
+                lastResume.education.faculty = payloadObject.faculty;
+            }
+        },
+        setChang(state) {
+            const resumesState = state.resumesState;
+
+            state.resumesState[resumesState.length - 1].statusSearchResume = '';
+        },
+        setChangeTypeWork(state, action: PayloadAction<string>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+            if (lastResume) {
+                lastResume.typeWorkResume = action.payload;
+            }
+        },
+        setAmountTimeWorked(state) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+            if (lastResume.positions) {
+                const length = lastResume.positions.length;
+                const positions = lastResume.positions;
+                if (length > 1) {
+                    const getEarlySinceDate = getEarlyOrLateDate(positions, 'early');
+                    const getLateToDate = getEarlyOrLateDate(positions, 'toDate');
+
+                    const amountCountTimeWorked = formattedWorkingTimeDate(getEarlySinceDate, getLateToDate)
+
+                    state.resumesState[0].amountTimeWorked = amountCountTimeWorked.calculateCountTime;
+                }
+                else if (length === 1) {
+                    const stateFirstObjPos = lastResume.positions[0].workingTime?.countTime;
+                    lastResume.amountTimeWorked = stateFirstObjPos;
+                }
+                else {
+                    lastResume.amountTimeWorked = {
+                        year: 0,
+                        month: 0
+                    };
+                }
+            }
+        },
+        setPosition(state, action: PayloadAction<Positions>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const positions = lastResume.positions ?? [];
+            const lengthPositions = positions.length;
+            const payloadObj = action.payload;
+
+            let payloadDataSinceDatePost = payloadObj.workingTime?.sinceDate || '';
+            let payloadDataToDatePost = payloadObj.workingTime?.toDate || '';
+
+            let formattedCountTime = { year: 0, month: 0 }; 
+
+            if (payloadDataSinceDatePost && payloadDataToDatePost) {
+                const formattedWorkingTime = formattedWorkingTimeDate(payloadDataSinceDatePost, payloadDataToDatePost);
+
+                formattedCountTime = formattedWorkingTime.calculateCountTime || { year: 0, month: 0 };
+            }
+
+
+            const finallyPost = {
+                idPosition: lengthPositions,
+                nameCompany: payloadObj.nameCompany,
+                cityCompany: payloadObj.cityCompany,
+                post: payloadObj.post,
+                workingTime: {
+                    sinceDate: payloadDataSinceDatePost,
+                    toDate: payloadDataToDatePost,
+                    countTime: {
+                        year: formattedCountTime.year,
+                        month: formattedCountTime.month
+                    }
+                },
+            };
+
+            if (lastResume.positions) {
+                lastResume.positions?.push(finallyPost);
+            }
+            else {
+                lastResume.positions = [finallyPost];
+            }
+        },
+        setUpdIdsPositions(state) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const statePositions = lastResume.positions;
+            if (statePositions && statePositions.length >= 1) {
+                const updIdsPos = statePositions?.map((item, index) => {
+                    return {
+                        idPosition: index,
+                        nameCompany: item.nameCompany,
+                        cityCompany: item.cityCompany,
+                        post: item.post,
+                        workingTime: {
+                            sinceDate: item.workingTime?.sinceDate || '',
+                            toDate: item.workingTime?.toDate || '',
+                            countTime: {
+                                year: item.workingTime?.countTime?.year ?? 0,
+                                month: item.workingTime?.countTime?.month ?? 0
+                            }
+                        }
+                    };
+                });
+                lastResume.positions = updIdsPos;
+            }
+
+        },
+        setFilterPositions(state, action: PayloadAction<number>) {
+            const resumesState = state.resumesState;
+
+            state.resumesState[resumesState.length - 1].positions = state.resumesState[resumesState.length - 1].positions?.filter(item => item.idPosition !== action.payload);
+        },
+        setFilterProjects(state, action: PayloadAction<number>) {
+            const resumesState = state.resumesState;
+
+            state.resumesState[resumesState.length - 1].petProjects = state.resumesState[resumesState.length - 1].petProjects?.filter(item => item.idProject !== action.payload)
+        },
+        setChangeFieldPost(state, action: PayloadAction<ChangeFieldPayload>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const postChange = action.payload.post;
+            const fieldChange = action.payload.field;
+            const valueChange = action.payload.value;
+
+            const statePositions = lastResume.positions;
+            if (statePositions) {
+                if (postChange && postChange.idPosition !== undefined) {
+                    const positionToUpdate = statePositions[postChange.idPosition];
+
+                    if (positionToUpdate) {
+                        let updatedPosition = { ...positionToUpdate };
+
+                        const slicedIsWorkingTimeField = fieldChange.slice(0, 11);
+                        const fieldWorkingTime = fieldChange.slice(12, fieldChange.length);
+                        if (slicedIsWorkingTimeField === 'workingTime' && updatedPosition.workingTime) {
+                            updatedPosition.workingTime = {
+                                ...updatedPosition.workingTime,
+                                [fieldWorkingTime]: valueChange
+                            };
+                        } else {
+                            updatedPosition[fieldChange] = valueChange;
+                        }
+
+                        statePositions[postChange.idPosition] = updatedPosition;
+                    }
+                }
+            }
+        },
+        setChangeDataPostArr(state, action: PayloadAction<ChangePostArrPayload>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const post = action.payload.post;
+            const mainIdPost = action.payload.mainIdPost;
+            if (lastResume.positions) {
+                lastResume.positions[mainIdPost].post = post;
+            }
+        },
+        setLinkProfile(state, action: PayloadAction<ProfileLinks>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const stateProfileLinks = lastResume.profileLinks;
+            lastResume.profileLinks = stateProfileLinks ?? [];
+            lastResume.profileLinks.push(action.payload);
+        },
+        setChangeLinkProfile(state, action: PayloadAction<{ nameLink: string, value: string }>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const field = action.payload.nameLink;
+            const value = action.payload.value;
+
+            const stateProfileLinks = lastResume.profileLinks;
+            if (stateProfileLinks) {
+                const changedLink = stateProfileLinks?.map((item, index) => {
+                    if (item.nameLink === field) {
+                        return {
+                            ...item,
+                            url: value
+                        }
+                    }
+                    return item;
+                })
+                lastResume.profileLinks = changedLink;
+            }
+        },
+        // setChangeProjectData(state, action: PayloadAction<Projects>) {
+        //     const changedProject = action.payload;
+
+        //     const stateProjects = state.resumesState[0]?.petProjects;
+        //     if (stateProjects) {
+        //         const updatedProjects = stateProjects.map((item) => {
+        //             if (item.idProject === changedProject.idProject) {
+        //                 const updatedItem: Projects = { ...item };
+
+        //                 (Object.keys(changedProject) as Array<keyof Projects>).forEach((key) => {
+        //                     const newValue: string | number = changedProject[key];
+        //                     if (item[key] !== newValue) {
+        //                         return{
+        //                             ...item,
+        //                             key: newValue
+        //                         }
+        //                     }
+        //                 });
+
+        //                 return updatedItem;
+        //             }
+        //             return item;
+        //         });
+        //         console.log(updatedProjects)
+        //         state.resumesState[0].petProjects = updatedProjects;
+        //     }
+        // },
+        setChangeProjectData(state, action: PayloadAction<Projects>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const changedProject = action.payload;
+
+            const stateProjects = lastResume.petProjects;
+            const updatedProjects = stateProjects?.map((item) => {
+                if (item.idProject === changedProject.idProject) {
+                    if (item.description !== changedProject.description) {
+                        return {
+                            ...item,
+                            description: changedProject.description
+                        }
+                    }
+                    if (item.name !== changedProject.name) {
+                        return {
+                            ...item,
+                            name: changedProject.name
+                        }
+                    }
+                    if (item.url !== changedProject.url) {
+                        return {
+                            ...item,
+                            url: changedProject.url
+                        }
+                    }
+                    return item;
+                }
+                return item;
+            });
+            lastResume.petProjects = updatedProjects;
+        },
+        setPetProject(state, action: PayloadAction<ProjectsForm>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            const statePetProjects = state.resumesState[0].petProjects;
+
+            const addIdProject: Projects = {
+                idProject: statePetProjects?.length || 0,
+                name: action.payload.projects.name,
+                description: action.payload.projects.description,
+                url: action.payload.projects.url,
+            };
+
+
+            lastResume.petProjects = statePetProjects ?? [];
+
+            lastResume.petProjects.push(addIdProject)
+        },
+        setSkills(state, action: PayloadAction<skills>) {
+            const resumesState = state.resumesState;
+
+            state.resumesState[resumesState.length - 1].skills = action.payload;
+        },
+        setValueModalCont(state, action: PayloadAction<{
+            typeField: string,
+            value: string
+        }>) {
+            const resumesState = state.resumesState;
+
+            const lastResume = resumesState[resumesState.length - 1];
+
+            if (action.payload.typeField === 'status search') {
+                lastResume.statusSearchResume = action.payload.value;
+            }
+            else {
+                lastResume.levelIsResume = action.payload.value;
+            }
+        },
+
         deleteResume(state) {
             state.resumesState = {};
         },
     },
 });
 
+<<<<<<< Updated upstream
 export const {
     setUpdCountTimeInToDate,
     setValueModalCont, setIdResumeDb, setResumeCompleted,
@@ -526,3 +877,7 @@ export const {
     setPhotoResume, setLevelIsResume, setInitial
 } = resumesSlice.actions;
 export default resumesSlice.reducer;
+=======
+export const { setValueModalCont, setSkills, setChang, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
+export default resumesSlice.reducer;
+>>>>>>> Stashed changes

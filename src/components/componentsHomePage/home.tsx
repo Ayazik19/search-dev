@@ -12,8 +12,6 @@ import { Date, skills } from "../../types/typesResume";
 import { arrAllTagesSearch, arrayStacks } from "../../dataArrays/listsStackDevops";
 import { PulseLoader } from "react-spinners";
 import BtnGoToFullSearchResume from "./btnGoToFullSearchResume";
-import { setFirstStep } from "../../store/stepsResume";
-import { setBasicInfo, setBusyness, setChangeTypeWork, setInitial, setNameResume, setResumeCompleted, setStatusSearchResume, setWorkFormat } from "../../store/resumesSlice";
 import useSetUpdAmountTimeWorkedPoss, { updCountTimeToDatePos } from "../../globalFuncs";
 
 
@@ -36,7 +34,6 @@ const Home: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const {setUpdAmountTimeWorkedPoss} = useSetUpdAmountTimeWorkedPoss();
-    const { stateStepsResume } = useAppSelector(state => state.stepsResume);
     const { resumesState } = useAppSelector(state => state.resumes);
     const [valueQuality, setValueQuality] = useState<number>(5);
 
@@ -84,7 +81,6 @@ const Home: React.FC = () => {
         }
         navigate('/create-resume');
         
-        dispatch(setChangeTypeWork('a'));
         // }
         // else if (typeAgreement === 'Find Dev' && typeFindDev !== true) {
         //     dispatch(setChangeIsFindDev(true))
@@ -95,7 +91,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         updCountTimeToDatePos(resumesState, dispatch);
         setUpdAmountTimeWorkedPoss();
-    }, []); // вызывается при монтировании компонента
+    }, []); 
 
 
 
@@ -256,10 +252,6 @@ const Home: React.FC = () => {
                 });
             }
         }
-    }, [arrSearchedResumes])
-
-    useEffect(() => {
-        console.log(arrSearchedResumes)
     }, [arrSearchedResumes])
 
     return (
