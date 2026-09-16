@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProjectsProfileLinks, Projects, skills, statusSearchResume, levelIsResume, Salary } from "../types/typesResume";
 import { FormValues } from "../components/componentsCreatePage/componentsStepsResume/stepResumeFour";
 import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import { ResumeState, Resume, BasicInfo, Education, Positions, Date, Post, ProfileLinks, Projects, skills, statusSearchResume, levelIsResume } from "../types/typesResume";
@@ -12,6 +15,9 @@ import { FormValues } from "../components/componentsCreatePage/componentsStepsRe
 import { differenceInMonths, differenceInYears, format, parseISO } from "date-fns";
 import { act, useState } from "react";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -19,6 +25,7 @@ import { ProjectsForm } from "../components/componentsCreatePage/componentsSteps
 
 
 const initialState: ResumeState = {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     resumesState: {
@@ -49,6 +56,9 @@ const initialState: ResumeState = {
 =======
     resumesState: []
 >>>>>>> Stashed changes
+=======
+    resumesState: []
+>>>>>>> Stashed changes
 };
 
 interface ChangeFieldPayload {
@@ -64,6 +74,10 @@ interface ChangePostArrPayload {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -166,6 +180,7 @@ const resumesSlice = createSlice({
     reducers: {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         setInitial(state){
             state.resumesState = initialState.resumesState;
         },
@@ -173,6 +188,8 @@ const resumesSlice = createSlice({
             if (state.resumesState) {
                 state.resumesState.nameResume = action.payload;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -239,6 +256,7 @@ const resumesSlice = createSlice({
             const payloadObject = action.payload;
             const resumesState = state.resumesState;
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
             if (resumesState && resumesState.education) {
@@ -574,6 +592,8 @@ const resumesSlice = createSlice({
 
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             const lastResume = resumesState[resumesState.length - 1];
 
             if (lastResume && lastResume.education) {
@@ -885,6 +905,7 @@ const resumesSlice = createSlice({
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export const {
     setUpdCountTimeInToDate,
     setValueModalCont, setIdResumeDb, setResumeCompleted,
@@ -898,6 +919,10 @@ export const {
     setPhotoResume, setLevelIsResume, setInitial
 } = resumesSlice.actions;
 export default resumesSlice.reducer;
+=======
+export const { setValueModalCont, setSkills, setChang, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
+export default resumesSlice.reducer;
+>>>>>>> Stashed changes
 =======
 export const { setValueModalCont, setSkills, setChang, setChangeProjectData, setChangeLinkProfile, setFilterProjects, setPetProject, setLinkProfile, setChangeDataPostArr, setChangeFieldPost, setUpdIdsPositions, setFilterPositions, setAmountTimeWorked, setPosition, setChangeTypeWork, setNameResume, setBasicInfo, setEducationClass, setEducation, deleteResume } = resumesSlice.actions;
 export default resumesSlice.reducer;
